@@ -20,6 +20,7 @@ import {
   RefreshCw,
   ChevronDown,
   Globe,
+  Gamepad2,
 } from 'lucide-react';
 
 interface MockOrder {
@@ -35,7 +36,7 @@ interface MockOrder {
 }
 
 interface BusinessConfig {
-  id: 'oh-my-marvz' | 'meta-pylon';
+  id: 'oh-my-marvz' | 'la3eeb';
   name: string;
   tagline: string;
   domain: string;
@@ -50,20 +51,20 @@ const BUSINESSES: Record<string, BusinessConfig> = {
     tagline: 'Marvel & Anime Collectibles Store',
     domain: 'oh-my-marvz.com',
     badgeBg: 'bg-red-50 text-red-700 border-red-200',
-    badgeText: 'E-COMMERCE STORE',
+    badgeText: 'COLLECTIBLES STORE',
   },
-  'meta-pylon': {
-    id: 'meta-pylon',
-    name: 'META PYLON DIGITAL',
-    tagline: 'Full-Stack Web & AI Engineering Agency',
-    domain: 'meta-pylon.com',
+  'la3eeb': {
+    id: 'la3eeb',
+    name: 'LA3EEB',
+    tagline: 'Gaming Gears & eSports Equipment Store',
+    domain: 'la3eeb.com',
     badgeBg: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-    badgeText: 'DIGITAL AGENCY',
+    badgeText: 'GAMING HUB',
   },
 };
 
 export default function AdminDashboardPage() {
-  const [currentBusinessId, setCurrentBusinessId] = useState<'oh-my-marvz' | 'meta-pylon'>('oh-my-marvz');
+  const [currentBusinessId, setCurrentBusinessId] = useState<'oh-my-marvz' | 'la3eeb'>('oh-my-marvz');
   const [isSwitchDropdownOpen, setIsSwitchDropdownOpen] = useState(false);
   
   const currentBusiness = BUSINESSES[currentBusinessId];
@@ -73,11 +74,11 @@ export default function AdminDashboardPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFranchiseFilter, setSelectedFranchiseFilter] = useState<'all' | 'marvel' | 'anime'>('all');
 
-  // Mock Meta Pylon Services Data for 2nd Business
-  const agencyServices = [
-    { id: 'srv-1', name: 'Custom Next.js Web Application', category: 'Development', price: 1499.0, status: 'Active' },
-    { id: 'srv-2', name: 'AI Chatbot & Automation Suite', category: 'Artificial Intelligence', price: 2100.0, status: 'Active' },
-    { id: 'srv-3', name: 'Brand Design & UI/UX Strategy', category: 'Design', price: 850.0, status: 'Active' },
+  // Mock La3eeb Gaming Catalog for 2nd Business
+  const la3eebProducts = [
+    { id: 'la3-1', name: 'Pro Wireless RGB Gaming Controller', category: 'Controllers', price: 69.99, status: 'In Stock' },
+    { id: 'la3-2', name: 'Mechanical Hotswap RGB Keyboard', category: 'Keyboards', price: 119.00, status: 'In Stock' },
+    { id: 'la3-3', name: '7.1 Surround Sound Gaming Headset', category: 'Audio Gear', price: 89.99, status: 'In Stock' },
   ];
 
   // Mock Orders Data for Store
@@ -177,7 +178,7 @@ export default function AdminDashboardPage() {
   // Calculate Stats based on active Business
   const totalRevenue = currentBusinessId === 'oh-my-marvz'
     ? products.reduce((acc, p) => acc + p.price, 0) * 14
-    : 18450.00;
+    : 12450.00;
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans selection:bg-indigo-600 selection:text-white">
@@ -189,7 +190,11 @@ export default function AdminDashboardPage() {
           {/* Left Brand Identifier */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-sm">
-              <Building2 className="w-5 h-5 stroke-[2.5]" />
+              {currentBusinessId === 'la3eeb' ? (
+                <Gamepad2 className="w-5 h-5 stroke-[2.5]" />
+              ) : (
+                <Building2 className="w-5 h-5 stroke-[2.5]" />
+              )}
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -299,8 +304,8 @@ export default function AdminDashboardPage() {
         <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
           {[
             { id: 'overview', label: 'ANALYTICS & METRICS' },
-            { id: 'products', label: currentBusinessId === 'oh-my-marvz' ? `STORE CATALOG (${products.length})` : 'AGENCY SERVICES (3)' },
-            { id: 'orders', label: currentBusinessId === 'oh-my-marvz' ? `CUSTOMER ORDERS (${orders.length})` : 'CLIENT INVOICES (3)' },
+            { id: 'products', label: currentBusinessId === 'oh-my-marvz' ? `STORE CATALOG (${products.length})` : 'GAMING PRODUCTS (3)' },
+            { id: 'orders', label: currentBusinessId === 'oh-my-marvz' ? `CUSTOMER ORDERS (${orders.length})` : 'LA3EEB ORDERS (3)' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -343,10 +348,10 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
                 <div className="text-2xl font-extrabold font-mono text-slate-900">
-                  {currentBusinessId === 'oh-my-marvz' ? `${products.length} Items` : '3 Services'}
+                  {currentBusinessId === 'oh-my-marvz' ? `${products.length} Items` : '3 Gaming Gears'}
                 </div>
                 <div className="text-[11px] text-slate-500 font-mono font-bold">
-                  {currentBusinessId === 'oh-my-marvz' ? '17 Active Marvel & Anime' : 'Web & AI Client Packages'}
+                  {currentBusinessId === 'oh-my-marvz' ? '17 Active Marvel & Anime' : 'Controllers, Keyboards & Audio'}
                 </div>
               </div>
 
@@ -472,13 +477,13 @@ export default function AdminDashboardPage() {
               </>
             ) : (
               <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xs">
-                <h3 className="text-lg font-extrabold text-slate-900">Meta Pylon Digital Agency Services</h3>
+                <h3 className="text-lg font-extrabold text-slate-900">LA3EEB Gaming Gear Inventory</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {agencyServices.map((srv) => (
-                    <div key={srv.id} className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-                      <div className="text-xs font-mono text-indigo-600 font-extrabold">{srv.category}</div>
-                      <div className="font-extrabold text-slate-900 text-sm">{srv.name}</div>
-                      <div className="text-lg font-extrabold text-emerald-600 font-mono">${srv.price.toFixed(2)}</div>
+                  {la3eebProducts.map((p) => (
+                    <div key={p.id} className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
+                      <div className="text-xs font-mono text-indigo-600 font-extrabold">{p.category}</div>
+                      <div className="font-extrabold text-slate-900 text-sm">{p.name}</div>
+                      <div className="text-lg font-extrabold text-emerald-600 font-mono">${p.price.toFixed(2)}</div>
                     </div>
                   ))}
                 </div>
