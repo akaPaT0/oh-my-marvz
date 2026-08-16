@@ -71,8 +71,8 @@ const BUSINESSES: Record<string, BusinessConfig> = {
     domain: 'la3eeb.com',
     badgeBg: 'bg-indigo-50 text-indigo-700 border-indigo-200',
     badgeText: 'GAMING HUB',
-    storefrontUrl: '/la3eeb',
-    storefrontLabel: 'LA3EEB STOREFRONT',
+    storefrontUrl: 'https://la3eeb.com',
+    storefrontLabel: 'LA3EEB WEBSITE',
   },
 };
 

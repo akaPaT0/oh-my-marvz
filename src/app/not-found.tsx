@@ -79,13 +79,15 @@ export default function NotFound() {
               <span>BROWSE PRODUCTS</span>
             </Link>
 
-            <Link
-              href="/la3eeb"
+            <a
+              href="https://la3eeb.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs py-3 px-4 rounded-xl border border-zinc-700/80 flex items-center justify-center gap-2 transition-colors"
             >
               <Compass className="w-4 h-4 text-indigo-400" />
-              <span>LA3EEB GAMING</span>
-            </Link>
+              <span>LA3EEB WEBSITE</span>
+            </a>
           </div>
         </div>
 
