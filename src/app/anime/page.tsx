@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from 'react';
 import { Header } from '@/components/Header';
-import { HeroBanner } from '@/components/HeroBanner';
 import { FeaturedVault } from '@/components/FeaturedVault';
 import { LebanonDeliveryBanner } from '@/components/LebanonDeliveryBanner';
 import { LettersToEditor } from '@/components/LettersToEditor';
@@ -93,13 +92,27 @@ export default function AnimePage() {
 
       {/* Main Container */}
       <main className="flex-1 w-full space-y-4">
-        {/* Anime Hero Featured Showcase (3 Featured Anime Products) */}
-        <HeroBanner
-          featuredProducts={animeProducts.filter((p) => p.isFeatured)}
-          onAddToCart={handleAddToCart}
-          onQuickView={(p) => setQuickViewProduct(p)}
-          onSelectCategory={(cat) => setActiveCategory(cat)}
-        />
+        {/* Anime Hero Banner */}
+        <section className="w-full max-w-6xl mx-auto my-4 px-4 sm:px-6 lg:px-8">
+          <div className="relative w-full bg-white border-3 border-black shadow-[4px_4px_0_#111] overflow-hidden p-6 sm:p-10">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-700 via-indigo-600 to-pink-600 opacity-95" />
+            <div className="absolute inset-0 halftone-comic-yellow opacity-30 mix-blend-multiply pointer-events-none" />
+
+            <div className="relative z-10 space-y-3 text-white">
+              <div className="inline-block bg-yellow-300 text-black border-2 border-black px-3 py-1 font-black text-xs uppercase transform -rotate-1 shadow-[2px_2px_0_#111]">
+                OFFICIAL ANIME CATALOG
+              </div>
+
+              <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white drop-shadow-[4px_4px_0_#111] italic leading-none">
+                ALL ANIME PRODUCTS & COLLECTIBLES
+              </h1>
+
+              <p className="text-xs sm:text-sm font-extrabold uppercase text-yellow-300 drop-shadow-[2px_2px_0_#111] tracking-wider">
+                Naruto, Attack on Titan, Dragon Ball, Demon Slayer & One Piece Figures
+              </p>
+            </div>
+          </div>
+        </section>
 
 
 
