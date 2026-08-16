@@ -9,6 +9,7 @@ import {
   ShoppingBag,
   Plus,
   Trash2,
+  Edit,
   TrendingUp,
   MapPin,
   CheckCircle,
@@ -21,6 +22,7 @@ import {
   ChevronDown,
   Globe,
   Gamepad2,
+  X,
 } from 'lucide-react';
 
 interface MockOrder {
@@ -79,6 +81,9 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'orders'>('overview');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFranchiseFilter, setSelectedFranchiseFilter] = useState<'all' | 'marvel' | 'anime'>('all');
+
+  // Edit Product Modal State
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   // Mock La3eeb Gaming Catalog for 2nd Business
   const la3eebProducts = [
@@ -160,6 +165,16 @@ export default function AdminDashboardPage() {
 
     setProducts([created, ...products]);
     setIsAddModalOpen(false);
+  };
+
+  const handleSaveEditedProduct = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingProduct) return;
+
+    setProducts(
+      products.map((p) => (p.id === editingProduct.id ? editingProduct : p))
+    );
+    setEditingProduct(null);
   };
 
   const handleDeleteProduct = (id: string) => {
@@ -467,10 +482,21 @@ export default function AdminDashboardPage() {
                               <span>{p.isFeatured ? 'FEATURED' : 'NORMAL'}</span>
                             </button>
                           </td>
-                          <td className="p-4 text-right">
+                          <td className="p-4 text-right flex items-center justify-end gap-2">
+                            {/* EDIT PRODUCT BUTTON */}
+                            <button
+                              onClick={() => setEditingProduct({ ...p })}
+                              className="p-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white rounded-xl transition-colors"
+                              title="Edit Product Details"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+
+                            {/* DELETE PRODUCT BUTTON */}
                             <button
                               onClick={() => handleDeleteProduct(p.id)}
                               className="p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-xl transition-colors"
+                              title="Delete Product"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -629,6 +655,122 @@ export default function AdminDashboardPage() {
                   className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-extrabold shadow-md"
                 >
                   SAVE ITEM
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* --- EDIT PRODUCT MODAL POPUP --- */}
+      {editingProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
+          <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h2 className="text-xl font-extrabold text-slate-900">
+                EDIT PRODUCT DETAILS
+              </h2>
+              <button
+                onClick={() => setEditingProduct(null)}
+                className="p-1 text-slate-400 hover:text-slate-700 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEditedProduct} className="space-y-3 text-xs font-mono">
+              <div>
+                <label className="block text-slate-600 font-bold mb-1">PRODUCT NAME</label>
+                <input
+                  type="text"
+                  required
+                  value={editingProduct.name}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-600 font-bold mb-1">SUBTITLE / EDITION</label>
+                <input
+                  type="text"
+                  value={editingProduct.subtitle}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, subtitle: e.target.value })}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-600 font-bold mb-1">PRICE ($ USD)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    required
+                    value={editingProduct.price}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) })}
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-600 font-bold mb-1">FRANCHISE</label>
+                  <select
+                    value={editingProduct.franchise}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, franchise: e.target.value as any })}
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold uppercase"
+                  >
+                    <option value="marvel">MARVEL</option>
+                    <option value="anime">ANIME</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-600 font-bold mb-1">IMAGE URL / PATH</label>
+                <input
+                  type="text"
+                  value={editingProduct.image}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-600 font-bold mb-1">DESCRIPTION</label>
+                <textarea
+                  rows={2}
+                  value={editingProduct.description}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 pt-1">
+                <input
+                  type="checkbox"
+                  id="editIsFeatured"
+                  checked={editingProduct.isFeatured || false}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, isFeatured: e.target.checked })}
+                  className="w-4 h-4 accent-indigo-600 cursor-pointer"
+                />
+                <label htmlFor="editIsFeatured" className="text-slate-900 font-bold uppercase cursor-pointer">
+                  SET AS FEATURED HERO SPOTLIGHT ITEM
+                </label>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setEditingProduct(null)}
+                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-extrabold"
+                >
+                  CANCEL
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-extrabold shadow-md"
+                >
+                  UPDATE PRODUCT
                 </button>
               </div>
             </form>
