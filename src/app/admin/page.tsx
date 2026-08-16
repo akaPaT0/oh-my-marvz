@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import {
   Package,
@@ -11,7 +9,6 @@ import {
   ShoppingBag,
   Plus,
   Trash2,
-  Edit,
   TrendingUp,
   MapPin,
   CheckCircle,
@@ -19,7 +16,8 @@ import {
   Shield,
   Star,
   Search,
-  ArrowUpDown,
+  ArrowLeft,
+  UserCheck,
 } from 'lucide-react';
 
 interface MockOrder {
@@ -151,20 +149,48 @@ export default function AdminDashboardPage() {
   const animeCount = products.filter((p) => p.franchise === 'anime').length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#eef0f2] text-black selection:bg-red-600 selection:text-white">
-      {/* Header */}
-      <Header cartCount={0} onOpenCart={() => {}} />
+    <div className="min-h-screen flex flex-col bg-[#eef0f2] text-black selection:bg-red-600 selection:text-white font-sans">
+      
+      {/* --- DEDICATED ADMIN TOPBAR (Zero Public Nav Header) --- */}
+      <header className="sticky top-0 z-40 bg-black text-white border-b-4 border-red-600 px-4 py-3 shadow-[0_4px_0_#111]">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-white p-1 border-2 border-white shadow-[2px_2px_0_#fff]">
+              <img src="/logo.png" alt="OH MY MARVZ" className="h-8 w-auto object-contain" />
+            </div>
+            <span className="bg-yellow-400 text-black px-2 py-0.5 font-black text-[10px] uppercase font-mono tracking-wider border border-black shadow-[1px_1px_0_#000]">
+              ADMIN PORTAL
+            </span>
+          </div>
 
+          <div className="flex items-center gap-4">
+            <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-zinc-300">
+              <UserCheck className="w-4 h-4 text-emerald-400" />
+              <span>LOGGED IN: <strong>STORE OWNER</strong></span>
+            </div>
+
+            <Link
+              href="/"
+              className="bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase px-4 py-2 border-2 border-white shadow-[2px_2px_0_#fff] flex items-center gap-1.5 transition-transform hover:-translate-y-0.5 tracking-wider"
+            >
+              <ArrowLeft className="w-4 h-4 stroke-[3]" />
+              <span>EXIT TO STORE</span>
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Admin Body */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         
-        {/* Top Admin Header Bar */}
+        {/* Top Control Panel Hero Banner */}
         <div className="bg-white border-3 border-black shadow-[4px_4px_0_#111] p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div className="inline-block bg-black text-yellow-300 border-2 border-black px-3 py-1 font-black text-xs uppercase transform -rotate-1 shadow-[2px_2px_0_#ffee00] mb-2">
               ADMIN CONTROL CENTER
             </div>
             <h1 className="text-2xl sm:text-3xl font-black uppercase italic tracking-tight text-black">
-              OH MY MARVZ STORE DASHBOARD
+              OH MY MARVZ DASHBOARD
             </h1>
             <p className="text-xs font-mono font-bold text-zinc-500">
               Manage inventory, featured products, and Lebanese BAU pickup & shipping orders.
@@ -475,7 +501,25 @@ export default function AdminDashboardPage() {
 
       </main>
 
-      <Footer />
+      {/* --- DEDICATED ADMIN FOOTER (Zero Public Customer Footer) --- */}
+      <footer className="bg-black text-white border-t-4 border-red-600 py-4 px-4 sm:px-6 lg:px-8 mt-12 text-xs font-mono">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <div className="text-zinc-400">
+            Oh My Marvz • Internal Store Operations Portal v1.0
+          </div>
+          <div className="text-zinc-400">
+            Crafted by{' '}
+            <a
+              href="https://meta-pylon.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-yellow-400 font-black hover:underline"
+            >
+              Meta Pylon
+            </a>
+          </div>
+        </div>
+      </footer>
 
       {/* --- ADD PRODUCT MODAL --- */}
       {isAddModalOpen && (
