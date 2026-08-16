@@ -100,15 +100,15 @@ export default function MarvelPage() {
 
             <div className="relative z-10 space-y-3 text-white">
               <div className="inline-block bg-yellow-300 text-black border-2 border-black px-3 py-1 font-black text-xs uppercase transform -rotate-1 shadow-[2px_2px_0_#111]">
-                OFFICIAL M@RVEL CATALOG
+                OFFICIAL MARVEL COLLECTION
               </div>
 
               <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white drop-shadow-[4px_4px_0_#111] italic leading-none">
-                M@RVEL ACTION FIGURES & GADGETS
+                MARVEL FIGURES & GADGETS
               </h1>
 
               <p className="text-xs sm:text-sm font-extrabold uppercase text-yellow-300 drop-shadow-[2px_2px_0_#111] tracking-wider">
-                Iron Man, Spider-Man, Thor, Deadpool, Wolverine & Avengers Collectibles
+                IRON MAN • SPIDER-MAN • THOR • DEADPOOL • WOLVERINE • AVENGERS
               </p>
             </div>
           </div>
