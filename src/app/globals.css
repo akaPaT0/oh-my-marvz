@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --comic-bg: #eef0f2;
+    --comic-paper: #ffffff;
+    --comic-black: #111111;
+    --comic-yellow: #facc15;
+    --comic-red: #dc2626;
+    --comic-blue: #2563eb;
+    --comic-pink: #db2777;
+  }
+}
+
+body {
+  background-color: #eef0f2;
+  color: #111111;
+  font-family: 'Arial Black', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+}
+
+/* Comic Panel Containers */
+.comic-panel-box {
+  background: #ffffff;
+  border: 3px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
+}
+
+.comic-panel-box-sm {
+  background: #ffffff;
+  border: 2px solid #111111;
+  box-shadow: 3px 3px 0px #111111;
+}
+
+/* Comic Ribbon Titles */
+.comic-ribbon-yellow {
+  background: #facc15;
+  border: 3px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
+  color: #111111;
+}
+
+.comic-ribbon-pink {
+  background: #fbcfe8;
+  border: 3px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
+  color: #111111;
+}
+
+.comic-ribbon-white {
+  background: #ffffff;
+  border: 3px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
+  color: #111111;
+}
+
+/* Halftone Panel Accents */
+.halftone-comic-red {
+  background-color: #dc2626;
+  background-image: radial-gradient(#ffffff 1.5px, transparent 1.5px);
+  background-size: 10px 10px;
+}
+
+.halftone-comic-yellow {
+  background-color: #facc15;
+  background-image: radial-gradient(#111111 1.5px, transparent 1.5px);
+  background-size: 10px 10px;
+}
+
+.halftone-comic-pink {
+  background-color: #fce7f3;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1.5px, transparent 1.5px);
+  background-size: 10px 10px;
+}
+
+/* Sticky Note Review Cards */
+.sticky-note-yellow {
+  background: #fef08a;
+  border: 2.5px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
+  transform: rotate(-1.5deg);
+}
+
+.sticky-note-white {
+  background: #ffffff;
+  border: 2.5px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
+  transform: rotate(0.5deg);
+}
+
+.sticky-note-pink {
+  background: #fce7f3;
+  border: 2.5px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
+  transform: rotate(1.5deg);
+}
+
+.thumbtack-pin {
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border: 2.5px solid #111111;
+  border-radius: 50%;
+  box-shadow: 1px 1px 0px #111111;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #eef0f2;
+}
+::-webkit-scrollbar-thumb {
+  background: #dc2626;
+  border: 2px solid #111111;
+}
