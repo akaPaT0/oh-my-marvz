@@ -72,19 +72,19 @@ export default function NotFound() {
 
           <div className="grid grid-cols-2 gap-3 pt-1">
             <Link
-              href="/marvel"
+              href="/"
               className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs py-3 px-4 rounded-xl border border-zinc-700/80 flex items-center justify-center gap-2 transition-colors"
             >
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>MARVEL STORE</span>
+              <ShoppingBag className="w-4 h-4 text-amber-400" />
+              <span>BROWSE PRODUCTS</span>
             </Link>
 
             <Link
-              href="/anime"
+              href="/la3eeb"
               className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs py-3 px-4 rounded-xl border border-zinc-700/80 flex items-center justify-center gap-2 transition-colors"
             >
-              <Compass className="w-4 h-4 text-purple-400" />
-              <span>ANIME STORE</span>
+              <Compass className="w-4 h-4 text-indigo-400" />
+              <span>LA3EEB GAMING</span>
             </Link>
           </div>
         </div>
