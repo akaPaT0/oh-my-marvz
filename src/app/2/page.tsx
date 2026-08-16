@@ -17,7 +17,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
-import { ProductQuickView } from '@/components/ProductQuickView';
+import { ModernProductModal } from '@/components/ModernProductModal';
 import { CartDrawer, CartItem } from '@/components/CartDrawer';
 import { CheckoutModal } from '@/components/CheckoutModal';
 
@@ -539,7 +539,7 @@ export default function ModernShop() {
         }
       `}</style>
 
-      <ProductQuickView product={quickViewProduct} onClose={() => setQuickViewProduct(null)} onAddToCart={handleAddToCart} />
+      <ModernProductModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} onAddToCart={handleAddToCart} />
       <CartDrawer
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
