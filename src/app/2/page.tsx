@@ -12,6 +12,9 @@ import {
   ArrowRight,
   SlidersHorizontal,
   X,
+  Truck,
+  RotateCcw,
+  ShieldCheck,
 } from 'lucide-react';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import { ProductQuickView } from '@/components/ProductQuickView';
@@ -19,7 +22,7 @@ import { CartDrawer, CartItem } from '@/components/CartDrawer';
 import { CheckoutModal } from '@/components/CheckoutModal';
 
 const CATEGORIES = [
-  { id: 'all', label: 'All' },
+  { id: 'all', label: 'All Products' },
   { id: 'figures', label: 'Figures' },
   { id: 'statues', label: 'Statues' },
   { id: 'keychains', label: 'Keychains' },
@@ -105,178 +108,243 @@ export default function ModernShop() {
   const cartCount = cartItems.reduce((acc, i) => acc + i.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-[#f7f7f5] text-[#111]" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+    <div className="min-h-screen text-[#111]" style={{ fontFamily: "'Inter', system-ui, sans-serif", background: '#F0EFE9' }}>
 
       {/* ─── TICKER ─── */}
-      <div className="bg-[#111] text-white text-[11px] font-semibold tracking-widest uppercase overflow-hidden py-2">
+      <div
+        style={{ background: '#111' }}
+        className="text-white text-[11px] font-semibold tracking-widest uppercase overflow-hidden py-2.5"
+      >
         <div className="flex gap-16 whitespace-nowrap animate-marquee">
           {Array(6).fill(null).map((_, i) => (
-            <span key={i} className="flex items-center gap-6 shrink-0">
+            <span key={i} className="flex items-center gap-8 shrink-0">
               <span>⚡ Fast Lebanon Delivery</span>
-              <span className="text-white/30">·</span>
+              <span className="opacity-20">·</span>
               <span>🏫 BAU Beirut Pickup</span>
-              <span className="text-white/30">·</span>
-              <span>✦ Authentic Collectibles</span>
-              <span className="text-white/30">·</span>
+              <span className="opacity-20">·</span>
+              <span>✦ 100% Authentic Collectibles</span>
+              <span className="opacity-20">·</span>
               <span>🎯 Marvel & Anime Grails</span>
-              <span className="text-white/30">·</span>
+              <span className="opacity-20">·</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* ─── HEADER ─── */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-black/[0.06]">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-[64px] flex items-center justify-between gap-6">
+      {/* ─── TOP NAV — full width, not floating ─── */}
+      <div style={{ background: '#FAFAF7', boxShadow: '0 1px 0 0 rgba(0,0,0,0.08), 0 4px 16px 0 rgba(0,0,0,0.06)' }} className="sticky top-0 z-50 w-full">
+        
+        {/* Main header row */}
+        <div className="w-full border-b border-black/[0.07]">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between gap-6">
+            
+            {/* Logo */}
+            <Link href="/2" className="text-[#111] font-black text-xl tracking-[-0.03em] hover:text-[#c96a00] transition-colors shrink-0">
+              OH MY MARVZ
+            </Link>
 
-          {/* Logo */}
-          <Link href="/2" className="text-[#111] font-black text-lg tracking-[-0.02em] hover:text-[#e07b00] transition-colors shrink-0">
-            OH MY MARVZ
-          </Link>
-
-          {/* Nav */}
-          <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium text-black/40">
-            {(['all', 'marvel', 'anime'] as const).map((f) => (
-              <button
-                key={f}
-                onClick={() => setActiveFranchise(f)}
-                className={`transition-colors hover:text-black capitalize ${activeFranchise === f ? 'text-black font-semibold' : ''}`}
+            {/* Search bar — center, prominent */}
+            <div className="hidden md:flex flex-1 max-w-md mx-6">
+              <div
+                className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl transition-all"
+                style={{ background: '#ECEAE2', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.08)' }}
               >
-                {f === 'all' ? 'All Collections' : f === 'marvel' ? 'Marvel' : 'Anime'}
+                <Search className="w-4 h-4 text-black/35 shrink-0" />
+                <input
+                  type="text"
+                  placeholder="Search collectibles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1 bg-transparent text-[#111] text-sm placeholder:text-black/30 focus:outline-none"
+                />
+                {searchQuery && (
+                  <button onClick={() => setSearchQuery('')}>
+                    <X className="w-3.5 h-3.5 text-black/30 hover:text-black" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Right Actions */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button className="md:hidden p-2.5 text-black/40 hover:text-black transition-colors" onClick={() => setSearchOpen(!searchOpen)}>
+                <Search className="w-5 h-5" />
               </button>
-            ))}
-            <Link href="/" className="hover:text-black transition-colors">Classic View</Link>
-          </nav>
 
-          {/* Actions */}
-          <div className="flex items-center gap-1 shrink-0">
-            <button
-              onClick={() => setSearchOpen(!searchOpen)}
-              className="p-2.5 text-black/40 hover:text-black transition-colors rounded-lg hover:bg-black/5"
-            >
-              <Search className="w-[18px] h-[18px]" />
-            </button>
+              <button className="relative p-2.5 text-black/40 hover:text-black transition-colors">
+                <Heart className="w-5 h-5" />
+                {wishlist.length > 0 && (
+                  <span
+                    className="absolute top-1 right-1 w-4 h-4 text-white text-[9px] font-black rounded-full flex items-center justify-center"
+                    style={{ background: '#c96a00' }}
+                  >
+                    {wishlist.length}
+                  </span>
+                )}
+              </button>
 
-            <button className="relative p-2.5 text-black/40 hover:text-black transition-colors rounded-lg hover:bg-black/5">
-              <Heart className="w-[18px] h-[18px]" />
-              {wishlist.length > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-3.5 h-3.5 bg-[#e07b00] text-white text-[9px] font-black rounded-full flex items-center justify-center">
-                  {wishlist.length}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => setCartOpen(true)}
-              className="ml-1 flex items-center gap-2 bg-[#111] text-white px-4 py-2 rounded-lg font-bold text-[13px] hover:bg-[#e07b00] transition-colors"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span className="hidden sm:inline">Cart</span>
-              {cartCount > 0 && (
-                <span className="bg-white/15 text-white text-[10px] font-black px-1.5 py-0.5 rounded min-w-[18px] text-center">
-                  {cartCount}
-                </span>
-              )}
-            </button>
+              <button
+                onClick={() => setCartOpen(true)}
+                className="flex items-center gap-2.5 text-white px-5 py-2.5 rounded-xl font-bold text-[13px] transition-all hover:opacity-90 active:scale-95"
+                style={{ background: '#111', boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Cart</span>
+                {cartCount > 0 && (
+                  <span className="bg-[#c96a00] text-white text-[10px] font-black px-1.5 py-0.5 rounded-lg min-w-[20px] text-center">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Search Drawer */}
+        {/* Second nav row — franchise / category tabs */}
+        <div className="w-full" style={{ background: '#FAFAF7' }}>
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-[46px] flex items-center gap-8">
+            {[
+              { id: 'all', label: 'All Collections' },
+              { id: 'marvel', label: 'Marvel Universe' },
+              { id: 'anime', label: 'Anime Grails' },
+            ].map((f) => (
+              <button
+                key={f.id}
+                onClick={() => setActiveFranchise(f.id as any)}
+                className={`text-[13px] font-semibold h-full border-b-2 transition-all ${
+                  activeFranchise === f.id
+                    ? 'text-[#111] border-[#c96a00]'
+                    : 'text-black/40 border-transparent hover:text-black/70 hover:border-black/20'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+
+            <div className="ml-auto hidden sm:flex items-center gap-6 text-[12px] text-black/35 font-medium">
+              <Link href="/" className="hover:text-black transition-colors">Classic View</Link>
+              <Link href="/marvel" className="hover:text-black transition-colors">Marvel Page</Link>
+              <Link href="/anime" className="hover:text-black transition-colors">Anime Page</Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile search bar */}
         {searchOpen && (
-          <div className="border-t border-black/[0.06] bg-white px-6 lg:px-10 py-3 flex items-center gap-3">
+          <div className="md:hidden border-t border-black/[0.07] px-4 py-3 flex items-center gap-3" style={{ background: '#FAFAF7' }}>
             <Search className="w-4 h-4 text-black/30 shrink-0" />
             <input
               autoFocus
               type="text"
-              placeholder="Search products..."
+              placeholder="Search collectibles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 bg-transparent text-[#111] text-sm placeholder:text-black/25 focus:outline-none"
             />
             <button onClick={() => { setSearchOpen(false); setSearchQuery(''); }}>
-              <X className="w-4 h-4 text-black/30 hover:text-black transition-colors" />
+              <X className="w-4 h-4 text-black/30" />
             </button>
           </div>
         )}
-      </header>
+      </div>
 
       {/* ─── HERO ─── */}
       {heroProduct && (
-        <section className="max-w-[1400px] mx-auto px-6 lg:px-10 py-14 lg:py-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <section style={{ background: '#FAFAF7', boxShadow: '0 8px 40px rgba(0,0,0,0.07)' }} className="w-full">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 lg:py-24">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-            {/* Left */}
-            <div className="space-y-7">
-              <div className="inline-flex items-center gap-2 bg-[#e07b00]/10 border border-[#e07b00]/20 text-[#e07b00] text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
-                <span className="w-1.5 h-1.5 bg-[#e07b00] rounded-full animate-pulse" />
-                New Drop
-              </div>
-
-              <h1 className="text-[clamp(3.5rem,7vw,6.5rem)] font-black leading-[0.88] tracking-[-0.04em] text-[#111] uppercase">
-                CURATED<br />
-                <span className="text-[#e07b00]">DROPS.</span>
-              </h1>
-
-              <p className="text-[15px] text-black/40 leading-relaxed max-w-md">
-                Premium Marvel statues, anime action figures, and limited collectibles — meticulously sourced and delivered across Lebanon.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <a
-                  href="#catalog"
-                  className="bg-[#111] text-white px-7 py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-wide hover:bg-[#e07b00] transition-colors inline-flex items-center gap-2"
+              {/* Left copy */}
+              <div className="space-y-7">
+                <div
+                  className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full"
+                  style={{ background: 'rgba(201,106,0,0.1)', border: '1px solid rgba(201,106,0,0.25)', color: '#c96a00' }}
                 >
-                  Shop All Drops <ArrowRight className="w-4 h-4" />
-                </a>
-                <button
-                  onClick={() => setQuickViewProduct(heroProduct)}
-                  className="border border-black/10 text-black/40 px-6 py-3.5 rounded-xl font-semibold text-[13px] hover:border-black/30 hover:text-black transition-colors bg-white"
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#c96a00] animate-pulse" />
+                  New Drop Available
+                </div>
+
+                <h1
+                  className="uppercase leading-[0.88] tracking-[-0.04em] font-black text-[#111]"
+                  style={{ fontSize: 'clamp(3.5rem,7vw,6.5rem)' }}
                 >
-                  Quick Preview
-                </button>
+                  CURATED<br />
+                  <span style={{ color: '#c96a00' }}>DROPS.</span>
+                </h1>
+
+                <p className="text-[15px] leading-relaxed max-w-md" style={{ color: 'rgba(0,0,0,0.45)' }}>
+                  Premium Marvel statues, anime action figures, and limited collectibles — sourced and delivered fast across Lebanon.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <a
+                    href="#catalog"
+                    className="inline-flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-wide transition-all active:scale-95"
+                    style={{ background: '#111', boxShadow: '0 4px 16px rgba(0,0,0,0.22)' }}
+                  >
+                    Shop All Drops <ArrowRight className="w-4 h-4" />
+                  </a>
+                  <button
+                    onClick={() => setQuickViewProduct(heroProduct)}
+                    className="px-6 py-3.5 rounded-xl font-semibold text-[13px] transition-all hover:bg-black/5"
+                    style={{ border: '1.5px solid rgba(0,0,0,0.12)', color: 'rgba(0,0,0,0.5)' }}
+                  >
+                    Quick Preview
+                  </button>
+                </div>
+
+                {/* Stats */}
+                <div className="flex items-center gap-8 pt-6" style={{ borderTop: '1.5px solid rgba(0,0,0,0.08)' }}>
+                  {[
+                    { val: '100%', label: 'Authentic' },
+                    { val: '24–48h', label: 'Lebanon Ship' },
+                    { val: 'BAU', label: 'Beirut Pickup' },
+                  ].map((stat, i) => (
+                    <React.Fragment key={stat.label}>
+                      {i > 0 && <div className="w-px h-8 bg-black/10" />}
+                      <div>
+                        <div className="text-xl font-black text-[#111]">{stat.val}</div>
+                        <div className="text-[11px] uppercase tracking-wider mt-0.5" style={{ color: 'rgba(0,0,0,0.3)' }}>{stat.label}</div>
+                      </div>
+                    </React.Fragment>
+                  ))}
+                </div>
               </div>
 
-              {/* Trust stats */}
-              <div className="flex items-center gap-8 pt-6 border-t border-black/[0.07]">
-                <div>
-                  <div className="text-xl font-black text-[#111]">100%</div>
-                  <div className="text-[11px] text-black/35 uppercase tracking-wider mt-0.5">Authentic</div>
-                </div>
-                <div className="w-px h-8 bg-black/10" />
-                <div>
-                  <div className="text-xl font-black text-[#111]">24-48h</div>
-                  <div className="text-[11px] text-black/35 uppercase tracking-wider mt-0.5">Lebanon Ship</div>
-                </div>
-                <div className="w-px h-8 bg-black/10" />
-                <div>
-                  <div className="text-xl font-black text-[#111]">BAU</div>
-                  <div className="text-[11px] text-black/35 uppercase tracking-wider mt-0.5">Pickup Point</div>
-                </div>
-              </div>
-            </div>
+              {/* Right: hero product card */}
+              <div
+                className="relative group cursor-pointer rounded-3xl overflow-hidden"
+                onClick={() => setQuickViewProduct(heroProduct)}
+                style={{ boxShadow: '0 20px 80px rgba(0,0,0,0.18), 0 4px 20px rgba(0,0,0,0.1)' }}
+              >
+                <div className="aspect-square relative" style={{ background: '#E8E5DA' }}>
+                  <Image
+                    src={heroProduct.image}
+                    alt={heroProduct.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%)' }} />
 
-            {/* Right: Hero Product Image */}
-            <div className="relative group cursor-pointer" onClick={() => setQuickViewProduct(heroProduct)}>
-              <div className="aspect-square rounded-3xl overflow-hidden bg-white shadow-[0_8px_60px_rgba(0,0,0,0.1)] relative">
-                <Image
-                  src={heroProduct.image}
-                  alt={heroProduct.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-                  <div>
-                    <p className="text-white/60 text-xs font-mono uppercase tracking-widest mb-0.5">{heroProduct.subtitle}</p>
-                    <h3 className="text-white font-bold text-lg leading-tight">{heroProduct.name}</h3>
+                  {/* Info overlay */}
+                  <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                    <div>
+                      <p className="text-[11px] font-mono uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>{heroProduct.subtitle}</p>
+                      <h3 className="text-white font-bold text-xl leading-tight">{heroProduct.name}</h3>
+                    </div>
+                    <div className="text-white font-black text-xl px-4 py-2 rounded-xl" style={{ background: '#c96a00', boxShadow: '0 4px 16px rgba(201,106,0,0.5)' }}>
+                      ${heroProduct.price.toFixed(0)}
+                    </div>
                   </div>
-                  <div className="bg-[#e07b00] text-white font-black text-lg px-4 py-2 rounded-xl">
-                    ${heroProduct.price.toFixed(0)}
-                  </div>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="bg-white text-black text-xs font-bold uppercase tracking-widest px-5 py-3 rounded-xl flex items-center gap-2 shadow-xl translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <Eye className="w-4 h-4" /> Quick View
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: 'rgba(0,0,0,0.15)' }}>
+                    <div
+                      className="flex items-center gap-2 text-[#111] text-[12px] font-bold uppercase tracking-widest px-6 py-3 rounded-xl translate-y-2 group-hover:translate-y-0 transition-transform"
+                      style={{ background: '#fff', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
+                    >
+                      <Eye className="w-4 h-4" /> Quick View
+                    </div>
                   </div>
                 </div>
               </div>
@@ -285,46 +353,72 @@ export default function ModernShop() {
         </section>
       )}
 
-      {/* ─── CATALOG ─── */}
-      <section id="catalog" className="max-w-[1400px] mx-auto px-6 lg:px-10 pb-20 space-y-6">
+      {/* ─── TRUST STRIP ─── */}
+      <div style={{ background: '#ECEAE2', borderTop: '1.5px solid rgba(0,0,0,0.07)', borderBottom: '1.5px solid rgba(0,0,0,0.07)' }}>
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0 sm:divide-x sm:divide-black/10">
+          {[
+            { icon: Truck, title: 'Lebanon-Wide Delivery', desc: '24 to 48 hours to your door' },
+            { icon: ShieldCheck, title: '100% Authenticated', desc: 'Inspected, verified collectibles only' },
+            { icon: RotateCcw, title: 'BAU Beirut Pickup', desc: 'Free collection from BAU campus' },
+          ].map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="flex items-center gap-4 px-0 sm:px-8 first:pl-0 last:pr-0">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(201,106,0,0.1)' }}>
+                <Icon className="w-5 h-5" style={{ color: '#c96a00' }} />
+              </div>
+              <div>
+                <div className="text-[13px] font-bold text-[#111]">{title}</div>
+                <div className="text-[12px]" style={{ color: 'rgba(0,0,0,0.4)' }}>{desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-y border-black/[0.07] py-4 bg-[#f7f7f5]">
+      {/* ─── CATALOG ─── */}
+      <section id="catalog" className="max-w-[1400px] mx-auto px-6 lg:px-10 py-12 space-y-7">
+
+        {/* Filter + Sort Row */}
+        <div
+          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl px-5 py-4"
+          style={{ background: '#FAFAF7', boxShadow: '0 2px 12px rgba(0,0,0,0.06), 0 1px 0 rgba(0,0,0,0.05)' }}
+        >
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`px-4 py-2 rounded-xl text-[12px] font-semibold transition-all cursor-pointer ${
+                className="px-4 py-2 rounded-xl text-[12px] font-semibold transition-all cursor-pointer"
+                style={
                   activeCategory === cat.id
-                    ? 'bg-[#111] text-white shadow-sm'
-                    : 'bg-white text-black/50 hover:text-black border border-black/[0.08] hover:border-black/20'
-                }`}
+                    ? { background: '#111', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }
+                    : { background: '#ECEAE2', color: 'rgba(0,0,0,0.5)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.06)' }
+                }
               >
                 {cat.label}
               </button>
             ))}
           </div>
 
-          <div className="flex items-center gap-2 text-[12px] text-black/40 shrink-0">
+          <div className="flex items-center gap-2 text-[12px] font-semibold shrink-0" style={{ color: 'rgba(0,0,0,0.4)' }}>
             <SlidersHorizontal className="w-3.5 h-3.5" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-transparent text-black/50 hover:text-black focus:outline-none cursor-pointer transition-colors font-semibold uppercase tracking-wide"
+              className="bg-transparent focus:outline-none cursor-pointer uppercase tracking-wide"
+              style={{ color: 'rgba(0,0,0,0.5)' }}
             >
               <option value="featured" className="text-black bg-white">Featured</option>
               <option value="price-low" className="text-black bg-white">Price: Low → High</option>
               <option value="price-high" className="text-black bg-white">Price: High → Low</option>
               <option value="rating" className="text-black bg-white">Top Rated</option>
             </select>
-            <span className="text-black/20">·</span>
-            <span className="text-black/30">{filteredProducts.length} items</span>
+            <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
+            <span>{filteredProducts.length} items</span>
           </div>
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {filteredProducts.map((product) => {
             const isWishlisted = wishlist.includes(product.id);
             const justAdded = addedId === product.id;
@@ -332,10 +426,19 @@ export default function ModernShop() {
             return (
               <div
                 key={product.id}
-                className="group bg-white rounded-2xl overflow-hidden border border-black/[0.07] hover:border-black/20 hover:shadow-[0_8px_40px_rgba(0,0,0,0.09)] transition-all duration-300 flex flex-col"
+                className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300"
+                style={{ background: '#FAFAF7', boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 1px 0 rgba(0,0,0,0.04)' }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = '0 12px 40px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.06)';
+                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-3px)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.06), 0 1px 0 rgba(0,0,0,0.04)';
+                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+                }}
               >
                 {/* Image */}
-                <div className="relative aspect-square overflow-hidden bg-[#f2f2f0]">
+                <div className="relative aspect-square overflow-hidden" style={{ background: '#ECEAE2' }}>
                   <Image
                     src={product.image}
                     alt={product.name}
@@ -346,11 +449,14 @@ export default function ModernShop() {
                   {/* Badges */}
                   <div className="absolute top-3 left-3 flex flex-col gap-1.5">
                     {product.isFeatured && (
-                      <span className="bg-[#e07b00] text-white text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-lg">
+                      <span className="text-white text-[10px] font-black uppercase tracking-wide px-2.5 py-1 rounded-lg" style={{ background: '#c96a00', boxShadow: '0 2px 8px rgba(201,106,0,0.4)' }}>
                         Featured
                       </span>
                     )}
-                    <span className="bg-white/90 backdrop-blur text-black/50 text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-lg">
+                    <span
+                      className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-0.5 rounded-lg"
+                      style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', color: 'rgba(0,0,0,0.5)', boxShadow: '0 1px 4px rgba(0,0,0,0.1)' }}
+                    >
                       {product.franchise}
                     </span>
                   </div>
@@ -358,44 +464,67 @@ export default function ModernShop() {
                   {/* Wishlist */}
                   <button
                     onClick={() => toggleWishlist(product.id)}
-                    className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur rounded-xl hover:bg-white transition-all shadow-sm"
+                    className="absolute top-3 right-3 p-2 rounded-xl transition-all"
+                    style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}
                   >
                     <Heart
                       className={`w-3.5 h-3.5 transition-colors ${isWishlisted ? 'fill-rose-500 text-rose-500' : 'text-black/30 hover:text-black'}`}
                     />
                   </button>
 
-                  {/* Quick View */}
+                  {/* Quick View — slide up on hover */}
                   <button
                     onClick={() => setQuickViewProduct(product)}
-                    className="absolute inset-x-3 bottom-3 py-2.5 bg-[#111] text-white text-[11px] font-bold uppercase tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center gap-1.5 translate-y-2 group-hover:translate-y-0 shadow-lg"
+                    className="absolute inset-x-3 bottom-3 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                    style={{ background: '#111', color: '#fff', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
                   >
                     <Eye className="w-3.5 h-3.5" /> Quick View
                   </button>
                 </div>
 
-                {/* Info */}
-                <div className="p-4 flex flex-col gap-3 flex-1">
-                  <div>
-                    <p className="text-black/30 text-[10px] font-mono uppercase tracking-widest mb-1">{product.subtitle}</p>
-                    <h3 className="text-[#111] text-[13px] font-bold leading-snug line-clamp-2 group-hover:text-[#e07b00] transition-colors">
+                {/* Card body */}
+                <div className="p-4 flex flex-col gap-3 flex-1" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                  <div className="flex-1">
+                    <p className="text-[10px] font-mono uppercase tracking-widest mb-1" style={{ color: 'rgba(0,0,0,0.3)' }}>{product.subtitle}</p>
+                    <h3
+                      className="text-[13px] font-bold leading-snug line-clamp-2 transition-colors group-hover:text-[#c96a00]"
+                      style={{ color: '#111' }}
+                    >
                       {product.name}
                     </h3>
                   </div>
-                  <div className="flex items-center gap-1 mt-auto">
-                    <Star className="w-3.5 h-3.5 text-[#e07b00] fill-[#e07b00]" />
-                    <span className="text-black/40 text-[11px] font-medium">{product.rating}</span>
+
+                  {/* Rating */}
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-3 h-3"
+                        style={{
+                          color: i < Math.round(product.rating) ? '#c96a00' : 'rgba(0,0,0,0.12)',
+                          fill: i < Math.round(product.rating) ? '#c96a00' : 'rgba(0,0,0,0.08)',
+                        }}
+                      />
+                    ))}
+                    <span className="text-[11px] ml-1 font-medium" style={{ color: 'rgba(0,0,0,0.35)' }}>{product.rating}</span>
                   </div>
 
-                  <div className="flex items-center justify-between gap-2 pt-3 border-t border-black/[0.06]">
-                    <span className="text-[#111] font-black text-base">${product.price.toFixed(2)}</span>
+                  {/* Price + CTA */}
+                  <div
+                    className="flex items-center justify-between gap-2 pt-3"
+                    style={{ borderTop: '1.5px solid rgba(0,0,0,0.06)' }}
+                  >
+                    <span className="font-black text-[#111]" style={{ fontSize: '17px', letterSpacing: '-0.02em' }}>
+                      ${product.price.toFixed(2)}
+                    </span>
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className={`px-3.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wide transition-all cursor-pointer ${
+                      className="px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wide transition-all cursor-pointer active:scale-95"
+                      style={
                         justAdded
-                          ? 'bg-[#e07b00] text-white'
-                          : 'bg-[#111] text-white hover:bg-[#e07b00]'
-                      }`}
+                          ? { background: '#c96a00', color: '#fff', boxShadow: '0 2px 10px rgba(201,106,0,0.4)' }
+                          : { background: '#111', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.18)' }
+                      }
                     >
                       {justAdded ? '✓ Added' : 'Add to Cart'}
                     </button>
@@ -408,19 +537,19 @@ export default function ModernShop() {
       </section>
 
       {/* ─── FOOTER ─── */}
-      <footer className="border-t border-black/[0.07] bg-white py-12">
+      <footer style={{ background: '#111', borderTop: '1px solid rgba(255,255,255,0.06)' }} className="py-12 mt-8">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
-            <div className="text-[#111] font-black text-base tracking-[-0.02em]">OH MY MARVZ</div>
-            <div className="text-black/30 text-[11px] mt-1">Lebanon's premier collectibles store</div>
+            <div className="text-white font-black text-base tracking-[-0.02em]">OH MY MARVZ</div>
+            <div className="text-white/25 text-[11px] mt-1">Lebanon's premier collectibles store</div>
           </div>
-          <div className="flex items-center gap-6 text-black/30 text-[12px] font-medium">
-            <Link href="/" className="hover:text-black transition-colors">Classic View</Link>
-            <Link href="/marvel" className="hover:text-black transition-colors">Marvel</Link>
-            <Link href="/anime" className="hover:text-black transition-colors">Anime</Link>
-            <Link href="/meta" className="hover:text-black transition-colors">Admin</Link>
+          <div className="flex items-center gap-6 text-white/30 text-[12px] font-medium">
+            <Link href="/" className="hover:text-white transition-colors">Classic View</Link>
+            <Link href="/marvel" className="hover:text-white transition-colors">Marvel</Link>
+            <Link href="/anime" className="hover:text-white transition-colors">Anime</Link>
+            <Link href="/meta" className="hover:text-white transition-colors">Admin</Link>
           </div>
-          <div className="text-black/25 text-[11px]">Crafted by Meta Pylon</div>
+          <div className="text-white/20 text-[11px]">Crafted by Meta Pylon</div>
         </div>
       </footer>
 
@@ -430,7 +559,7 @@ export default function ModernShop() {
           to { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: marquee 25s linear infinite;
+          animation: marquee 28s linear infinite;
           width: max-content;
         }
       `}</style>
