@@ -95,7 +95,7 @@ export default function AnimePage() {
         {/* Anime Hero Banner */}
         <section className="w-full max-w-6xl mx-auto my-4 px-4 sm:px-6 lg:px-8">
           <div className="relative w-full bg-white border-3 border-black shadow-[4px_4px_0_#111] overflow-hidden p-6 sm:p-10">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-700 via-indigo-600 to-pink-600 opacity-95" />
+            <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 opacity-95" />
             <div className="absolute inset-0 halftone-comic-yellow opacity-30 mix-blend-multiply pointer-events-none" />
 
             <div className="relative z-10 space-y-3 text-white">
