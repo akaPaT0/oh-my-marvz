@@ -42,6 +42,8 @@ interface BusinessConfig {
   domain: string;
   badgeBg: string;
   badgeText: string;
+  storefrontUrl: string;
+  storefrontLabel: string;
 }
 
 const BUSINESSES: Record<string, BusinessConfig> = {
@@ -52,6 +54,8 @@ const BUSINESSES: Record<string, BusinessConfig> = {
     domain: 'oh-my-marvz.com',
     badgeBg: 'bg-red-50 text-red-700 border-red-200',
     badgeText: 'COLLECTIBLES STORE',
+    storefrontUrl: '/',
+    storefrontLabel: 'OH MY MARVZ STOREFRONT',
   },
   'la3eeb': {
     id: 'la3eeb',
@@ -60,6 +64,8 @@ const BUSINESSES: Record<string, BusinessConfig> = {
     domain: 'la3eeb.com',
     badgeBg: 'bg-indigo-50 text-indigo-700 border-indigo-200',
     badgeText: 'GAMING HUB',
+    storefrontUrl: '/la3eeb',
+    storefrontLabel: 'LA3EEB STOREFRONT',
   },
 };
 
@@ -258,13 +264,13 @@ export default function AdminDashboardPage() {
               )}
             </div>
 
-            {/* Exit to Storefront */}
+            {/* Dynamic Exit to Storefront based on Active Business */}
             <Link
-              href="/"
-              className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 flex items-center gap-2 transition-colors"
+              href={currentBusiness.storefrontUrl}
+              className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 flex items-center gap-2 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">STOREFRONT</span>
+              <span className="hidden sm:inline">{currentBusiness.storefrontLabel}</span>
             </Link>
           </div>
 
