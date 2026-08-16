@@ -134,13 +134,14 @@ export default function ModernShop() {
       {/* ─── FLOATING HOVERING NAV ─── */}
       <div className="sticky top-4 z-50 flex justify-center px-4 pointer-events-none">
         <nav
-          className="pointer-events-auto w-full max-w-5xl flex items-center justify-between gap-4 px-5 py-3 rounded-2xl"
+          className="pointer-events-auto w-full max-w-5xl flex items-center justify-between gap-4 px-6 py-2.5"
           style={{
-            background: 'rgba(250,250,247,0.88)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.14), 0 1px 0 rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9)',
+            background: 'rgba(250,250,247,0.9)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.13), 0 1px 0 rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.95)',
             border: '1px solid rgba(0,0,0,0.08)',
+            borderRadius: '9999px',
           }}
         >
           {/* Logo */}
@@ -158,11 +159,11 @@ export default function ModernShop() {
               <button
                 key={f.id}
                 onClick={() => setActiveFranchise(f.id as any)}
-                className="px-4 py-1.5 rounded-xl text-[13px] font-semibold transition-all"
+                className="px-4 py-1.5 text-[13px] font-semibold transition-all"
                 style={
                   activeFranchise === f.id
-                    ? { background: '#111', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }
-                    : { color: 'rgba(0,0,0,0.45)' }
+                    ? { borderRadius: '9999px', background: '#111', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }
+                    : { borderRadius: '9999px', color: 'rgba(0,0,0,0.45)' }
                 }
               >
                 {f.label}
