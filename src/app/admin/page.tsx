@@ -49,7 +49,7 @@ const BUSINESSES: Record<string, BusinessConfig> = {
     name: 'OH MY MARVZ',
     tagline: 'Marvel & Anime Collectibles Store',
     domain: 'oh-my-marvz.com',
-    badgeBg: 'bg-red-600 text-white border-2 border-slate-900',
+    badgeBg: 'bg-red-50 text-red-700 border-red-200',
     badgeText: 'E-COMMERCE STORE',
   },
   'meta-pylon': {
@@ -57,7 +57,7 @@ const BUSINESSES: Record<string, BusinessConfig> = {
     name: 'META PYLON DIGITAL',
     tagline: 'Full-Stack Web & AI Engineering Agency',
     domain: 'meta-pylon.com',
-    badgeBg: 'bg-indigo-600 text-white border-2 border-slate-900',
+    badgeBg: 'bg-indigo-50 text-indigo-700 border-indigo-200',
     badgeText: 'DIGITAL AGENCY',
   },
 };
@@ -180,28 +180,28 @@ export default function AdminDashboardPage() {
     : 18450.00;
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-100 text-slate-900 font-sans selection:bg-slate-900 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans selection:bg-indigo-600 selection:text-white">
       
-      {/* --- HIGH-CONTRAST TOPBAR --- */}
-      <header className="sticky top-0 z-40 bg-slate-900 text-white border-b-4 border-slate-950 px-4 sm:px-6 lg:px-8 py-3.5 shadow-md">
+      {/* --- SLEEK MODERN SAAS NAVBAR --- */}
+      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-3.5 shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           
           {/* Left Brand Identifier */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-amber-400 text-slate-950 font-black border-2 border-white flex items-center justify-center shadow-[2px_2px_0_#fff]">
-              <Building2 className="w-6 h-6 stroke-[3]" />
+            <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-sm">
+              <Building2 className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-black text-base tracking-wider font-mono text-white">
+                <span className="font-extrabold text-sm tracking-tight text-slate-900 font-mono">
                   ENTERPRISE ADMIN PORTAL
                 </span>
-                <span className={`text-[10px] font-black uppercase px-2 py-0.5 font-mono ${currentBusiness.badgeBg}`}>
+                <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${currentBusiness.badgeBg}`}>
                   {currentBusiness.badgeText}
                 </span>
               </div>
-              <p className="text-xs text-slate-300 font-mono font-extrabold">
-                Active Tenant: <strong className="text-amber-400 uppercase">{currentBusiness.name}</strong>
+              <p className="text-[11px] text-slate-500 font-mono">
+                Active Tenant: <strong className="text-slate-800 font-bold">{currentBusiness.name}</strong>
               </p>
             </div>
           </div>
@@ -213,17 +213,17 @@ export default function AdminDashboardPage() {
             <div className="relative">
               <button
                 onClick={() => setIsSwitchDropdownOpen(!isSwitchDropdownOpen)}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase px-4 py-2.5 border-2 border-white shadow-[3px_3px_0_#fff] flex items-center gap-2 transition-transform hover:-translate-y-0.5 focus:outline-none"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-2 transition-all focus:outline-none"
               >
-                <RefreshCw className="w-4 h-4 stroke-[3]" />
+                <RefreshCw className="w-3.5 h-3.5" />
                 <span>SWITCH BUSINESS</span>
-                <ChevronDown className="w-4 h-4 stroke-[3]" />
+                <ChevronDown className="w-3.5 h-3.5" />
               </button>
 
               {/* Dropdown Menu */}
               {isSwitchDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-white border-3 border-slate-900 shadow-[6px_6px_0_#0f172a] p-2 space-y-1 z-50">
-                  <div className="px-3 py-2 text-xs font-black text-slate-500 uppercase tracking-wider font-mono border-b-2 border-slate-200">
+                <div className="absolute right-0 mt-2 w-72 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 space-y-1 z-50 animate-in fade-in slide-in-from-top-2">
+                  <div className="px-3 py-1.5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest font-mono">
                     Select Enterprise Business
                   </div>
 
@@ -234,18 +234,18 @@ export default function AdminDashboardPage() {
                         setCurrentBusinessId(b.id as any);
                         setIsSwitchDropdownOpen(false);
                       }}
-                      className={`w-full text-left p-3 flex items-center justify-between border-2 transition-colors ${
+                      className={`w-full text-left p-3 rounded-xl flex items-center justify-between transition-all ${
                         currentBusinessId === b.id
-                          ? 'bg-slate-900 text-white border-slate-900 font-black'
-                          : 'bg-white text-slate-900 border-transparent hover:bg-slate-100'
+                          ? 'bg-slate-100 text-slate-900 font-bold border border-slate-200'
+                          : 'hover:bg-slate-50 text-slate-600'
                       }`}
                     >
                       <div>
-                        <div className="font-black text-xs uppercase">{b.name}</div>
-                        <div className="text-[11px] font-mono font-bold text-slate-400">{b.tagline}</div>
+                        <div className="font-extrabold text-xs text-slate-900">{b.name}</div>
+                        <div className="text-[10px] text-slate-500 font-mono">{b.tagline}</div>
                       </div>
                       {currentBusinessId === b.id && (
-                        <div className="w-3 h-3 bg-amber-400 border border-black" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-xs" />
                       )}
                     </button>
                   ))}
@@ -256,10 +256,10 @@ export default function AdminDashboardPage() {
             {/* Exit to Storefront */}
             <Link
               href="/"
-              className="bg-white hover:bg-slate-200 text-slate-950 font-black text-xs uppercase px-4 py-2.5 border-2 border-slate-900 shadow-[3px_3px_0_#000] flex items-center gap-2 transition-transform hover:-translate-y-0.5"
+              className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 flex items-center gap-2 transition-colors"
             >
-              <ArrowLeft className="w-4 h-4 stroke-[3]" />
-              <span className="hidden sm:inline">PUBLIC STOREFRONT</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">STOREFRONT</span>
             </Link>
           </div>
 
@@ -267,36 +267,36 @@ export default function AdminDashboardPage() {
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
         {/* Dynamic Business Header Banner */}
-        <div className="bg-white border-3 border-slate-900 p-6 sm:p-8 shadow-[6px_6px_0_#0f172a] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 bg-slate-900 text-amber-400 font-mono text-xs font-black px-3 py-1 border-2 border-slate-900 shadow-[2px_2px_0_#000]">
-              <Globe className="w-4 h-4 text-amber-400" />
+            <div className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full text-xs font-mono text-slate-700 font-bold">
+              <Globe className="w-3.5 h-3.5 text-indigo-600" />
               <span>{currentBusiness.domain}</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-slate-950 italic">
-              {currentBusiness.name} CONTROL CENTER
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+              {currentBusiness.name} DASHBOARD
             </h1>
-            <p className="text-xs sm:text-sm font-extrabold text-slate-700 max-w-xl font-mono">
-              {currentBusiness.tagline}. Direct analytics, product catalog management, and order fulfillment.
+            <p className="text-xs sm:text-sm text-slate-600 max-w-xl font-medium">
+              {currentBusiness.tagline}. Centralized dashboard for sales analytics, product catalog management, and order fulfillment.
             </p>
           </div>
 
           {currentBusinessId === 'oh-my-marvz' && (
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase px-6 py-3.5 border-3 border-slate-900 shadow-[4px_4px_0_#000] flex items-center gap-2 transition-transform hover:-translate-y-0.5"
+              className="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs px-5 py-3 rounded-xl shadow-sm flex items-center gap-2 transition-all hover:scale-102"
             >
-              <Plus className="w-5 h-5 stroke-[3]" />
-              <span>ADD CATALOG ITEM</span>
+              <Plus className="w-4 h-4 stroke-[3]" />
+              <span>CREATE PRODUCT ITEM</span>
             </button>
           )}
         </div>
 
-        {/* Tab Selection Navigation */}
-        <div className="flex items-center gap-3 border-b-3 border-slate-900 pb-3 overflow-x-auto">
+        {/* Tab Selection Controls */}
+        <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
           {[
             { id: 'overview', label: 'ANALYTICS & METRICS' },
             { id: 'products', label: currentBusinessId === 'oh-my-marvz' ? `STORE CATALOG (${products.length})` : 'AGENCY SERVICES (3)' },
@@ -305,10 +305,10 @@ export default function AdminDashboardPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-5 py-3 font-black text-xs uppercase tracking-wider border-2 border-slate-900 shadow-[3px_3px_0_#0f172a] transition-all ${
+              className={`px-4 py-2.5 rounded-xl font-extrabold text-xs tracking-wider transition-all ${
                 activeTab === tab.id
-                  ? 'bg-slate-900 text-white italic'
-                  : 'bg-white text-slate-950 hover:bg-amber-300'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'text-slate-600 hover:bg-slate-200/60'
               }`}
             >
               {tab.label}
@@ -321,59 +321,59 @@ export default function AdminDashboardPage() {
           <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               
-              <div className="bg-white border-3 border-slate-900 p-5 space-y-3 shadow-[4px_4px_0_#0f172a]">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black uppercase text-slate-600 font-mono">MONTHLY REVENUE</span>
-                  <div className="p-2 bg-emerald-500 text-white border-2 border-slate-900 shadow-[2px_2px_0_#000]">
-                    <DollarSign className="w-5 h-5 stroke-[3]" />
+                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">MONTHLY REVENUE</span>
+                  <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+                    <DollarSign className="w-5 h-5 stroke-[2.5]" />
                   </div>
                 </div>
-                <div className="text-3xl font-black font-mono text-slate-950">${totalRevenue.toFixed(2)}</div>
-                <div className="text-xs text-emerald-700 font-black font-mono flex items-center gap-1">
-                  <TrendingUp className="w-4 h-4" />
-                  <span>+24.2% Growth</span>
+                <div className="text-2xl font-extrabold font-mono text-slate-900">${totalRevenue.toFixed(2)}</div>
+                <div className="text-[11px] text-emerald-600 font-mono font-bold flex items-center gap-1">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>+24.2% from last month</span>
                 </div>
               </div>
 
-              <div className="bg-white border-3 border-slate-900 p-5 space-y-3 shadow-[4px_4px_0_#0f172a]">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black uppercase text-slate-600 font-mono">TOTAL INVENTORY</span>
-                  <div className="p-2 bg-indigo-600 text-white border-2 border-slate-900 shadow-[2px_2px_0_#000]">
-                    <Package className="w-5 h-5 stroke-[3]" />
+                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">TOTAL INVENTORY</span>
+                  <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
+                    <Package className="w-5 h-5 stroke-[2.5]" />
                   </div>
                 </div>
-                <div className="text-3xl font-black font-mono text-slate-950">
+                <div className="text-2xl font-extrabold font-mono text-slate-900">
                   {currentBusinessId === 'oh-my-marvz' ? `${products.length} Items` : '3 Services'}
                 </div>
-                <div className="text-xs font-bold font-mono text-slate-600">
-                  {currentBusinessId === 'oh-my-marvz' ? '17 Marvel & Anime Collectibles' : 'Web & AI Packages'}
+                <div className="text-[11px] text-slate-500 font-mono font-bold">
+                  {currentBusinessId === 'oh-my-marvz' ? '17 Active Marvel & Anime' : 'Web & AI Client Packages'}
                 </div>
               </div>
 
-              <div className="bg-white border-3 border-slate-900 p-5 space-y-3 shadow-[4px_4px_0_#0f172a]">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black uppercase text-slate-600 font-mono">PENDING ORDERS</span>
-                  <div className="p-2 bg-amber-500 text-slate-950 border-2 border-slate-900 shadow-[2px_2px_0_#000]">
-                    <ShoppingBag className="w-5 h-5 stroke-[3]" />
+                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">PENDING ORDERS</span>
+                  <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
+                    <ShoppingBag className="w-5 h-5 stroke-[2.5]" />
                   </div>
                 </div>
-                <div className="text-3xl font-black font-mono text-slate-950">
+                <div className="text-2xl font-extrabold font-mono text-slate-900">
                   {orders.filter((o) => o.status === 'pending').length} Pending
                 </div>
-                <div className="text-xs font-black text-amber-700 font-mono">
-                  Requires fulfillment
+                <div className="text-[11px] text-amber-600 font-mono font-bold">
+                  Requires fulfillment action
                 </div>
               </div>
 
-              <div className="bg-white border-3 border-slate-900 p-5 space-y-3 shadow-[4px_4px_0_#0f172a]">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black uppercase text-slate-600 font-mono">FULFILLMENT RATE</span>
-                  <div className="p-2 bg-blue-600 text-white border-2 border-slate-900 shadow-[2px_2px_0_#000]">
-                    <MapPin className="w-5 h-5 stroke-[3]" />
+                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">FULFILLMENT RATE</span>
+                  <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
+                    <MapPin className="w-5 h-5 stroke-[2.5]" />
                   </div>
                 </div>
-                <div className="text-3xl font-black font-mono text-slate-950">98.5%</div>
-                <div className="text-xs font-bold font-mono text-blue-700">
+                <div className="text-2xl font-extrabold font-mono text-slate-900">98.5%</div>
+                <div className="text-[11px] text-blue-600 font-mono font-bold">
                   BAU Station & Shipping
                 </div>
               </div>
@@ -387,15 +387,15 @@ export default function AdminDashboardPage() {
           <div className="space-y-4">
             {currentBusinessId === 'oh-my-marvz' ? (
               <>
-                <div className="bg-white border-3 border-slate-900 p-4 shadow-[4px_4px_0_#0f172a] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="relative flex-1 w-full sm:w-64">
-                    <Search className="w-4 h-4 absolute left-3 top-3.5 text-slate-400" />
+                    <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
                     <input
                       type="text"
-                      placeholder="SEARCH PRODUCT CATALOG..."
+                      placeholder="Search inventory items..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border-2 border-slate-900 font-mono font-black text-xs text-slate-950 focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:outline-none text-slate-900"
                     />
                   </div>
 
@@ -404,10 +404,10 @@ export default function AdminDashboardPage() {
                       <button
                         key={f}
                         onClick={() => setSelectedFranchiseFilter(f as any)}
-                        className={`px-3 py-1.5 border-2 border-slate-900 font-black text-xs uppercase shadow-[2px_2px_0_#000] ${
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-extrabold uppercase transition-colors ${
                           selectedFranchiseFilter === f
                             ? 'bg-slate-900 text-white'
-                            : 'bg-white text-slate-900 hover:bg-amber-300'
+                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         }`}
                       >
                         {f}
@@ -416,10 +416,10 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
 
-                <div className="bg-white border-3 border-slate-900 shadow-[6px_6px_0_#0f172a] overflow-x-auto">
+                <div className="bg-white border border-slate-200 rounded-2xl overflow-x-auto shadow-xs">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b-3 border-slate-900 text-xs font-black uppercase font-mono bg-slate-900 text-white">
+                      <tr className="border-b border-slate-200 text-xs font-mono text-slate-500 uppercase bg-slate-50 font-extrabold">
                         <th className="p-4">PRODUCT</th>
                         <th className="p-4">FRANCHISE</th>
                         <th className="p-4">PRICE</th>
@@ -427,42 +427,41 @@ export default function AdminDashboardPage() {
                         <th className="p-4 text-right">ACTIONS</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y-2 divide-slate-900 text-xs font-mono font-bold">
+                    <tbody className="divide-y divide-slate-200 text-xs font-mono">
                       {filteredProducts.map((p) => (
-                        <tr key={p.id} className="hover:bg-amber-50 transition-colors">
+                        <tr key={p.id} className="hover:bg-slate-50 transition-colors">
                           <td className="p-4 flex items-center gap-3">
-                            <img src={p.image} alt={p.name} className="w-12 h-12 object-contain bg-white border-2 border-slate-900 p-1 flex-shrink-0" />
+                            <img src={p.image} alt={p.name} className="w-10 h-10 object-contain bg-slate-50 border border-slate-200 p-1 rounded-xl" />
                             <div>
-                              <div className="font-black text-sm text-slate-950">{p.name}</div>
-                              <div className="text-xs text-slate-500 font-bold">{p.subtitle}</div>
+                              <div className="font-extrabold text-slate-900 text-sm">{p.name}</div>
+                              <div className="text-[10px] text-slate-500">{p.subtitle}</div>
                             </div>
                           </td>
                           <td className="p-4">
-                            <span className={`px-2.5 py-1 border-2 border-slate-900 font-black text-[10px] uppercase shadow-[1px_1px_0_#000] ${
-                              p.franchise === 'marvel' ? 'bg-red-600 text-white' : 'bg-amber-400 text-slate-950'
+                            <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${
+                              p.franchise === 'marvel' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
                             }`}>
                               {p.franchise}
                             </span>
                           </td>
-                          <td className="p-4 font-black text-slate-950 text-sm font-mono">${p.price.toFixed(2)}</td>
+                          <td className="p-4 font-extrabold text-slate-900">${p.price.toFixed(2)}</td>
                           <td className="p-4">
                             <button
                               onClick={() => handleToggleFeatured(p.id)}
-                              className={`px-3 py-1 border-2 border-slate-900 font-black text-[10px] uppercase flex items-center gap-1.5 shadow-[1px_1px_0_#000] ${
-                                p.isFeatured ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-900'
+                              className={`px-2.5 py-1 rounded-xl text-[10px] font-extrabold flex items-center gap-1.5 transition-colors ${
+                                p.isFeatured ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600'
                               }`}
                             >
-                              <Star className={`w-3.5 h-3.5 ${p.isFeatured ? 'fill-white' : ''}`} />
+                              <Star className="w-3 h-3" />
                               <span>{p.isFeatured ? 'FEATURED' : 'NORMAL'}</span>
                             </button>
                           </td>
                           <td className="p-4 text-right">
                             <button
                               onClick={() => handleDeleteProduct(p.id)}
-                              className="p-2 bg-red-600 hover:bg-red-700 text-white border-2 border-slate-900 shadow-[2px_2px_0_#000]"
-                              title="Delete Item"
+                              className="p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-xl transition-colors"
                             >
-                              <Trash2 className="w-4 h-4 stroke-[2.5]" />
+                              <Trash2 className="w-4 h-4" />
                             </button>
                           </td>
                         </tr>
@@ -472,14 +471,14 @@ export default function AdminDashboardPage() {
                 </div>
               </>
             ) : (
-              <div className="bg-white border-3 border-slate-900 p-6 space-y-4 shadow-[6px_6px_0_#0f172a]">
-                <h3 className="text-xl font-black uppercase italic text-slate-950">Meta Pylon Digital Agency Services</h3>
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xs">
+                <h3 className="text-lg font-extrabold text-slate-900">Meta Pylon Digital Agency Services</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {agencyServices.map((srv) => (
-                    <div key={srv.id} className="bg-slate-50 border-2 border-slate-900 p-4 space-y-2 shadow-[3px_3px_0_#000]">
-                      <div className="text-xs font-mono font-black text-indigo-700 uppercase">{srv.category}</div>
-                      <div className="font-black text-slate-950 text-base">{srv.name}</div>
-                      <div className="text-xl font-black text-emerald-700 font-mono">${srv.price.toFixed(2)}</div>
+                    <div key={srv.id} className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
+                      <div className="text-xs font-mono text-indigo-600 font-extrabold">{srv.category}</div>
+                      <div className="font-extrabold text-slate-900 text-sm">{srv.name}</div>
+                      <div className="text-lg font-extrabold text-emerald-600 font-mono">${srv.price.toFixed(2)}</div>
                     </div>
                   ))}
                 </div>
@@ -490,34 +489,34 @@ export default function AdminDashboardPage() {
 
         {/* --- TAB 3: ORDERS MANAGEMENT --- */}
         {activeTab === 'orders' && (
-          <div className="bg-white border-3 border-slate-900 p-6 space-y-4 shadow-[6px_6px_0_#0f172a]">
-            <h3 className="text-xl font-black uppercase italic text-slate-950">Active Store Orders & BAU Station</h3>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xs">
+            <h3 className="text-lg font-extrabold text-slate-900">Active Store Orders & Fulfillment</h3>
             <div className="space-y-3">
               {orders.map((order) => (
-                <div key={order.id} className="bg-slate-50 border-2 border-slate-900 p-4 shadow-[3px_3px_0_#000] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <div className="space-y-1">
+                <div key={order.id} className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-black font-mono text-indigo-700 text-sm">{order.id}</span>
-                      <span className="px-2.5 py-0.5 bg-amber-300 text-slate-950 border border-slate-900 font-black text-[10px] font-mono">
-                        {order.fulfillment === 'pickup' ? 'BAU BEIRUT PICKUP' : 'LEBANON SHIPPING'}
+                      <span className="font-extrabold font-mono text-indigo-600 text-sm">{order.id}</span>
+                      <span className="px-2.5 py-0.5 bg-slate-200 rounded-full text-[10px] font-mono text-slate-700 font-bold">
+                        {order.fulfillment === 'pickup' ? 'BAU BEIRUT PICKUP' : 'LEBANON DELIVERY'}
                       </span>
                     </div>
-                    <div className="font-black text-slate-950 text-xs">{order.customerName} ({order.phone})</div>
-                    <div className="text-xs font-mono text-slate-600 font-bold">{order.location} • {order.date}</div>
+                    <div className="font-extrabold text-slate-900 text-xs mt-1">{order.customerName} ({order.phone})</div>
+                    <div className="text-[11px] font-mono text-slate-500 font-bold">{order.location} • {order.date}</div>
                   </div>
 
                   <div className="flex items-center gap-4">
                     <div className="text-right font-mono">
-                      <div className="text-lg font-black text-red-600">${order.totalPrice.toFixed(2)}</div>
-                      <div className="text-xs font-bold text-slate-600">{order.itemsCount} Items</div>
+                      <div className="text-base font-extrabold text-emerald-600">${order.totalPrice.toFixed(2)}</div>
+                      <div className="text-[10px] text-slate-500 font-bold">{order.itemsCount} Items</div>
                     </div>
                     <button
                       onClick={() => setOrders(orders.map((o) => o.id === order.id ? { ...o, status: 'completed' } : o))}
-                      className={`px-4 py-2.5 border-2 border-slate-900 font-black text-xs uppercase flex items-center gap-1.5 shadow-[2px_2px_0_#000] ${
-                        order.status === 'completed' ? 'bg-emerald-600 text-white' : 'bg-amber-400 text-slate-950 hover:bg-amber-500'
+                      className={`px-4 py-2 rounded-xl text-xs font-mono font-extrabold flex items-center gap-1.5 ${
+                        order.status === 'completed' ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' : 'bg-indigo-600 text-white hover:bg-indigo-700'
                       }`}
                     >
-                      <CheckCircle className="w-4 h-4 stroke-[2.5]" />
+                      <CheckCircle className="w-4 h-4" />
                       <span>{order.status === 'completed' ? 'COMPLETED' : 'MARK COMPLETED'}</span>
                     </button>
                   </div>
@@ -529,19 +528,19 @@ export default function AdminDashboardPage() {
 
       </main>
 
-      {/* --- DEDICATED ADMIN FOOTER WITH HIGH-CONTRAST META PYLON CREDIT --- */}
-      <footer className="bg-slate-900 text-white border-t-4 border-slate-950 py-6 px-4 sm:px-6 lg:px-8 mt-12 text-xs font-mono">
+      {/* --- DEDICATED ADMIN FOOTER WITH META PYLON CREDIT --- */}
+      <footer className="bg-white border-t border-slate-200 py-6 px-4 sm:px-6 lg:px-8 mt-12 text-xs font-mono">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          <div className="text-slate-300 font-extrabold">
-            Enterprise Admin Portal • <strong className="text-white uppercase">{currentBusiness.name}</strong>
+          <div className="text-slate-500 font-extrabold">
+            Enterprise Admin Portal • {currentBusiness.name}
           </div>
-          <div className="text-slate-300 font-black">
+          <div className="text-slate-700 font-black">
             Crafted by{' '}
             <a
               href="https://meta-pylon.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-400 hover:text-white font-black underline tracking-wider transition-colors"
+              className="text-indigo-600 hover:text-indigo-800 font-extrabold underline"
             >
               Meta Pylon
             </a>
@@ -551,43 +550,43 @@ export default function AdminDashboardPage() {
 
       {/* --- ADD PRODUCT MODAL --- */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xs">
-          <div className="relative w-full max-w-lg bg-white border-3 border-slate-900 shadow-[8px_8px_0_#000] p-6 space-y-4">
-            <h2 className="text-xl font-black uppercase italic text-slate-950 border-b-3 border-slate-900 pb-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+          <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-2xl">
+            <h2 className="text-xl font-extrabold text-slate-900 border-b border-slate-200 pb-3">
               Create New Store Item
             </h2>
 
-            <form onSubmit={handleCreateProduct} className="space-y-3 text-xs font-mono font-bold">
+            <form onSubmit={handleCreateProduct} className="space-y-3 text-xs font-mono">
               <div>
-                <label className="block text-slate-950 uppercase mb-1">PRODUCT NAME</label>
+                <label className="block text-slate-600 font-bold mb-1">PRODUCT NAME</label>
                 <input
                   type="text"
                   required
                   placeholder="Spider-Man Poseable Statue"
                   value={newProduct.name}
                   onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border-2 border-slate-900 font-bold focus:outline-none"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-950 uppercase mb-1">PRICE ($ USD)</label>
+                  <label className="block text-slate-600 font-bold mb-1">PRICE ($ USD)</label>
                   <input
                     type="number"
                     step="0.01"
                     required
                     value={newProduct.price}
                     onChange={(e) => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
-                    className="w-full p-2.5 bg-slate-50 border-2 border-slate-900 font-bold focus:outline-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-950 uppercase mb-1">FRANCHISE</label>
+                  <label className="block text-slate-600 font-bold mb-1">FRANCHISE</label>
                   <select
                     value={newProduct.franchise}
                     onChange={(e) => setNewProduct({ ...newProduct, franchise: e.target.value as any })}
-                    className="w-full p-2.5 bg-slate-50 border-2 border-slate-900 font-bold focus:outline-none uppercase"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold uppercase"
                   >
                     <option value="marvel">MARVEL</option>
                     <option value="anime">ANIME</option>
@@ -596,27 +595,27 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="block text-slate-950 uppercase mb-1">IMAGE URL / PATH</label>
+                <label className="block text-slate-600 font-bold mb-1">IMAGE URL / PATH</label>
                 <input
                   type="text"
                   placeholder="/products/ironman_figure.png"
                   value={newProduct.image}
                   onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border-2 border-slate-900 font-bold focus:outline-none"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t-2 border-slate-900">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 bg-slate-200 border-2 border-slate-900 text-slate-950 font-black uppercase"
+                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-extrabold"
                 >
                   CANCEL
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white border-2 border-slate-900 font-black uppercase shadow-[3px_3px_0_#000]"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-extrabold shadow-md"
                 >
                   SAVE ITEM
                 </button>
