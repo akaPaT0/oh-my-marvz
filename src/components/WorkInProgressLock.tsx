@@ -49,7 +49,7 @@ export function WorkInProgressLock() {
         {/* Meta Pylon Official Header Badge */}
         <div className="flex items-center justify-center gap-2 text-xs font-mono font-extrabold text-[#2DD4BF] uppercase tracking-widest bg-[#2DD4BF]/10 border border-[#2DD4BF]/25 py-1.5 px-4 rounded-full max-w-xs mx-auto">
           <ShieldCheck className="w-4 h-4 text-[#2DD4BF]" />
-          <span>META PYLON DIGITAL</span>
+          <span>META PYLON</span>
         </div>
 
         {/* Lock Icon Box with Official Teal Core Glow */}
@@ -63,7 +63,7 @@ export function WorkInProgressLock() {
           </h2>
 
           <p className="text-xs text-[#94A3B8] font-medium leading-relaxed max-w-xs mx-auto">
-            Our engineering team at <strong className="text-[#2DD4BF] font-bold">Meta Pylon Digital</strong> is actively building and refining this platform.
+            Our engineering team at <strong className="text-[#2DD4BF] font-bold">Meta Pylon</strong> is actively building and refining this platform.
           </p>
         </div>
 
@@ -99,7 +99,7 @@ export function WorkInProgressLock() {
 
         <div className="pt-2 border-t border-white/10 text-[11px] font-mono text-[#94A3B8] font-bold flex items-center justify-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-[#2DD4BF]" />
-          <span>Crafted by Meta Pylon Digital</span>
+          <span>Crafted by Meta Pylon</span>
         </div>
 
       </div>
