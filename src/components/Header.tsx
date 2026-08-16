@@ -119,13 +119,15 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
             </button>
 
-            {/* Profile Icon Button */}
-            <button
+            {/* Admin Dashboard Profile Button */}
+            <Link
+              href="/admin"
               className="text-black hover:text-red-600 transition-colors p-1"
-              aria-label="User Profile"
+              aria-label="Admin Dashboard"
+              title="Admin Dashboard"
             >
               <User className="w-7 h-7 stroke-[2.5]" />
-            </button>
+            </Link>
           </div>
 
         </div>
