@@ -131,122 +131,96 @@ export default function ModernShop() {
         </div>
       </div>
 
-      {/* ─── TOP NAV — full width, not floating ─── */}
-      <div style={{ background: '#FAFAF7', boxShadow: '0 1px 0 0 rgba(0,0,0,0.08), 0 4px 16px 0 rgba(0,0,0,0.06)' }} className="sticky top-0 z-50 w-full">
-        
-        {/* Main header row */}
-        <div className="w-full border-b border-black/[0.07]">
-          <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between gap-6">
-            
-            {/* Logo */}
-            <Link href="/2" className="text-[#111] font-black text-xl tracking-[-0.03em] hover:text-[#c96a00] transition-colors shrink-0">
-              OH MY MARVZ
-            </Link>
+      {/* ─── FLOATING HOVERING NAV ─── */}
+      <div className="sticky top-4 z-50 flex justify-center px-4 pointer-events-none">
+        <nav
+          className="pointer-events-auto w-full max-w-5xl flex items-center justify-between gap-4 px-5 py-3 rounded-2xl"
+          style={{
+            background: 'rgba(250,250,247,0.88)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.14), 0 1px 0 rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9)',
+            border: '1px solid rgba(0,0,0,0.08)',
+          }}
+        >
+          {/* Logo */}
+          <Link href="/2" className="text-[#111] font-black text-[15px] tracking-[-0.03em] hover:text-[#c96a00] transition-colors shrink-0">
+            OH MY MARVZ
+          </Link>
 
-            {/* Search bar — center, prominent */}
-            <div className="hidden md:flex flex-1 max-w-md mx-6">
-              <div
-                className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl transition-all"
-                style={{ background: '#ECEAE2', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.08)' }}
-              >
-                <Search className="w-4 h-4 text-black/35 shrink-0" />
-                <input
-                  type="text"
-                  placeholder="Search collectibles..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 bg-transparent text-[#111] text-sm placeholder:text-black/30 focus:outline-none"
-                />
-                {searchQuery && (
-                  <button onClick={() => setSearchQuery('')}>
-                    <X className="w-3.5 h-3.5 text-black/30 hover:text-black" />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Right Actions */}
-            <div className="flex items-center gap-2 shrink-0">
-              <button className="md:hidden p-2.5 text-black/40 hover:text-black transition-colors" onClick={() => setSearchOpen(!searchOpen)}>
-                <Search className="w-5 h-5" />
-              </button>
-
-              <button className="relative p-2.5 text-black/40 hover:text-black transition-colors">
-                <Heart className="w-5 h-5" />
-                {wishlist.length > 0 && (
-                  <span
-                    className="absolute top-1 right-1 w-4 h-4 text-white text-[9px] font-black rounded-full flex items-center justify-center"
-                    style={{ background: '#c96a00' }}
-                  >
-                    {wishlist.length}
-                  </span>
-                )}
-              </button>
-
-              <button
-                onClick={() => setCartOpen(true)}
-                className="flex items-center gap-2.5 text-white px-5 py-2.5 rounded-xl font-bold text-[13px] transition-all hover:opacity-90 active:scale-95"
-                style={{ background: '#111', boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Cart</span>
-                {cartCount > 0 && (
-                  <span className="bg-[#c96a00] text-white text-[10px] font-black px-1.5 py-0.5 rounded-lg min-w-[20px] text-center">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Second nav row — franchise / category tabs */}
-        <div className="w-full" style={{ background: '#FAFAF7' }}>
-          <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-[46px] flex items-center gap-8">
+          {/* Center nav links */}
+          <div className="hidden md:flex items-center gap-1">
             {[
-              { id: 'all', label: 'All Collections' },
-              { id: 'marvel', label: 'Marvel Universe' },
-              { id: 'anime', label: 'Anime Grails' },
+              { id: 'all', label: 'All' },
+              { id: 'marvel', label: 'Marvel' },
+              { id: 'anime', label: 'Anime' },
             ].map((f) => (
               <button
                 key={f.id}
                 onClick={() => setActiveFranchise(f.id as any)}
-                className={`text-[13px] font-semibold h-full border-b-2 transition-all ${
+                className="px-4 py-1.5 rounded-xl text-[13px] font-semibold transition-all"
+                style={
                   activeFranchise === f.id
-                    ? 'text-[#111] border-[#c96a00]'
-                    : 'text-black/40 border-transparent hover:text-black/70 hover:border-black/20'
-                }`}
+                    ? { background: '#111', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }
+                    : { color: 'rgba(0,0,0,0.45)' }
+                }
               >
                 {f.label}
               </button>
             ))}
-
-            <div className="ml-auto hidden sm:flex items-center gap-6 text-[12px] text-black/35 font-medium">
-              <Link href="/" className="hover:text-black transition-colors">Classic View</Link>
-              <Link href="/marvel" className="hover:text-black transition-colors">Marvel Page</Link>
-              <Link href="/anime" className="hover:text-black transition-colors">Anime Page</Link>
-            </div>
+            <div className="w-px h-4 bg-black/10 mx-2" />
+            <Link href="/" className="px-3 py-1.5 rounded-xl text-[13px] text-black/35 font-medium hover:text-black transition-colors">Classic</Link>
           </div>
-        </div>
 
-        {/* Mobile search bar */}
-        {searchOpen && (
-          <div className="md:hidden border-t border-black/[0.07] px-4 py-3 flex items-center gap-3" style={{ background: '#FAFAF7' }}>
-            <Search className="w-4 h-4 text-black/30 shrink-0" />
-            <input
-              autoFocus
-              type="text"
-              placeholder="Search collectibles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 bg-transparent text-[#111] text-sm placeholder:text-black/25 focus:outline-none"
-            />
-            <button onClick={() => { setSearchOpen(false); setSearchQuery(''); }}>
-              <X className="w-4 h-4 text-black/30" />
+          {/* Right: Search + Wishlist + Cart */}
+          <div className="flex items-center gap-2 shrink-0">
+
+            {/* Inline search */}
+            <div
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl w-40 lg:w-52 transition-all"
+              style={{ background: '#ECEAE2', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.07)' }}
+            >
+              <Search className="w-3.5 h-3.5 text-black/30 shrink-0" />
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 bg-transparent text-[#111] text-xs placeholder:text-black/30 focus:outline-none min-w-0"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')}>
+                  <X className="w-3 h-3 text-black/30 hover:text-black" />
+                </button>
+              )}
+            </div>
+
+            <button className="relative p-2 text-black/40 hover:text-black rounded-xl hover:bg-black/5 transition-all">
+              <Heart className="w-4.5 h-4.5" style={{ width: '18px', height: '18px' }} />
+              {wishlist.length > 0 && (
+                <span className="absolute top-1 right-1 w-3.5 h-3.5 text-white text-[9px] font-black rounded-full flex items-center justify-center" style={{ background: '#c96a00' }}>
+                  {wishlist.length}
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => setCartOpen(true)}
+              className="flex items-center gap-2 text-white px-4 py-2 rounded-xl font-bold text-[12px] transition-all hover:opacity-90 active:scale-95"
+              style={{ background: '#111', boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
+            >
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>Cart</span>
+              {cartCount > 0 && (
+                <span className="text-[10px] font-black px-1.5 py-0.5 rounded-lg min-w-[18px] text-center" style={{ background: '#c96a00' }}>
+                  {cartCount}
+                </span>
+              )}
             </button>
           </div>
-        )}
+        </nav>
       </div>
+
 
       {/* ─── HERO ─── */}
       {heroProduct && (
