@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
+import { convertImageToWebP, WebPOptimizationResult } from '@/lib/image-optimizer';
 import {
   Package,
   DollarSign,
@@ -23,6 +24,10 @@ import {
   Globe,
   Gamepad2,
   X,
+  Upload,
+  Zap,
+  Database,
+  Lock,
 } from 'lucide-react';
 
 interface MockOrder {
@@ -85,6 +90,10 @@ export default function AdminDashboardPage() {
   // Edit Product Modal State
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
+  // WebP Image Compression State
+  const [webpOptimization, setWebpOptimization] = useState<WebPOptimizationResult | null>(null);
+  const [isOptimizingImage, setIsOptimizingImage] = useState(false);
+
   // Mock La3eeb Gaming Catalog for 2nd Business
   const la3eebProducts = [
     { id: 'la3-1', name: 'Pro Wireless RGB Gaming Controller', category: 'Controllers', price: 69.99, status: 'In Stock' },
@@ -140,7 +149,33 @@ export default function AdminDashboardPage() {
     inStock: true,
     isFeatured: false,
     description: '',
+    image: '',
   });
+
+  // Handle File Upload and Convert to WebP
+  const handleImageFileUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    isEditMode: boolean = false
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsOptimizingImage(true);
+      const result = await convertImageToWebP(file);
+      setWebpOptimization(result);
+
+      if (isEditMode && editingProduct) {
+        setEditingProduct({ ...editingProduct, image: result.dataUrl });
+      } else {
+        setNewProduct({ ...newProduct, image: result.dataUrl });
+      }
+    } catch (err) {
+      console.error('Failed to convert image to WebP:', err);
+    } finally {
+      setIsOptimizingImage(false);
+    }
+  };
 
   const handleCreateProduct = (e: React.FormEvent) => {
     e.preventDefault();
@@ -165,6 +200,7 @@ export default function AdminDashboardPage() {
 
     setProducts([created, ...products]);
     setIsAddModalOpen(false);
+    setWebpOptimization(null);
   };
 
   const handleSaveEditedProduct = (e: React.FormEvent) => {
@@ -175,6 +211,7 @@ export default function AdminDashboardPage() {
       products.map((p) => (p.id === editingProduct.id ? editingProduct : p))
     );
     setEditingProduct(null);
+    setWebpOptimization(null);
   };
 
   const handleDeleteProduct = (id: string) => {
@@ -235,6 +272,12 @@ export default function AdminDashboardPage() {
           {/* Right Action Controls & Distant Business Switcher */}
           <div className="flex items-center gap-3">
             
+            {/* Supabase Ready Badge */}
+            <div className="hidden md:flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1.5 rounded-xl text-xs font-mono font-extrabold">
+              <Database className="w-3.5 h-3.5" />
+              <span>SUPABASE READY</span>
+            </div>
+
             {/* DISTANT BUSINESS SWITCHER BUTTON */}
             <div className="relative">
               <button
@@ -312,7 +355,10 @@ export default function AdminDashboardPage() {
 
           {currentBusinessId === 'oh-my-marvz' && (
             <button
-              onClick={() => setIsAddModalOpen(true)}
+              onClick={() => {
+                setWebpOptimization(null);
+                setIsAddModalOpen(true);
+              }}
               className="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs px-5 py-3 rounded-xl shadow-sm flex items-center gap-2 transition-all hover:scale-102"
             >
               <Plus className="w-4 h-4 stroke-[3]" />
@@ -485,7 +531,10 @@ export default function AdminDashboardPage() {
                           <td className="p-4 text-right flex items-center justify-end gap-2">
                             {/* EDIT PRODUCT BUTTON */}
                             <button
-                              onClick={() => setEditingProduct({ ...p })}
+                              onClick={() => {
+                                setWebpOptimization(null);
+                                setEditingProduct({ ...p });
+                              }}
                               className="p-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white rounded-xl transition-colors"
                               title="Edit Product Details"
                             >
@@ -585,7 +634,7 @@ export default function AdminDashboardPage() {
         </div>
       </footer>
 
-      {/* --- ADD PRODUCT MODAL --- */}
+      {/* --- CREATE PRODUCT MODAL --- */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
           <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-2xl">
@@ -631,15 +680,25 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-slate-600 font-bold mb-1">IMAGE URL / PATH</label>
+              {/* WebP Image Upload */}
+              <div className="space-y-1">
+                <label className="block text-slate-600 font-bold">UPLOAD PRODUCT IMAGE (AUTO WEBP CONVERT)</label>
                 <input
-                  type="text"
-                  placeholder="/products/ironman_figure.png"
-                  value={newProduct.image}
-                  onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageFileUpload(e, false)}
+                  className="w-full text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
                 />
+                {isOptimizingImage && (
+                  <p className="text-indigo-600 text-[10px] font-bold animate-pulse">
+                    ⚡ Converting image to WebP format...
+                  </p>
+                )}
+                {webpOptimization && (
+                  <div className="bg-emerald-50 border border-emerald-200 p-2 rounded-xl text-[10px] text-emerald-700 font-bold">
+                    ⚡ WebP Optimized! Saved {webpOptimization.compressionRatio}% file size ({(webpOptimization.originalSize / 1024).toFixed(0)}KB ➔ {(webpOptimization.optimizedSize / 1024).toFixed(0)}KB)
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
@@ -794,14 +853,25 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-slate-700 font-extrabold mb-1">IMAGE URL / PATH</label>
+                {/* Image Upload + WebP Converter */}
+                <div className="space-y-1">
+                  <label className="block text-slate-700 font-extrabold mb-1">CHANGE PRODUCT IMAGE (WEBP OPTIMIZED)</label>
                   <input
-                    type="text"
-                    value={editingProduct.image}
-                    onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageFileUpload(e, true)}
+                    className="w-full text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
                   />
+                  {isOptimizingImage && (
+                    <p className="text-indigo-600 text-[10px] font-bold animate-pulse">
+                      ⚡ Converting image to WebP format...
+                    </p>
+                  )}
+                  {webpOptimization && (
+                    <div className="bg-emerald-50 border border-emerald-200 p-2 rounded-xl text-[10px] text-emerald-700 font-bold">
+                      ⚡ WebP Optimized! Saved {webpOptimization.compressionRatio}% file size ({(webpOptimization.originalSize / 1024).toFixed(0)}KB ➔ {(webpOptimization.optimizedSize / 1024).toFixed(0)}KB)
+                    </div>
+                  )}
                 </div>
 
                 <div>
