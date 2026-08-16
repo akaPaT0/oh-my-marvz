@@ -220,7 +220,7 @@ export default function AdminDashboardPage() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-sm tracking-tight text-slate-900 font-mono">
-                  ENTERPRISE ADMIN PORTAL
+                  ENTERPRISE META PORTAL
                 </span>
                 <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${currentBusiness.badgeBg}`}>
                   {currentBusiness.badgeText}

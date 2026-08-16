@@ -121,7 +121,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Admin Dashboard Profile Button */}
             <Link
-              href="/admin"
+              href="/meta"
               className="text-black hover:text-red-600 transition-colors p-1"
               aria-label="Admin Dashboard"
               title="Admin Dashboard"
