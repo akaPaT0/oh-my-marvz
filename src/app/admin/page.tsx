@@ -662,118 +662,189 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      {/* --- EDIT PRODUCT MODAL POPUP --- */}
+      {/* --- EDIT PRODUCT MODAL POPUP (2-Column Widescreen Live Preview) --- */}
       {editingProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
-          <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h2 className="text-xl font-extrabold text-slate-900">
-                EDIT PRODUCT DETAILS
-              </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in overflow-y-auto">
+          <div className="relative w-full max-w-4xl bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl my-8">
+            
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+              <div>
+                <h2 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                  <Edit className="w-5 h-5 text-indigo-600" />
+                  <span>EDIT PRODUCT CATALOG ITEM</span>
+                </h2>
+                <p className="text-xs text-slate-500 font-mono">
+                  Modify details on the right to see the live product preview update on the left.
+                </p>
+              </div>
               <button
                 onClick={() => setEditingProduct(null)}
-                className="p-1 text-slate-400 hover:text-slate-700 rounded-lg"
+                className="p-2 text-slate-400 hover:text-slate-700 bg-slate-100 rounded-xl transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveEditedProduct} className="space-y-3 text-xs font-mono">
-              <div>
-                <label className="block text-slate-600 font-bold mb-1">PRODUCT NAME</label>
-                <input
-                  type="text"
-                  required
-                  value={editingProduct.name}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
-                />
+            {/* 2-Column Grid Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+              
+              {/* LEFT COLUMN: LIVE PRODUCT PREVIEW CARD */}
+              <div className="md:col-span-5 space-y-3 bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-xs">
+                <div className="text-xs font-mono font-extrabold text-slate-400 uppercase tracking-widest border-b border-slate-200 pb-2">
+                  LIVE PRODUCT PREVIEW
+                </div>
+
+                {/* Product Image Display Box */}
+                <div className="relative w-full h-56 bg-white border border-slate-200 rounded-xl p-3 flex items-center justify-center overflow-hidden shadow-xs">
+                  {editingProduct.image ? (
+                    <img
+                      src={editingProduct.image}
+                      alt={editingProduct.name}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <div className="text-xs font-mono text-slate-400">NO IMAGE PROVIDED</div>
+                  )}
+
+                  {editingProduct.isFeatured && (
+                    <span className="absolute top-2 left-2 bg-amber-400 text-slate-950 font-mono font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-xs">
+                      FEATURED SPOTLIGHT
+                    </span>
+                  )}
+
+                  <span className={`absolute top-2 right-2 font-mono font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase ${
+                    editingProduct.franchise === 'marvel' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
+                  }`}>
+                    {editingProduct.franchise}
+                  </span>
+                </div>
+
+                {/* Product Info Preview */}
+                <div className="space-y-1 pt-1">
+                  <div className="font-extrabold text-base text-slate-900 leading-snug">
+                    {editingProduct.name || 'Untitled Product'}
+                  </div>
+                  <div className="text-xs font-medium text-slate-500">
+                    {editingProduct.subtitle || 'No edition subtitle specified'}
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+                  <div className="text-xl font-extrabold text-emerald-600 font-mono">
+                    ${editingProduct.price ? editingProduct.price.toFixed(2) : '0.00'}
+                  </div>
+                  <div className="text-[11px] font-mono text-slate-400 uppercase">
+                    Category: {editingProduct.category || 'figurines'}
+                  </div>
+                </div>
+
+                {editingProduct.description && (
+                  <p className="text-xs text-slate-600 font-medium italic bg-white p-3 rounded-xl border border-slate-200">
+                    "{editingProduct.description}"
+                  </p>
+                )}
               </div>
 
-              <div>
-                <label className="block text-slate-600 font-bold mb-1">SUBTITLE / EDITION</label>
-                <input
-                  type="text"
-                  value={editingProduct.subtitle}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, subtitle: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
+              {/* RIGHT COLUMN: EDIT FORM */}
+              <form onSubmit={handleSaveEditedProduct} className="md:col-span-7 space-y-4 text-xs font-mono">
                 <div>
-                  <label className="block text-slate-600 font-bold mb-1">PRICE ($ USD)</label>
+                  <label className="block text-slate-700 font-extrabold mb-1">PRODUCT NAME</label>
                   <input
-                    type="number"
-                    step="0.01"
+                    type="text"
                     required
-                    value={editingProduct.price}
-                    onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) })}
+                    value={editingProduct.name}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
                     className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
                   />
                 </div>
+
                 <div>
-                  <label className="block text-slate-600 font-bold mb-1">FRANCHISE</label>
-                  <select
-                    value={editingProduct.franchise}
-                    onChange={(e) => setEditingProduct({ ...editingProduct, franchise: e.target.value as any })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold uppercase"
-                  >
-                    <option value="marvel">MARVEL</option>
-                    <option value="anime">ANIME</option>
-                  </select>
+                  <label className="block text-slate-700 font-extrabold mb-1">SUBTITLE / EDITION</label>
+                  <input
+                    type="text"
+                    value={editingProduct.subtitle}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, subtitle: e.target.value })}
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                  />
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-slate-600 font-bold mb-1">IMAGE URL / PATH</label>
-                <input
-                  type="text"
-                  value={editingProduct.image}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
-                />
-              </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-slate-700 font-extrabold mb-1">PRICE ($ USD)</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      required
+                      value={editingProduct.price}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) })}
+                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-700 font-extrabold mb-1">FRANCHISE</label>
+                    <select
+                      value={editingProduct.franchise}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, franchise: e.target.value as any })}
+                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold uppercase"
+                    >
+                      <option value="marvel">MARVEL</option>
+                      <option value="anime">ANIME</option>
+                    </select>
+                  </div>
+                </div>
 
-              <div>
-                <label className="block text-slate-600 font-bold mb-1">DESCRIPTION</label>
-                <textarea
-                  rows={2}
-                  value={editingProduct.description}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
-                />
-              </div>
+                <div>
+                  <label className="block text-slate-700 font-extrabold mb-1">IMAGE URL / PATH</label>
+                  <input
+                    type="text"
+                    value={editingProduct.image}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                  />
+                </div>
 
-              <div className="flex items-center gap-2 pt-1">
-                <input
-                  type="checkbox"
-                  id="editIsFeatured"
-                  checked={editingProduct.isFeatured || false}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, isFeatured: e.target.checked })}
-                  className="w-4 h-4 accent-indigo-600 cursor-pointer"
-                />
-                <label htmlFor="editIsFeatured" className="text-slate-900 font-bold uppercase cursor-pointer">
-                  SET AS FEATURED HERO SPOTLIGHT ITEM
-                </label>
-              </div>
+                <div>
+                  <label className="block text-slate-700 font-extrabold mb-1">DESCRIPTION</label>
+                  <textarea
+                    rows={3}
+                    value={editingProduct.description}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-600 font-bold"
+                  />
+                </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-                <button
-                  type="button"
-                  onClick={() => setEditingProduct(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-extrabold"
-                >
-                  CANCEL
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-extrabold shadow-md"
-                >
-                  UPDATE PRODUCT
-                </button>
-              </div>
-            </form>
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="checkbox"
+                    id="editIsFeatured"
+                    checked={editingProduct.isFeatured || false}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, isFeatured: e.target.checked })}
+                    className="w-4 h-4 accent-indigo-600 cursor-pointer"
+                  />
+                  <label htmlFor="editIsFeatured" className="text-slate-900 font-extrabold uppercase cursor-pointer">
+                    SET AS FEATURED HERO SPOTLIGHT ITEM
+                  </label>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+                  <button
+                    type="button"
+                    onClick={() => setEditingProduct(null)}
+                    className="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-extrabold"
+                  >
+                    CANCEL
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-extrabold shadow-md"
+                  >
+                    UPDATE PRODUCT
+                  </button>
+                </div>
+              </form>
+
+            </div>
           </div>
         </div>
       )}
