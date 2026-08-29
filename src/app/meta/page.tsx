@@ -28,7 +28,20 @@ import {
   Zap,
   Database,
   Lock,
+  BarChart3,
+  PieChart,
+  Users,
+  ArrowUpRight,
+  ArrowDownRight,
+  Eye,
+  Clock,
+  Activity,
+  Award,
+  ShoppingCart,
+  Percent,
+  Layers,
 } from 'lucide-react';
+
 
 interface MockOrder {
   id: string;
@@ -84,7 +97,9 @@ export default function AdminDashboardPage() {
 
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'orders'>('overview');
+  const [analyticsTimeframe, setAnalyticsTimeframe] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
   const [searchQuery, setSearchQuery] = useState('');
+
   const [selectedFranchiseFilter, setSelectedFranchiseFilter] = useState<'all' | 'marvel' | 'anime'>('all');
 
   // Edit Product Modal State
@@ -388,71 +403,328 @@ export default function AdminDashboardPage() {
           ))}
         </div>
 
-        {/* --- TAB 1: OVERVIEW METRICS --- */}
+        {/* --- TAB 1: OVERVIEW METRICS & PRO ANALYTICS --- */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
+
+            {/* Timeframe Filter Bar */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-indigo-600" />
+                <span className="font-extrabold text-sm text-slate-900 font-mono">Performance & Revenue Analytics</span>
+                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono">
+                  LIVE SYNC
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-mono font-bold">
+                {[
+                  { id: '7d', label: '7 Days' },
+                  { id: '30d', label: '30 Days' },
+                  { id: '90d', label: '90 Days' },
+                  { id: '1y', label: '1 Year' },
+                ].map((tf) => (
+                  <button
+                    key={tf.id}
+                    onClick={() => setAnalyticsTimeframe(tf.id as any)}
+                    className={`px-3 py-1.5 rounded-lg transition-all ${
+                      analyticsTimeframe === tf.id
+                        ? 'bg-white text-slate-900 shadow-xs font-extrabold'
+                        : 'text-slate-500 hover:text-slate-800'
+                    }`}
+                  >
+                    {tf.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Top 4 KPI Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              
+              {/* Monthly Revenue */}
               <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">MONTHLY REVENUE</span>
+                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">GROSS REVENUE</span>
                   <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
                     <DollarSign className="w-5 h-5 stroke-[2.5]" />
                   </div>
                 </div>
-                <div className="text-2xl font-extrabold font-mono text-slate-900">${totalRevenue.toFixed(2)}</div>
+                <div className="text-2xl font-extrabold font-mono text-slate-900">${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
                 <div className="text-[11px] text-emerald-600 font-mono font-bold flex items-center gap-1">
                   <TrendingUp className="w-3.5 h-3.5" />
-                  <span>+24.2% from last month</span>
+                  <span>+24.2% vs previous period</span>
                 </div>
               </div>
 
+              {/* Total Orders & Volume */}
               <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">TOTAL INVENTORY</span>
+                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">TOTAL ORDERS</span>
                   <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
-                    <Package className="w-5 h-5 stroke-[2.5]" />
+                    <ShoppingCart className="w-5 h-5 stroke-[2.5]" />
                   </div>
                 </div>
                 <div className="text-2xl font-extrabold font-mono text-slate-900">
-                  {currentBusinessId === 'oh-my-marvz' ? `${products.length} Items` : '3 Gaming Gears'}
+                  {currentBusinessId === 'oh-my-marvz' ? '342 Orders' : '189 Orders'}
                 </div>
-                <div className="text-[11px] text-slate-500 font-mono font-bold">
-                  {currentBusinessId === 'oh-my-marvz' ? '17 Active Marvel & Anime' : 'Controllers, Keyboards & Audio'}
+                <div className="text-[11px] text-indigo-600 font-mono font-bold flex items-center gap-1">
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  <span>+18.7% fulfillment volume</span>
                 </div>
               </div>
 
+              {/* Conversion Rate */}
               <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">PENDING ORDERS</span>
+                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">CONVERSION RATE</span>
                   <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
-                    <ShoppingBag className="w-5 h-5 stroke-[2.5]" />
+                    <Percent className="w-5 h-5 stroke-[2.5]" />
                   </div>
                 </div>
-                <div className="text-2xl font-extrabold font-mono text-slate-900">
-                  {orders.filter((o) => o.status === 'pending').length} Pending
-                </div>
-                <div className="text-[11px] text-amber-600 font-mono font-bold">
-                  Requires fulfillment action
+                <div className="text-2xl font-extrabold font-mono text-slate-900">3.82%</div>
+                <div className="text-[11px] text-amber-600 font-mono font-bold flex items-center gap-1">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>+1.4% vs industry baseline</span>
                 </div>
               </div>
 
+              {/* Average Order Value (AOV) */}
               <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">FULFILLMENT RATE</span>
+                  <span className="text-xs font-mono text-slate-500 font-extrabold uppercase">AVG. ORDER VALUE</span>
                   <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
-                    <MapPin className="w-5 h-5 stroke-[2.5]" />
+                    <Award className="w-5 h-5 stroke-[2.5]" />
                   </div>
                 </div>
-                <div className="text-2xl font-extrabold font-mono text-slate-900">98.5%</div>
-                <div className="text-[11px] text-blue-600 font-mono font-bold">
-                  BAU Station & Shipping
+                <div className="text-2xl font-extrabold font-mono text-slate-900">$42.80</div>
+                <div className="text-[11px] text-blue-600 font-mono font-bold flex items-center gap-1">
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  <span>+$6.20 bundle uplift</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Revenue Trend Visualizer & Breakdown */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Sales & Orders Growth Bar Chart (2 cols) */}
+              <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-extrabold text-sm text-slate-900 font-mono">REVENUE & SALES VOLUME TIMELINE</h3>
+                    <p className="text-xs text-slate-500">Monthly breakdown across all Lebanese districts & online orders</p>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs font-mono font-bold">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-3 h-3 rounded-xs bg-[#E23636]" />
+                      <span className="text-slate-600">Marvel</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-3 h-3 rounded-xs bg-indigo-600" />
+                      <span className="text-slate-600">Anime</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Visual Chart Bars */}
+                <div className="pt-4 space-y-3">
+                  {[
+                    { month: 'Jan', marvel: 3800, anime: 3100, total: '$6,900', pct: '62%' },
+                    { month: 'Feb', marvel: 4200, anime: 3900, total: '$8,100', pct: '74%' },
+                    { month: 'Mar', marvel: 5100, anime: 4600, total: '$9,700', pct: '86%' },
+                    { month: 'Apr (Current)', marvel: 6600, anime: 5850, total: `$${totalRevenue.toLocaleString()}`, pct: '100%' },
+                  ].map((bar, i) => (
+                    <div key={i} className="space-y-1.5">
+                      <div className="flex justify-between text-xs font-mono font-bold">
+                        <span className="text-slate-800">{bar.month}</span>
+                        <span className="text-slate-900">{bar.total}</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-6 rounded-xl overflow-hidden flex shadow-inner">
+                        <div
+                          className="bg-[#E23636] h-full flex items-center justify-end pr-2 text-[10px] font-mono font-extrabold text-white transition-all duration-500"
+                          style={{ width: `${(bar.marvel / (bar.marvel + bar.anime)) * parseInt(bar.pct)}%` }}
+                        >
+                          54%
+                        </div>
+                        <div
+                          className="bg-indigo-600 h-full flex items-center justify-end pr-2 text-[10px] font-mono font-extrabold text-white transition-all duration-500"
+                          style={{ width: `${(bar.anime / (bar.marvel + bar.anime)) * parseInt(bar.pct)}%` }}
+                        >
+                          46%
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs font-mono">
+                  <span className="text-slate-600 font-medium">⚡ Peak Order Hour: <strong>8:00 PM – 11:30 PM (Lebanon GMT+2)</strong></span>
+                  <span className="font-bold text-emerald-600">+34% weekend surge</span>
+                </div>
+              </div>
+
+              {/* Fulfillment & Payment Channels */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-5">
+                <div>
+                  <h3 className="font-extrabold text-sm text-slate-900 font-mono">FULFILLMENT & PAYMENTS</h3>
+                  <p className="text-xs text-slate-500">Distribution across Lebanese channels</p>
+                </div>
+
+                {/* Fulfillment Split */}
+                <div className="space-y-3">
+                  <div className="text-xs font-mono font-bold text-slate-700 flex justify-between">
+                    <span>Doorstep Delivery (Lebanon)</span>
+                    <span className="text-[#E23636]">58%</span>
+                  </div>
+                  <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <div className="bg-[#E23636] h-full rounded-full" style={{ width: '58%' }} />
+                  </div>
+
+                  <div className="text-xs font-mono font-bold text-slate-700 flex justify-between pt-1">
+                    <span>BAU Beirut Campus Pickup</span>
+                    <span className="text-indigo-600">42%</span>
+                  </div>
+                  <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <div className="bg-indigo-600 h-full rounded-full" style={{ width: '42%' }} />
+                  </div>
+                </div>
+
+                <div className="border-t border-slate-100 pt-4 space-y-3">
+                  <span className="text-[11px] font-mono font-extrabold text-slate-400 uppercase tracking-wider block">
+                    Payment Method Split
+                  </span>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                      <div className="text-[11px] text-slate-500 font-bold">Cash on Delivery</div>
+                      <div className="text-base font-extrabold text-slate-900 mt-1">68.4%</div>
+                      <div className="text-[10px] text-emerald-600 font-bold">USD / LBP</div>
+                    </div>
+                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                      <div className="text-[11px] text-slate-500 font-bold">Whish / OMT Pay</div>
+                      <div className="text-base font-extrabold text-slate-900 mt-1">31.6%</div>
+                      <div className="text-[10px] text-indigo-600 font-bold">Digital Transfer</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-slate-100 pt-3 flex items-center justify-between text-xs font-mono font-bold">
+                  <span className="text-slate-600">Dispatch Speed</span>
+                  <span className="text-emerald-600">⚡ 1.2 hrs Avg</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Regional Sales Breakdown & Top Selling Products */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* Lebanon Regional Sales Breakdown */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-extrabold text-sm text-slate-900 font-mono">SALES BY LEBANESE REGION</h3>
+                    <p className="text-xs text-slate-500">Order distribution across governorates</p>
+                  </div>
+                  <MapPin className="w-5 h-5 text-[#E23636]" />
+                </div>
+
+                <div className="space-y-3 pt-2">
+                  {[
+                    { region: 'Beirut (Hamra, Achrafieh, BAU)', percentage: 48, orders: 164, revenue: '$6,210' },
+                    { region: 'Mount Lebanon (Metn, Keserwan, Baabda)', percentage: 26, orders: 89, revenue: '$3,420' },
+                    { region: 'North (Tripoli, Koura, Batroun)', percentage: 12, orders: 41, revenue: '$1,480' },
+                    { region: 'South (Saida, Tyre, Nabatieh)', percentage: 9, orders: 31, revenue: '$960' },
+                    { region: 'Bekaa (Zahle, Chtaura, Baalbek)', percentage: 5, orders: 17, revenue: '$380' },
+                  ].map((r, idx) => (
+                    <div key={idx} className="p-3 bg-slate-50 border border-slate-100 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-xs font-mono font-bold">
+                        <span className="text-slate-900">{r.region}</span>
+                        <span className="text-[#E23636]">{r.revenue} ({r.percentage}%)</span>
+                      </div>
+                      <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                        <div
+                          className="bg-[#E23636] h-full rounded-full transition-all duration-300"
+                          style={{ width: `${r.percentage}%` }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-[10px] text-slate-500 font-mono font-medium">
+                        <span>{r.orders} Doorstep & Campus Deliveries</span>
+                        <span className="text-emerald-700 font-bold">99.2% Success</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Top Selling Collectibles Leaderboard */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-extrabold text-sm text-slate-900 font-mono">TOP SELLING COLLECTIBLES</h3>
+                    <p className="text-xs text-slate-500">Highest grossing items & stock velocity</p>
+                  </div>
+                  <Award className="w-5 h-5 text-amber-500" />
+                </div>
+
+                <div className="space-y-3 pt-2">
+                  {products.slice(0, 5).map((p, idx) => (
+                    <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl gap-3">
+                      <div className="flex items-center gap-3">
+                        <span className={`w-6 h-6 rounded-lg flex items-center justify-center font-mono font-extrabold text-xs ${
+                          idx === 0 ? 'bg-amber-100 text-amber-800' : idx === 1 ? 'bg-slate-200 text-slate-800' : 'bg-slate-100 text-slate-600'
+                        }`}>
+                          #{idx + 1}
+                        </span>
+                        <img src={p.image} alt={p.name} className="w-10 h-10 object-contain bg-white border border-slate-200 p-0.5 rounded-lg" />
+                        <div>
+                          <div className="font-extrabold text-xs text-slate-900 line-clamp-1">{p.name}</div>
+                          <div className="text-[10px] text-slate-500 font-mono">${p.price.toFixed(2)} • {p.category}</div>
+                        </div>
+                      </div>
+
+                      <div className="text-right flex-shrink-0 font-mono">
+                        <div className="font-extrabold text-xs text-[#E23636]">${(p.price * (32 - idx * 4)).toFixed(2)}</div>
+                        <div className="text-[10px] text-emerald-600 font-bold">{32 - idx * 4} sold</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
             </div>
+
+            {/* Customer Search Trends & Demographics Bar */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-extrabold text-sm text-slate-900 font-mono">STORE SEARCH QUERIES & INTENT</h3>
+                  <p className="text-xs text-slate-500">Most requested characters, franchises, and accessories</p>
+                </div>
+                <Search className="w-5 h-5 text-slate-400" />
+              </div>
+
+              <div className="flex flex-wrap gap-2 pt-1">
+                {[
+                  { tag: 'Iron Man Mark 85', count: '384 searches', growth: '+32%' },
+                  { tag: 'Luffy Gear 5 Figure', count: '298 searches', growth: '+45%' },
+                  { tag: 'Zoro Shusui Katana', count: '241 searches', growth: '+18%' },
+                  { tag: 'Spider-Man 2099 Pop', count: '194 searches', growth: '+22%' },
+                  { tag: 'Death Note Replica', count: '165 searches', growth: '+12%' },
+                  { tag: 'Attack on Titan Keychain', count: '142 searches', growth: '+9%' },
+                  { tag: 'Goku Ultra Instinct', count: '130 searches', growth: '+15%' },
+                  { tag: 'Gojo Satoru Statue', count: '118 searches', growth: '+28%' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-mono">
+                    <span className="font-extrabold text-slate-800">{item.tag}</span>
+                    <span className="text-slate-500 text-[11px] font-medium">• {item.count}</span>
+                    <span className="text-emerald-600 font-bold text-[10px]">{item.growth}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         )}
+
 
         {/* --- TAB 2: INVENTORY & PRODUCTS CONTROL --- */}
         {activeTab === 'products' && (
