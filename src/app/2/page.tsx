@@ -41,11 +41,15 @@ export default function ShopPage() {
   const [addedId, setAddedId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [featuredIndex, setFeaturedIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
 
   const featuredProducts = useMemo(
     () => products.filter((p) => p.isFeatured || p.rating >= 5.0).slice(0, 6),
     [products]
   );
+
+
 
 
 
@@ -123,7 +127,10 @@ export default function ShopPage() {
           .store-featured-actions { display: flex !important; flex-direction: row !important; gap: 6px !important; }
           .store-featured-btn-view { width: auto !important; height: 32px !important; padding: 0 10px !important; font-size: 11px !important; border-radius: 8px !important; }
           .store-featured-btn-add { width: auto !important; height: 32px !important; padding: 0 10px !important; font-size: 11px !important; border-radius: 8px !important; }
+          .store-featured-arrows { width: 30px !important; height: 30px !important; display: flex !important; }
+          .store-featured-dots { bottom: 8px !important; right: 10px !important; padding: 3px 8px !important; }
           .store-collection-header-inner { padding: 12px 14px !important; width: 100% !important; flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+
 
 
           .store-filter-pills { overflow-x: auto !important; flex-wrap: nowrap !important; max-width: 100% !important; width: 100% !important; padding-bottom: 4px !important; -webkit-overflow-scrolling: touch !important; white-space: nowrap !important; }
@@ -387,9 +394,9 @@ export default function ShopPage() {
       </div>
 
 
-      {/* ── FEATURED SPOTLIGHT BANNER (Cropped Image BG + Gradient Scrim, Static) ── */}
+      {/* ── FEATURED SPOTLIGHT BANNER (Cropped Image BG + Gradient Scrim, Interactive Carousel) ── */}
       {featuredProducts.length > 0 && (() => {
-        const item = featuredProducts[0];
+        const item = featuredProducts[featuredIndex] || featuredProducts[0];
         const itemDiscount = item.originalPrice
           ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
           : null;
@@ -404,7 +411,7 @@ export default function ShopPage() {
                   Featured Spotlight
                 </h2>
                 <p style={{ fontSize: 13, color: '#777', margin: '3px 0 0' }}>
-                  Hand-picked grail item and high-demand collector edition
+                  Hand-picked grail items and high-demand collector editions
                 </p>
               </div>
 
@@ -439,9 +446,25 @@ export default function ShopPage() {
               </div>
             </div>
 
-            {/* Featured Banner: Cropped Product Image as Background + Gradient Scrim */}
+            {/* Featured Banner: Cropped Product Image as Background + Gradient Scrim + Swipe & Arrows */}
             <div
               className="store-featured-banner"
+              onTouchStart={e => {
+                setTouchEndX(null);
+                setTouchStartX(e.targetTouches[0].clientX);
+              }}
+              onTouchMove={e => {
+                setTouchEndX(e.targetTouches[0].clientX);
+              }}
+              onTouchEnd={() => {
+                if (!touchStartX || !touchEndX) return;
+                const diff = touchStartX - touchEndX;
+                if (diff > 40) {
+                  setFeaturedIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1));
+                } else if (diff < -40) {
+                  setFeaturedIndex(prev => (prev === 0 ? featuredProducts.length - 1 : prev - 1));
+                }
+              }}
               style={{
                 position: 'relative',
                 borderRadius: 22,
@@ -452,6 +475,7 @@ export default function ShopPage() {
                 display: 'flex',
                 alignItems: 'center',
                 background: '#ECECEC',
+                touchAction: 'pan-y',
               }}
             >
               {/* Background Product Image */}
@@ -589,10 +613,95 @@ export default function ShopPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Navigation Arrows for PC & Mobile */}
+              <button
+                onClick={e => {
+                  e.stopPropagation();
+                  setFeaturedIndex(prev => (prev === 0 ? featuredProducts.length - 1 : prev - 1));
+                }}
+                aria-label="Previous slide"
+                className="store-featured-arrows"
+                style={{
+                  position: 'absolute',
+                  left: 14,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 4,
+                  width: 38,
+                  height: 38,
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.92)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+                  color: '#1A1A1A',
+                  transition: 'transform 0.15s, background 0.15s',
+                }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              <button
+                onClick={e => {
+                  e.stopPropagation();
+                  setFeaturedIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1));
+                }}
+                aria-label="Next slide"
+                className="store-featured-arrows"
+                style={{
+                  position: 'absolute',
+                  right: 14,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 4,
+                  width: 38,
+                  height: 38,
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.92)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+                  color: '#1A1A1A',
+                  transition: 'transform 0.15s, background 0.15s',
+                }}
+              >
+                <ChevronRight size={20} />
+              </button>
+
+              {/* Bottom Pagination Dots */}
+              <div className="store-featured-dots" style={{ position: 'absolute', bottom: 12, right: 18, zIndex: 4, display: 'flex', gap: 6, background: 'rgba(0,0,0,0.25)', padding: '5px 10px', borderRadius: 20, backdropFilter: 'blur(8px)' }}>
+                {featuredProducts.map((_, dotIdx) => (
+                  <button
+                    key={dotIdx}
+                    onClick={() => setFeaturedIndex(dotIdx)}
+                    aria-label={`Jump to slide ${dotIdx + 1}`}
+                    style={{
+                      width: featuredIndex === dotIdx ? 18 : 6,
+                      height: 6,
+                      borderRadius: 999,
+                      background: featuredIndex === dotIdx ? '#fff' : 'rgba(255,255,255,0.45)',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: 0,
+                      transition: 'all 0.2s ease',
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         );
       })()}
+
 
 
 
