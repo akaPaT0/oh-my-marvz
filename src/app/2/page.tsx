@@ -294,7 +294,7 @@ export default function ShopPage() {
                     (e.currentTarget as HTMLButtonElement).style.borderColor = '#E5E5E5';
                   }}
                 >
-                  {/* Authentic Artwork Collage Header */}
+                  {/* Artwork Header */}
                   <div style={{ position: 'relative', aspectRatio: '1.2', background: '#1A1A1A', overflow: 'hidden', width: '100%' }}>
                     <Image
                       src={item.img}
@@ -302,10 +302,8 @@ export default function ShopPage() {
                       fill
                       style={{ objectFit: 'cover' }}
                     />
-                    <span style={{ position: 'absolute', top: 10, left: 10, background: '#C96A00', color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 8px', borderRadius: 4, letterSpacing: '0.06em' }}>
-                      {item.tag}
-                    </span>
                   </div>
+
 
                   <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4, width: '100%', borderTop: '1px solid #EBEBEB' }}>
                     <p style={{ fontSize: 15, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.01em' }}>
