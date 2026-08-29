@@ -4,17 +4,20 @@ import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  ShoppingBag,
+  ShoppingCart,
   Search,
   Heart,
   Star,
-  Eye,
-  ArrowRight,
+  ChevronDown,
   SlidersHorizontal,
   X,
+  Check,
   Truck,
-  RotateCcw,
   ShieldCheck,
+  RotateCcw,
+  User,
+  Menu,
+  Tag,
 } from 'lucide-react';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import { ModernProductModal } from '@/components/ModernProductModal';
@@ -22,29 +25,22 @@ import { CartDrawer, CartItem } from '@/components/CartDrawer';
 import { CheckoutModal } from '@/components/CheckoutModal';
 import { ViewSwitcher } from '@/components/ViewSwitcher';
 
+const CATEGORIES = ['All', 'Figures', 'Statues', 'Keychains', 'Funko Pops', 'Stickers'];
+const FRANCHISES = ['All', 'Marvel', 'Anime'];
 
-const CATEGORIES = [
-  { id: 'all', label: 'All Products' },
-  { id: 'figures', label: 'Figures' },
-  { id: 'statues', label: 'Statues' },
-  { id: 'keychains', label: 'Keychains' },
-  { id: 'pops', label: 'Funko Pops' },
-  { id: 'stickers', label: 'Stickers' },
-];
-
-export default function ModernShop() {
+export default function ShopPage() {
   const [products] = useState<Product[]>(INITIAL_PRODUCTS);
-  const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [activeFranchise, setActiveFranchise] = useState<'all' | 'marvel' | 'anime'>('all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeFranchise, setActiveFranchise] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [addedId, setAddedId] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleAddToCart = (product: Product, quantity = 1) => {
     setCartItems((prev) => {
@@ -57,46 +53,21 @@ export default function ModernShop() {
       return [...prev, { product, quantity }];
     });
     setAddedId(product.id);
-    setTimeout(() => setAddedId(null), 1500);
+    setTimeout(() => setAddedId(null), 1800);
   };
 
-  const handleUpdateCartQuantity = (index: number, newQty: number) => {
-    if (newQty <= 0) {
-      setCartItems((prev) => prev.filter((_, i) => i !== index));
-      return;
-    }
-    setCartItems((prev) => {
-      const updated = [...prev];
-      updated[index].quantity = newQty;
-      return updated;
-    });
-  };
-
-  const handleRemoveCartItem = (index: number) => {
-    setCartItems((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const toggleWishlist = (productId: string) => {
-    setWishlist((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
-    );
-  };
+  const toggleWishlist = (id: string) =>
+    setWishlist((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
 
   const filteredProducts = useMemo(() => {
     return products
       .filter((p) => {
-        const matchesFranchise = activeFranchise === 'all' || p.franchise === activeFranchise;
-        const matchesCategory =
-          activeCategory === 'all' ||
-          p.category === activeCategory ||
-          p.category.includes(activeCategory) ||
-          (activeCategory === 'keychains' && p.category.includes('keychain')) ||
-          (activeCategory === 'pops' && p.category.includes('pop'));
-        const matchesSearch =
-          !searchQuery ||
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.subtitle.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesFranchise && matchesCategory && matchesSearch;
+        const cat = activeCategory === 'All' || p.category.toLowerCase().includes(activeCategory.toLowerCase()) ||
+          (activeCategory === 'Funko Pops' && p.category.toLowerCase().includes('pop')) ||
+          (activeCategory === 'Keychains' && p.category.toLowerCase().includes('keychain'));
+        const franchise = activeFranchise === 'All' || p.franchise.toLowerCase() === activeFranchise.toLowerCase();
+        const search = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return cat && franchise && search;
       })
       .sort((a, b) => {
         if (sortBy === 'price-low') return a.price - b.price;
@@ -104,450 +75,348 @@ export default function ModernShop() {
         if (sortBy === 'rating') return b.rating - a.rating;
         return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
       });
-  }, [products, activeFranchise, activeCategory, searchQuery, sortBy]);
+  }, [products, activeCategory, activeFranchise, searchQuery, sortBy]);
 
-  const heroProduct = products.filter((p) => p.isFeatured)[0];
-  const cartCount = cartItems.reduce((acc, i) => acc + i.quantity, 0);
+  const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
   return (
-    <div className="min-h-screen text-[#111]" style={{ fontFamily: "'Inter', system-ui, sans-serif", background: '#F0EFE9' }}>
+    <div className="min-h-screen bg-[#F2F2F2] text-[#1A1A1A]" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
 
-      {/* ─── TICKER ─── */}
-      <div
-        style={{ background: '#111' }}
-        className="text-white text-[11px] font-semibold tracking-widest uppercase overflow-hidden py-2.5"
-      >
-        <div className="flex gap-16 whitespace-nowrap animate-marquee">
-          {Array(6).fill(null).map((_, i) => (
-            <span key={i} className="flex items-center gap-8 shrink-0">
-              <span>⚡ Fast Lebanon Delivery</span>
-              <span className="opacity-20">·</span>
-              <span>🏫 BAU Beirut Pickup</span>
-              <span className="opacity-20">·</span>
-              <span>✦ 100% Authentic Collectibles</span>
-              <span className="opacity-20">·</span>
-              <span>🎯 Marvel & Anime Grails</span>
-              <span className="opacity-20">·</span>
-            </span>
-          ))}
-        </div>
+      {/* ── ANNOUNCEMENT BAR ── */}
+      <div className="bg-[#1A1A1A] text-white text-[12px] font-medium text-center py-2 px-4">
+        🚚 Free delivery across Lebanon &nbsp;·&nbsp; 🏫 BAU Beirut pickup available &nbsp;·&nbsp; ✅ 100% Authentic collectibles
       </div>
 
-      {/* ─── FLOATING HOVERING NAV ─── */}
-      <div className="sticky top-4 z-50 flex justify-center px-4 pointer-events-none">
-        <nav
-          className="pointer-events-auto w-full max-w-5xl flex items-center justify-between gap-4 px-6 py-2.5"
-          style={{
-            background: 'rgba(250,250,247,0.9)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.13), 0 1px 0 rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.95)',
-            border: '1px solid rgba(0,0,0,0.08)',
-            borderRadius: '9999px',
-          }}
-        >
-          {/* Logo */}
-          <Link href="/2" className="text-[#111] font-black text-[15px] tracking-[-0.03em] hover:text-[#c96a00] transition-colors shrink-0">
-            OH MY MARVZ
-          </Link>
+      {/* ── HEADER ── */}
+      <header className="bg-white border-b border-[#E5E5E5] sticky top-0 z-50">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
 
-          {/* Center nav links */}
-          <div className="hidden md:flex items-center gap-1">
-            {[
-              { id: 'all', label: 'All' },
-              { id: 'marvel', label: 'Marvel' },
-              { id: 'anime', label: 'Anime' },
-            ].map((f) => (
-              <button
-                key={f.id}
-                onClick={() => setActiveFranchise(f.id as any)}
-                className="px-4 py-1.5 text-[13px] font-semibold transition-all"
-                style={
-                  activeFranchise === f.id
-                    ? { borderRadius: '9999px', background: '#111', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }
-                    : { borderRadius: '9999px', color: 'rgba(0,0,0,0.45)' }
-                }
-              >
-                {f.label}
+          {/* Main row */}
+          <div className="flex items-center gap-4 h-[64px]">
+
+            {/* Mobile menu */}
+            <button className="md:hidden p-2 text-[#555]" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              <Menu className="w-5 h-5" />
+            </button>
+
+            {/* Logo */}
+            <Link href="/2" className="font-black text-[18px] tracking-tight text-[#1A1A1A] hover:text-[#C96A00] transition-colors shrink-0 mr-2">
+              OH MY MARVZ
+            </Link>
+
+            {/* Search — prominent center */}
+            <div className="flex-1 max-w-xl hidden sm:block">
+              <div className="flex items-center bg-[#F5F5F5] border border-[#DCDCDC] rounded-lg overflow-hidden focus-within:border-[#1A1A1A] focus-within:ring-1 focus-within:ring-[#1A1A1A] transition-all">
+                <input
+                  type="text"
+                  placeholder="Search collectibles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1 px-4 py-2.5 bg-transparent text-[14px] text-[#1A1A1A] placeholder:text-[#999] focus:outline-none"
+                />
+                <button className="px-4 py-2.5 bg-[#1A1A1A] hover:bg-[#333] transition-colors">
+                  <Search className="w-4 h-4 text-white" />
+                </button>
+              </div>
+            </div>
+
+            {/* Right actions */}
+            <div className="flex items-center gap-1 ml-auto">
+              <button className="sm:hidden p-2 text-[#555]">
+                <Search className="w-5 h-5" />
               </button>
-            ))}
-            <div className="w-px h-4 bg-black/10 mx-2" />
-            <Link href="/" className="px-3 py-1.5 rounded-xl text-[13px] text-black/35 font-medium hover:text-black transition-colors">Classic</Link>
+              <button className="relative p-2 text-[#555] hover:text-[#1A1A1A] transition-colors">
+                <Heart className="w-5 h-5" />
+                {wishlist.length > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                    {wishlist.length}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setCartOpen(true)}
+                className="relative flex items-center gap-2 bg-[#C96A00] hover:bg-[#B05A00] text-white px-4 py-2 rounded-lg font-semibold text-[14px] transition-colors ml-1"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                <span className="hidden sm:inline">Cart</span>
+                {cartCount > 0 && (
+                  <span className="bg-white text-[#C96A00] text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
 
-          {/* Right: Search + Wishlist + Cart */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Nav bar */}
+          <nav className="hidden md:flex items-center gap-6 h-[40px] border-t border-[#F0F0F0] text-[13px] font-medium text-[#555]">
+            {FRANCHISES.map((f) => (
+              <button
+                key={f}
+                onClick={() => setActiveFranchise(f)}
+                className={`h-full border-b-2 transition-colors ${
+                  activeFranchise === f
+                    ? 'border-[#C96A00] text-[#C96A00] font-semibold'
+                    : 'border-transparent hover:text-[#1A1A1A] hover:border-[#DCDCDC]'
+                }`}
+              >
+                {f === 'All' ? 'All Collections' : f}
+              </button>
+            ))}
+            <Link href="/" className="ml-auto h-full flex items-center border-transparent hover:text-[#1A1A1A] transition-colors">
+              Classic View →
+            </Link>
+          </nav>
+        </div>
 
-            {/* Inline search */}
-            <div
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl w-40 lg:w-52 transition-all"
-              style={{ background: '#ECEAE2', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.07)' }}
-            >
-              <Search className="w-3.5 h-3.5 text-black/30 shrink-0" />
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-[#F0F0F0] bg-white px-4 py-3 space-y-2">
+            <div className="flex items-center bg-[#F5F5F5] border border-[#DCDCDC] rounded-lg overflow-hidden">
               <input
                 type="text"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 bg-transparent text-[#111] text-xs placeholder:text-black/30 focus:outline-none min-w-0"
+                className="flex-1 px-3 py-2.5 bg-transparent text-[14px] focus:outline-none"
               />
-              {searchQuery && (
-                <button onClick={() => setSearchQuery('')}>
-                  <X className="w-3 h-3 text-black/30 hover:text-black" />
-                </button>
-              )}
+              <button className="px-3 py-2.5">
+                <Search className="w-4 h-4 text-[#555]" />
+              </button>
             </div>
-
-            <button className="relative p-2 text-black/40 hover:text-black rounded-xl hover:bg-black/5 transition-all">
-              <Heart className="w-4.5 h-4.5" style={{ width: '18px', height: '18px' }} />
-              {wishlist.length > 0 && (
-                <span className="absolute top-1 right-1 w-3.5 h-3.5 text-white text-[9px] font-black rounded-full flex items-center justify-center" style={{ background: '#c96a00' }}>
-                  {wishlist.length}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => setCartOpen(true)}
-              className="flex items-center gap-2 text-white px-4 py-2 rounded-xl font-bold text-[12px] transition-all hover:opacity-90 active:scale-95"
-              style={{ background: '#111', boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
-            >
-              <ShoppingBag className="w-3.5 h-3.5" />
-              <span>Cart</span>
-              {cartCount > 0 && (
-                <span className="text-[10px] font-black px-1.5 py-0.5 rounded-lg min-w-[18px] text-center" style={{ background: '#c96a00' }}>
-                  {cartCount}
-                </span>
-              )}
-            </button>
-          </div>
-        </nav>
-      </div>
-
-
-      {/* ─── HERO ─── */}
-      {heroProduct && (
-        <section style={{ background: '#FAFAF7', boxShadow: '0 8px 40px rgba(0,0,0,0.07)' }} className="w-full">
-          <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 lg:py-24">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-              {/* Left copy */}
-              <div className="space-y-7">
-                <div
-                  className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full"
-                  style={{ background: 'rgba(201,106,0,0.1)', border: '1px solid rgba(201,106,0,0.25)', color: '#c96a00' }}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#c96a00] animate-pulse" />
-                  New Drop Available
-                </div>
-
-                <h1
-                  className="uppercase leading-[0.88] tracking-[-0.04em] font-black text-[#111]"
-                  style={{ fontSize: 'clamp(3.5rem,7vw,6.5rem)' }}
-                >
-                  CURATED<br />
-                  <span style={{ color: '#c96a00' }}>DROPS.</span>
-                </h1>
-
-                <p className="text-[15px] leading-relaxed max-w-md" style={{ color: 'rgba(0,0,0,0.45)' }}>
-                  Premium Marvel statues, anime action figures, and limited collectibles — sourced and delivered fast across Lebanon.
-                </p>
-
-                <div className="flex flex-wrap items-center gap-3 pt-1">
-                  <a
-                    href="#catalog"
-                    className="inline-flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-wide transition-all active:scale-95"
-                    style={{ background: '#111', boxShadow: '0 4px 16px rgba(0,0,0,0.22)' }}
-                  >
-                    Shop All Drops <ArrowRight className="w-4 h-4" />
-                  </a>
-                  <button
-                    onClick={() => setQuickViewProduct(heroProduct)}
-                    className="px-6 py-3.5 rounded-xl font-semibold text-[13px] transition-all hover:bg-black/5"
-                    style={{ border: '1.5px solid rgba(0,0,0,0.12)', color: 'rgba(0,0,0,0.5)' }}
-                  >
-                    Quick Preview
-                  </button>
-                </div>
-
-                {/* Stats */}
-                <div className="flex items-center gap-8 pt-6" style={{ borderTop: '1.5px solid rgba(0,0,0,0.08)' }}>
-                  {[
-                    { val: '100%', label: 'Authentic' },
-                    { val: '24–48h', label: 'Lebanon Ship' },
-                    { val: 'BAU', label: 'Beirut Pickup' },
-                  ].map((stat, i) => (
-                    <React.Fragment key={stat.label}>
-                      {i > 0 && <div className="w-px h-8 bg-black/10" />}
-                      <div>
-                        <div className="text-xl font-black text-[#111]">{stat.val}</div>
-                        <div className="text-[11px] uppercase tracking-wider mt-0.5" style={{ color: 'rgba(0,0,0,0.3)' }}>{stat.label}</div>
-                      </div>
-                    </React.Fragment>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right: hero product card */}
-              <div
-                className="relative group cursor-pointer rounded-3xl overflow-hidden"
-                onClick={() => setQuickViewProduct(heroProduct)}
-                style={{ boxShadow: '0 20px 80px rgba(0,0,0,0.18), 0 4px 20px rgba(0,0,0,0.1)' }}
+            {FRANCHISES.map((f) => (
+              <button
+                key={f}
+                onClick={() => { setActiveFranchise(f); setMobileMenuOpen(false); }}
+                className={`block w-full text-left px-2 py-1.5 text-[14px] rounded ${activeFranchise === f ? 'text-[#C96A00] font-semibold' : 'text-[#555]'}`}
               >
-                <div className="aspect-square relative" style={{ background: '#E8E5DA' }}>
-                  <Image
-                    src={heroProduct.image}
-                    alt={heroProduct.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%)' }} />
-
-                  {/* Info overlay */}
-                  <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-                    <div>
-                      <p className="text-[11px] font-mono uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>{heroProduct.subtitle}</p>
-                      <h3 className="text-white font-bold text-xl leading-tight">{heroProduct.name}</h3>
-                    </div>
-                    <div className="text-white font-black text-xl px-4 py-2 rounded-xl" style={{ background: '#c96a00', boxShadow: '0 4px 16px rgba(201,106,0,0.5)' }}>
-                      ${heroProduct.price.toFixed(0)}
-                    </div>
-                  </div>
-
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: 'rgba(0,0,0,0.15)' }}>
-                    <div
-                      className="flex items-center gap-2 text-[#111] text-[12px] font-bold uppercase tracking-widest px-6 py-3 rounded-xl translate-y-2 group-hover:translate-y-0 transition-transform"
-                      style={{ background: '#fff', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
-                    >
-                      <Eye className="w-4 h-4" /> Quick View
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                {f === 'All' ? 'All Collections' : f}
+              </button>
+            ))}
           </div>
-        </section>
-      )}
+        )}
+      </header>
 
-      {/* ─── TRUST STRIP ─── */}
-      <div style={{ background: '#ECEAE2', borderTop: '1.5px solid rgba(0,0,0,0.07)', borderBottom: '1.5px solid rgba(0,0,0,0.07)' }}>
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0 sm:divide-x sm:divide-black/10">
+      {/* ── TRUST BAR ── */}
+      <div className="bg-white border-b border-[#E5E5E5]">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap justify-center gap-x-8 gap-y-2">
           {[
-            { icon: Truck, title: 'Lebanon-Wide Delivery', desc: '24 to 48 hours to your door' },
-            { icon: ShieldCheck, title: '100% Authenticated', desc: 'Inspected, verified collectibles only' },
-            { icon: RotateCcw, title: 'BAU Beirut Pickup', desc: 'Free collection from BAU campus' },
-          ].map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="flex items-center gap-4 px-0 sm:px-8 first:pl-0 last:pr-0">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(201,106,0,0.1)' }}>
-                <Icon className="w-5 h-5" style={{ color: '#c96a00' }} />
-              </div>
-              <div>
-                <div className="text-[13px] font-bold text-[#111]">{title}</div>
-                <div className="text-[12px]" style={{ color: 'rgba(0,0,0,0.4)' }}>{desc}</div>
-              </div>
+            { icon: Truck, text: 'Lebanon-wide delivery' },
+            { icon: ShieldCheck, text: '100% Authentic' },
+            { icon: RotateCcw, text: 'BAU Beirut pickup' },
+          ].map(({ icon: Icon, text }) => (
+            <div key={text} className="flex items-center gap-2 text-[13px] text-[#444]">
+              <Icon className="w-4 h-4 text-[#C96A00]" />
+              <span>{text}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ─── CATALOG ─── */}
-      <section id="catalog" className="max-w-[1400px] mx-auto px-6 lg:px-10 py-12 space-y-7">
+      {/* ── MAIN CONTENT ── */}
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-6">
 
-        {/* Filter + Sort Row */}
-        <div
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl px-5 py-4"
-          style={{ background: '#FAFAF7', boxShadow: '0 2px 12px rgba(0,0,0,0.06), 0 1px 0 rgba(0,0,0,0.05)' }}
-        >
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className="px-4 py-2 rounded-xl text-[12px] font-semibold transition-all cursor-pointer"
-                style={
-                  activeCategory === cat.id
-                    ? { background: '#111', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }
-                    : { background: '#ECEAE2', color: 'rgba(0,0,0,0.5)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.06)' }
-                }
-              >
-                {cat.label}
-              </button>
-            ))}
+        {/* Page heading + sort */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+          <div>
+            <h1 className="text-[22px] font-black text-[#1A1A1A]">
+              {activeFranchise === 'All' ? 'All Collectibles' : `${activeFranchise} Collection`}
+            </h1>
+            <p className="text-[13px] text-[#888] mt-0.5">{filteredProducts.length} products</p>
           </div>
 
-          <div className="flex items-center gap-2 text-[12px] font-semibold shrink-0" style={{ color: 'rgba(0,0,0,0.4)' }}>
-            <SlidersHorizontal className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-2">
+            <label className="text-[13px] text-[#555] font-medium">Sort by:</label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-transparent focus:outline-none cursor-pointer uppercase tracking-wide"
-              style={{ color: 'rgba(0,0,0,0.5)' }}
+              className="border border-[#DCDCDC] rounded-lg px-3 py-2 text-[13px] text-[#1A1A1A] bg-white focus:outline-none focus:border-[#1A1A1A] cursor-pointer"
             >
-              <option value="featured" className="text-black bg-white">Featured</option>
-              <option value="price-low" className="text-black bg-white">Price: Low → High</option>
-              <option value="price-high" className="text-black bg-white">Price: High → Low</option>
-              <option value="rating" className="text-black bg-white">Top Rated</option>
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Best Rated</option>
             </select>
-            <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
-            <span>{filteredProducts.length} items</span>
           </div>
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        {/* Category filter chips */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-1.5 rounded-full text-[13px] font-medium border transition-all ${
+                activeCategory === cat
+                  ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
+                  : 'bg-white text-[#555] border-[#DCDCDC] hover:border-[#999] hover:text-[#1A1A1A]'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* ── PRODUCT GRID ── */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredProducts.map((product) => {
             const isWishlisted = wishlist.includes(product.id);
             const justAdded = addedId === product.id;
+            const discount = product.originalPrice
+              ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+              : null;
 
             return (
               <div
                 key={product.id}
-                className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300"
-                style={{ background: '#FAFAF7', boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 1px 0 rgba(0,0,0,0.04)' }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = '0 12px 40px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.06)';
-                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-3px)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.06), 0 1px 0 rgba(0,0,0,0.04)';
-                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
-                }}
+                className="bg-white rounded-xl border border-[#E8E8E8] overflow-hidden flex flex-col hover:shadow-[0_4px_20px_rgba(0,0,0,0.10)] hover:-translate-y-0.5 transition-all duration-200"
               >
                 {/* Image */}
-                <div className="relative aspect-square overflow-hidden" style={{ background: '#ECEAE2' }}>
+                <div
+                  className="relative aspect-square bg-[#F8F8F8] cursor-pointer overflow-hidden"
+                  onClick={() => setQuickViewProduct(product)}
+                >
                   <Image
                     src={product.image}
                     alt={product.name}
                     fill
-                    className="object-cover group-hover:scale-106 transition-transform duration-500"
+                    className="object-cover hover:scale-105 transition-transform duration-400"
                   />
 
                   {/* Badges */}
-                  <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                  <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5">
+                    {discount && (
+                      <span className="bg-red-500 text-white text-[11px] font-bold px-2 py-0.5 rounded">
+                        -{discount}%
+                      </span>
+                    )}
                     {product.isFeatured && (
-                      <span className="text-white text-[10px] font-black uppercase tracking-wide px-2.5 py-1 rounded-lg" style={{ background: '#c96a00', boxShadow: '0 2px 8px rgba(201,106,0,0.4)' }}>
+                      <span className="bg-[#C96A00] text-white text-[11px] font-bold px-2 py-0.5 rounded">
                         Featured
                       </span>
                     )}
-                    <span
-                      className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-0.5 rounded-lg"
-                      style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', color: 'rgba(0,0,0,0.5)', boxShadow: '0 1px 4px rgba(0,0,0,0.1)' }}
-                    >
-                      {product.franchise}
-                    </span>
                   </div>
 
                   {/* Wishlist */}
                   <button
-                    onClick={() => toggleWishlist(product.id)}
-                    className="absolute top-3 right-3 p-2 rounded-xl transition-all"
-                    style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}
+                    onClick={(e) => { e.stopPropagation(); toggleWishlist(product.id); }}
+                    className="absolute top-2.5 right-2.5 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center border border-[#E8E8E8] hover:scale-110 transition-transform"
                   >
                     <Heart
-                      className={`w-3.5 h-3.5 transition-colors ${isWishlisted ? 'fill-rose-500 text-rose-500' : 'text-black/30 hover:text-black'}`}
+                      className="w-4 h-4"
+                      style={{
+                        fill: isWishlisted ? '#ef4444' : 'none',
+                        color: isWishlisted ? '#ef4444' : '#888',
+                      }}
                     />
-                  </button>
-
-                  {/* Quick View — slide up on hover */}
-                  <button
-                    onClick={() => setQuickViewProduct(product)}
-                    className="absolute inset-x-3 bottom-3 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
-                    style={{ background: '#111', color: '#fff', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
-                  >
-                    <Eye className="w-3.5 h-3.5" /> Quick View
                   </button>
                 </div>
 
-                {/* Card body */}
-                <div className="p-4 flex flex-col gap-3 flex-1" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-                  <div className="flex-1">
-                    <p className="text-[10px] font-mono uppercase tracking-widest mb-1" style={{ color: 'rgba(0,0,0,0.3)' }}>{product.subtitle}</p>
-                    <h3
-                      className="text-[13px] font-bold leading-snug line-clamp-2 transition-colors group-hover:text-[#c96a00]"
-                      style={{ color: '#111' }}
-                    >
-                      {product.name}
-                    </h3>
-                  </div>
+                {/* Info */}
+                <div className="p-3 flex flex-col gap-2 flex-1">
+                  {/* Category label */}
+                  <p className="text-[11px] text-[#999] uppercase tracking-wider font-medium">{product.subtitle}</p>
 
-                  {/* Rating */}
+                  {/* Name */}
+                  <h3
+                    className="text-[13px] font-semibold text-[#1A1A1A] line-clamp-2 leading-snug cursor-pointer hover:text-[#C96A00] transition-colors"
+                    onClick={() => setQuickViewProduct(product)}
+                  >
+                    {product.name}
+                  </h3>
+
+                  {/* Stars */}
                   <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
                         className="w-3 h-3"
                         style={{
-                          color: i < Math.round(product.rating) ? '#c96a00' : 'rgba(0,0,0,0.12)',
-                          fill: i < Math.round(product.rating) ? '#c96a00' : 'rgba(0,0,0,0.08)',
+                          fill: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB',
+                          color: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB',
                         }}
                       />
                     ))}
-                    <span className="text-[11px] ml-1 font-medium" style={{ color: 'rgba(0,0,0,0.35)' }}>{product.rating}</span>
+                    <span className="text-[11px] text-[#888] ml-0.5">({product.reviewsCount})</span>
                   </div>
 
-                  {/* Price + CTA */}
-                  <div
-                    className="flex items-center justify-between gap-2 pt-3"
-                    style={{ borderTop: '1.5px solid rgba(0,0,0,0.06)' }}
-                  >
-                    <span className="font-black text-[#111]" style={{ fontSize: '17px', letterSpacing: '-0.02em' }}>
-                      ${product.price.toFixed(2)}
-                    </span>
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wide transition-all cursor-pointer active:scale-95"
-                      style={
-                        justAdded
-                          ? { background: '#c96a00', color: '#fff', boxShadow: '0 2px 10px rgba(201,106,0,0.4)' }
-                          : { background: '#111', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.18)' }
-                      }
-                    >
-                      {justAdded ? '✓ Added' : 'Add to Cart'}
-                    </button>
+                  {/* Price row */}
+                  <div className="flex items-center gap-2 mt-auto">
+                    <span className="text-[16px] font-black text-[#1A1A1A]">${product.price.toFixed(2)}</span>
+                    {product.originalPrice && (
+                      <span className="text-[12px] text-[#AAA] line-through">${product.originalPrice.toFixed(2)}</span>
+                    )}
                   </div>
+
+                  {/* Add to cart */}
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className={`w-full py-2.5 rounded-lg text-[13px] font-semibold transition-all active:scale-95 mt-1 flex items-center justify-center gap-2 ${
+                      justAdded
+                        ? 'bg-green-600 text-white'
+                        : 'bg-[#1A1A1A] hover:bg-[#333] text-white'
+                    }`}
+                  >
+                    {justAdded ? (
+                      <><Check className="w-4 h-4" /> Added!</>
+                    ) : (
+                      <><ShoppingCart className="w-3.5 h-3.5" /> Add to Cart</>
+                    )}
+                  </button>
                 </div>
               </div>
             );
           })}
         </div>
-      </section>
 
-      {/* ─── FOOTER ─── */}
-      <footer style={{ background: '#111', borderTop: '1px solid rgba(255,255,255,0.06)' }} className="py-12 mt-8">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-20 text-[#999]">
+            <p className="text-[18px] font-semibold mb-2">No products found</p>
+            <p className="text-[14px]">Try a different category or search term.</p>
+          </div>
+        )}
+      </div>
+
+      {/* ── FOOTER ── */}
+      <footer className="bg-[#1A1A1A] text-white mt-12 py-10">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid sm:grid-cols-3 gap-8">
           <div>
-            <div className="text-white font-black text-base tracking-[-0.02em]">OH MY MARVZ</div>
-            <div className="text-white/25 text-[11px] mt-1">Lebanon's premier collectibles store</div>
+            <div className="font-black text-[16px] mb-2">OH MY MARVZ</div>
+            <p className="text-[13px] text-white/50 leading-relaxed">Lebanon's premier collectibles store. Marvel, anime, and more — sourced, verified, and delivered.</p>
           </div>
-          <div className="flex items-center gap-6 text-white/30 text-[12px] font-medium">
-            <Link href="/" className="hover:text-white transition-colors">Classic View</Link>
-            <Link href="/marvel" className="hover:text-white transition-colors">Marvel</Link>
-            <Link href="/anime" className="hover:text-white transition-colors">Anime</Link>
-            <Link href="/meta" className="hover:text-white transition-colors">Admin</Link>
+          <div>
+            <div className="font-semibold text-[13px] text-white/60 uppercase tracking-widest mb-3">Shop</div>
+            <div className="space-y-2 text-[13px] text-white/50">
+              <Link href="/marvel" className="block hover:text-white transition-colors">Marvel Collection</Link>
+              <Link href="/anime" className="block hover:text-white transition-colors">Anime Collection</Link>
+              <Link href="/" className="block hover:text-white transition-colors">Classic View</Link>
+            </div>
           </div>
-          <div className="text-white/20 text-[11px]">Crafted by Meta Pylon</div>
+          <div>
+            <div className="font-semibold text-[13px] text-white/60 uppercase tracking-widest mb-3">Info</div>
+            <div className="space-y-2 text-[13px] text-white/50">
+              <p>📍 BAU Beirut pickup available</p>
+              <p>🚚 Lebanon-wide delivery</p>
+              <p>✅ 100% authentic products</p>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-[12px] text-white/30">
+          <span>© 2025 Oh My Marvz</span>
+          <span>Powered by Meta Pylon</span>
         </div>
       </footer>
-
-      <style>{`
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 28s linear infinite;
-          width: max-content;
-        }
-      `}</style>
 
       <ModernProductModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} onAddToCart={handleAddToCart} />
       <CartDrawer
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
         items={cartItems}
-        onUpdateQuantity={handleUpdateCartQuantity}
-        onRemoveItem={handleRemoveCartItem}
+        onUpdateQuantity={(i, q) => {
+          if (q <= 0) setCartItems((p) => p.filter((_, idx) => idx !== i));
+          else setCartItems((p) => { const u = [...p]; u[i].quantity = q; return u; });
+        }}
+        onRemoveItem={(i) => setCartItems((p) => p.filter((_, idx) => idx !== i))}
         onCheckout={() => { setCartOpen(false); setCheckoutOpen(true); }}
       />
       <CheckoutModal
