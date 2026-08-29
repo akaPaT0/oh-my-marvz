@@ -436,29 +436,59 @@ export default function ShopPage() {
                 background: '#ECECEC',
               }}
             >
-              {/* Full Cropped Product Image as Background */}
+              {/* Ambient Background Blur of the Product Image */}
               <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
                 <Image
                   src={item.image}
-                  alt={item.name}
+                  alt=""
                   fill
-                  priority
                   style={{
                     objectFit: 'cover',
-                    objectPosition: 'center 40%',
-                    transition: 'all 0.4s ease',
+                    filter: 'blur(32px) opacity(0.32) saturate(150%)',
+                    transform: 'scale(1.2)',
                   }}
                 />
-                {/* Subtle soft gradient fade on left for crystal clear typography */}
+                {/* Soft backdrop fade to ensure text readability on the left */}
                 <div
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.82) 42%, rgba(255,255,255,0.15) 75%, transparent 100%)',
-                    pointerEvents: 'none',
+                    background: 'linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.95) 45%, rgba(255,255,255,0.45) 80%, rgba(255,255,255,0.2) 100%)',
                   }}
                 />
               </div>
+
+              {/* Main Product Showcase (Full figure visible, no awkward cropping) */}
+              <div
+                style={{
+                  position: 'absolute',
+                  right: 48,
+                  top: 24,
+                  bottom: 24,
+                  width: '48%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  pointerEvents: 'none',
+                  zIndex: 1,
+                }}
+              >
+                <div style={{ position: 'relative', width: '100%', height: '100%', maxHeight: 400 }}>
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    priority
+                    style={{
+                      objectFit: 'contain',
+                      objectPosition: 'center center',
+                      filter: 'drop-shadow(0 16px 32px rgba(0,0,0,0.15))',
+                      transition: 'all 0.35s ease',
+                    }}
+                  />
+                </div>
+              </div>
+
 
               {/* Direct Unwrapped Content Overlay */}
               <div
