@@ -261,77 +261,129 @@ export default function ShopPage() {
       </header>
 
       {/* ── HERO ── */}
-      <div className="store-hero-wrap" style={{ background: '#fff', borderBottom: '1.5px solid #E8E8E8' }}>
-        <div className="store-hero-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 28px 56px' }}>
+      <div className="store-hero-wrap" style={{ background: 'linear-gradient(180deg, #F8F9FA 0%, #FFFFFF 100%)', borderBottom: '1px solid #E8E8E8' }}>
+        <div className="store-hero-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '48px 28px 44px' }}>
           <div className="store-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, alignItems: 'center' }}>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h1 className="store-hero-h1" style={{ fontSize: 46, fontWeight: 900, color: '#1A1A1A', margin: 0, lineHeight: 1.1, letterSpacing: '-0.03em' }}>
-                Marvel & Anime Collectibles, Delivered.
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {/* Badge Tag */}
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 12px', background: '#EDEDF2', borderRadius: 99, border: '1px solid #E2E2EA', width: 'fit-content' }}>
+                <Sparkles size={12} style={{ color: '#C96A00' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#333', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                  Authentic Collector Vault
+                </span>
+              </div>
+
+              {/* Main Headline */}
+              <h1 className="store-hero-h1" style={{ fontSize: 44, fontWeight: 900, color: '#111', margin: 0, lineHeight: 1.12, letterSpacing: '-0.035em' }}>
+                Marvel & Anime <span style={{ color: '#C96A00' }}>Grails & Gadgets.</span>
               </h1>
-              <p className="store-hero-desc" style={{ fontSize: 15, color: '#666', margin: 0, lineHeight: 1.65, maxWidth: 480 }}>
-                High-articulation figures, collector statues, metal keychains & sticker packs. Verified authentic with Lebanon-wide doorstep delivery or BAU Beirut pickup.
+
+              <p className="store-hero-desc" style={{ fontSize: 14.5, color: '#555', margin: 0, lineHeight: 1.6, maxWidth: 480 }}>
+                High-articulation figures, statues, metal keychains & sticker packs. 100% authentic collector stock with Lebanon doorstep delivery or BAU Beirut pickup.
               </p>
 
-              {/* CTAs */}
-              <div style={{ display: 'flex', gap: 12, marginTop: 4, flexWrap: 'wrap' }}>
+              {/* CTAs with Modern Depth & Hover */}
+              <div style={{ display: 'flex', gap: 10, marginTop: 4, flexWrap: 'wrap' }}>
                 <button
                   onClick={() => { setActiveFranchise('All'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }}
-                  style={{ padding: '13px 28px', background: '#1A1A1A', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer', letterSpacing: '-0.01em', boxShadow: '0 4px 16px rgba(0,0,0,0.18)', transition: 'background 0.15s' }}
+                  style={{
+                    padding: '12px 24px',
+                    background: '#111',
+                    color: '#fff',
+                    border: '1px solid #222',
+                    borderRadius: 12,
+                    fontSize: 13.5,
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    letterSpacing: '-0.01em',
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = '#222';
+                    (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = '#111';
+                    (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                  }}
                 >
-                  Explore Full Vault
+                  <span>Explore Full Vault</span>
+                  <ArrowRight size={14} />
                 </button>
+
                 <button
                   onClick={() => {
                     setActiveFranchise('All');
                     setActiveCategory('All');
                     document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  style={{ padding: '13px 24px', background: '#fff', color: '#1A1A1A', border: '1.5px solid #DCDCDC', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer', transition: 'border-color 0.15s', display: 'inline-flex', alignItems: 'center', gap: 6 }}
+                  style={{
+                    padding: '12px 20px',
+                    background: '#F3F4F6',
+                    color: '#1A1A1A',
+                    border: '1px solid #E5E7EB',
+                    borderRadius: 12,
+                    fontSize: 13.5,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    transition: 'all 0.15s',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = '#E5E7EB';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = '#F3F4F6';
+                  }}
                 >
-                  <span>Discover New Drops</span>
-                  <span style={{ fontSize: 16 }}>→</span>
+                  <span>Discover Drops</span>
+                  <span style={{ fontSize: 14 }}>→</span>
                 </button>
               </div>
 
-              {/* Highlights bar (Strict 3 columns side-by-side) */}
-              <div className="store-hero-stats" style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 16, paddingTop: 18, borderTop: '1px solid #EFEFEF', width: '100%' }}>
+              {/* Highlights Framed Trust Card (Strict 3 columns side-by-side) */}
+              <div className="store-hero-stats" style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 12, padding: '12px 16px', background: '#F7F7FA', border: '1px solid #ECECF0', borderRadius: 14, width: '100%', marginTop: 2 }}>
                 <div>
-                  <p className="store-hero-stat-val" style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0, whiteSpace: 'nowrap' }}>4.9 ★</p>
-                  <p className="store-hero-stat-lbl" style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600, whiteSpace: 'nowrap' }}>Customer Rating</p>
+                  <p className="store-hero-stat-val" style={{ fontSize: 16, fontWeight: 900, color: '#111', margin: 0, whiteSpace: 'nowrap' }}>4.9 ★</p>
+                  <p className="store-hero-stat-lbl" style={{ fontSize: 10, color: '#777', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 700, whiteSpace: 'nowrap' }}>Customer Rating</p>
                 </div>
-                <div className="store-hero-stats-divider" style={{ width: 1, height: 28, background: '#E8E8E8' }} />
+                <div className="store-hero-stats-divider" style={{ width: 1, height: 24, background: '#E2E2E8' }} />
                 <div>
-                  <p className="store-hero-stat-val" style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0, whiteSpace: 'nowrap' }}>24-48h</p>
-                  <p className="store-hero-stat-lbl" style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600, whiteSpace: 'nowrap' }}>Lebanon Delivery</p>
+                  <p className="store-hero-stat-val" style={{ fontSize: 16, fontWeight: 900, color: '#111', margin: 0, whiteSpace: 'nowrap' }}>24-48h</p>
+                  <p className="store-hero-stat-lbl" style={{ fontSize: 10, color: '#777', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 700, whiteSpace: 'nowrap' }}>Lebanon Delivery</p>
                 </div>
-                <div className="store-hero-stats-divider" style={{ width: 1, height: 28, background: '#E8E8E8' }} />
+                <div className="store-hero-stats-divider" style={{ width: 1, height: 24, background: '#E2E2E8' }} />
                 <div>
-                  <p className="store-hero-stat-val" style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0, whiteSpace: 'nowrap' }}>Free Pickup</p>
-                  <p className="store-hero-stat-lbl" style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600, whiteSpace: 'nowrap' }}>BAU Campus</p>
+                  <p className="store-hero-stat-val" style={{ fontSize: 16, fontWeight: 900, color: '#111', margin: 0, whiteSpace: 'nowrap' }}>Free Pickup</p>
+                  <p className="store-hero-stat-lbl" style={{ fontSize: 10, color: '#777', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 700, whiteSpace: 'nowrap' }}>BAU Campus</p>
                 </div>
               </div>
-
 
             </div>
 
             {/* Right: Marvel & Anime Franchise Collection Cards with Authentic Artwork */}
-            <div className="store-hero-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="store-hero-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
               {[
                 {
                   id: 'Marvel',
                   name: 'Marvel Series',
-                  desc: 'Avengers, Iron Man, Spider-Man & X-Men',
+                  desc: 'Avengers, Spider-Man, Iron Man & X-Men',
                   img: '/banners/marvel_comic_art.jpg',
                 },
                 {
                   id: 'Anime',
                   name: 'Anime Series',
-                  desc: 'One Piece, Naruto, Hunter x Hunter & more',
+                  desc: 'One Piece, Naruto, Hunter x Hunter',
                   img: '/banners/anime_collage.jpg',
                 }
               ].map(item => (
-
                 <button
                   key={item.id}
                   className="store-hero-card-tile"
@@ -341,27 +393,27 @@ export default function ShopPage() {
                   }}
                   style={{
                     position: 'relative',
-                    borderRadius: 16,
+                    borderRadius: 18,
                     overflow: 'hidden',
-                    border: '1px solid rgba(0,0,0,0.1)',
+                    border: '1px solid rgba(0,0,0,0.12)',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'flex-end',
                     cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-                    transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
-                    padding: '20px 18px',
+                    boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
+                    transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s',
+                    padding: '16px 14px',
                     textAlign: 'left',
-                    minHeight: 240,
+                    minHeight: 230,
                     background: '#1A1A1A',
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-4px)';
-                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 12px 32px rgba(0,0,0,0.18)';
+                    (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-3px)';
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 12px 30px rgba(0,0,0,0.2)';
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 20px rgba(0,0,0,0.1)';
                   }}
                 >
                   {/* Full-bleed Background Artwork */}
@@ -369,7 +421,7 @@ export default function ShopPage() {
                     src={item.img}
                     alt={item.name}
                     fill
-                    style={{ objectFit: 'cover', transition: 'transform 0.3s ease' }}
+                    style={{ objectFit: 'cover', transition: 'transform 0.4s ease' }}
                   />
 
                   {/* Gradient Scrim for Legibility */}
@@ -377,20 +429,33 @@ export default function ShopPage() {
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0.88) 100%)',
+                      background: 'linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.85) 100%)',
                       pointerEvents: 'none',
                     }}
                   />
 
-                  {/* Direct Text Overlay */}
-                  <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: 4 }}>
-                    <p className="store-hero-card-title" style={{ fontSize: 18, fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.02em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+                  {/* Frosted Glass Floating Badge Overlay */}
+                  <div
+                    style={{
+                      position: 'relative',
+                      zIndex: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 3,
+                      background: 'rgba(0,0,0,0.4)',
+                      backdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      borderRadius: 12,
+                      padding: '10px 12px',
+                    }}
+                  >
+                    <p className="store-hero-card-title" style={{ fontSize: 16, fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.02em' }}>
                       {item.name}
                     </p>
-                    <p className="store-hero-card-desc" style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', margin: '0 0 6px', lineHeight: 1.35, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+                    <p className="store-hero-card-desc" style={{ fontSize: 11, color: 'rgba(255,255,255,0.8)', margin: 0, lineHeight: 1.3 }}>
                       {item.desc}
                     </p>
-                    <span style={{ fontSize: 13, fontWeight: 800, color: '#fff', display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#FFD700', display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
                       Shop {item.id} →
                     </span>
                   </div>
@@ -398,13 +463,12 @@ export default function ShopPage() {
               ))}
             </div>
 
-
           </div>
         </div>
       </div>
 
-
       {/* ── FEATURED SPOTLIGHT BANNER (Cropped Image BG + Gradient Scrim, Interactive Carousel) ── */}
+
       {featuredProducts.length > 0 && (() => {
         const item = featuredProducts[featuredIndex] || featuredProducts[0];
         const itemDiscount = item.originalPrice
@@ -434,25 +498,34 @@ export default function ShopPage() {
                     document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   style={{
-                    padding: '7px 14px',
-                    borderRadius: 8,
-                    background: '#fff',
-                    border: '1.5px solid #DCDCDC',
+                    padding: '8px 16px',
+                    borderRadius: 10,
+                    background: '#F7F7F9',
+                    border: '1px solid #E2E2EA',
                     fontSize: 12,
-                    fontWeight: 700,
-                    color: '#1A1A1A',
+                    fontWeight: 800,
+                    color: '#111',
                     cursor: 'pointer',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 6,
-                    transition: 'border-color 0.15s',
+                    transition: 'all 0.15s',
                   }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = '#1A1A1A')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = '#DCDCDC')}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = '#111';
+                    (e.currentTarget as HTMLButtonElement).style.color = '#fff';
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#111';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = '#F7F7F9';
+                    (e.currentTarget as HTMLButtonElement).style.color = '#111';
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#E2E2EA';
+                  }}
                 >
-                  <span>Explore Featured Products</span>
+                  <span>Explore Featured</span>
                   <ArrowRight size={13} />
                 </button>
+
               </div>
             </div>
 
