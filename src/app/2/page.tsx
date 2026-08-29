@@ -409,27 +409,36 @@ export default function ShopPage() {
             onClick={e => e.stopPropagation()}
           >
 
-            {/* Header of Drawer */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #EFEFEF', paddingBottom: 14 }}>
-              <Image
-                src="/logo.png"
-                alt="Oh My Marvz"
-                width={120}
-                height={34}
-                style={{ objectFit: 'contain', height: 30, width: 'auto' }}
-              />
+            {/* Header with User Profile & Close Button */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1.5px solid #F0F0F0', paddingBottom: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', border: '2px solid #E23636', background: '#F0F0F0', boxShadow: '0 2px 8px rgba(226,54,54,0.3)', flexShrink: 0 }}>
+                  <Image
+                    src="/avatar.png"
+                    alt="User Profile"
+                    width={44}
+                    height={44}
+                    style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: 14, fontWeight: 900, color: '#111', lineHeight: 1.2 }}>Collector Profile</span>
+                  <span style={{ fontSize: 11, fontWeight: 800, color: '#E23636', textTransform: 'uppercase', letterSpacing: '0.04em' }}>VIP Member</span>
+                </div>
+              </div>
+
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close menu"
-                style={{ background: 'none', border: 'none', padding: 6, cursor: 'pointer', color: '#111', display: 'flex' }}
+                style={{ background: '#F4F4F4', border: 'none', padding: 6, cursor: 'pointer', color: '#111', display: 'flex', borderRadius: '50%' }}
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
 
-            {/* Franchise Categories */}
+            {/* Universes & Navigation */}
             <div>
-              <p style={{ fontSize: 11, fontWeight: 800, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px 4px' }}>Franchises</p>
+              <p style={{ fontSize: 11, fontWeight: 800, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px 4px' }}>Universes</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {[
                   { id: 'All', label: 'All Universes' },
@@ -465,20 +474,11 @@ export default function ShopPage() {
               </div>
             </div>
 
-            {/* Quick Links */}
-            <div style={{ borderTop: '1px solid #EFEFEF', paddingTop: 16 }}>
-              <p style={{ fontSize: 11, fontWeight: 800, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px 4px' }}>Pages</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <Link href="/marvel" onClick={() => setMobileMenuOpen(false)} style={{ color: '#222', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, padding: '6px 8px' }}>
-                  Marvel Dedicated View →
-                </Link>
-                <Link href="/anime" onClick={() => setMobileMenuOpen(false)} style={{ color: '#222', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, padding: '6px 8px' }}>
-                  Anime Dedicated View →
-                </Link>
-                <Link href="/" onClick={() => setMobileMenuOpen(false)} style={{ color: '#222', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, padding: '6px 8px' }}>
-                  Classic Comic View →
-                </Link>
-              </div>
+            {/* Classic View Link */}
+            <div style={{ borderTop: '1px solid #EFEFEF', paddingTop: 12 }}>
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} style={{ color: '#555', textDecoration: 'none', fontSize: 13, fontWeight: 600, padding: '4px 6px', display: 'block' }}>
+                Switch to Classic Comic View →
+              </Link>
             </div>
 
             {/* Pickup Info Banner */}
@@ -489,6 +489,7 @@ export default function ShopPage() {
           </div>
         </div>
       )}
+
 
       {/* ── HERO (Signature Red, Black & White Energy) ── */}
       <div className="store-hero-wrap" style={{ background: 'radial-gradient(ellipse 90% 60% at 15% -5%, rgba(226,54,54,0.07) 0%, #FFFFFF 65%)', borderBottom: '1.5px solid #E8E8E8', paddingTop: 62 }}>
