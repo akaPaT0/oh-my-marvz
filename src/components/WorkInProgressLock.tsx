@@ -99,8 +99,19 @@ export function WorkInProgressLock() {
 
         <div className="pt-2 border-t border-white/10 text-[11px] font-mono text-[#94A3B8] font-bold flex items-center justify-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-[#2DD4BF]" />
-          <span>Crafted by Meta Pylon</span>
+          <span>
+            Crafted by{' '}
+            <a
+              href="https://meta-pylon.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#2DD4BF] hover:underline"
+            >
+              Meta Pylon
+            </a>
+          </span>
         </div>
+
 
       </div>
 

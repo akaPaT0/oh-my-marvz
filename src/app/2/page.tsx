@@ -1744,8 +1744,18 @@ export default function ShopPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
               <span>📍 Beirut, Lebanon</span>
               <span>•</span>
-              <span style={{ color: '#777' }}>Powered by Meta Pylon</span>
+              <a
+                href="https://meta-pylon.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#888', textDecoration: 'none', transition: 'color 0.15s' }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={e => (e.currentTarget.style.color = '#888888')}
+              >
+                Powered by <strong style={{ color: '#bbb', textDecoration: 'underline' }}>Meta Pylon</strong>
+              </a>
             </div>
+
           </div>
         </div>
       </footer>
