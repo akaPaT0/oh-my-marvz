@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -17,8 +17,10 @@ import {
   Plus,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   ArrowRight,
   Sparkles,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import { CartDrawer, CartItem } from '@/components/CartDrawer';
@@ -44,6 +46,7 @@ export default function ShopPage() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeFranchise, setActiveFranchise] = useState('All');
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured');
+  const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -55,6 +58,8 @@ export default function ShopPage() {
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
+  const categoryScrollRef = useRef<HTMLDivElement>(null);
+
 
   const featuredProducts = useMemo(
     () => products.filter((p) => p.isFeatured || p.rating >= 5.0).slice(0, 6),
@@ -823,51 +828,188 @@ export default function ShopPage() {
 
 
       {/* ── COLLECTION HEADER (Single Row Bar) ── */}
-      <div id="shop-grid" style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginTop: 28 }}>
-        <div className="store-collection-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '14px 24px', display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 16, justifyContent: 'space-between' }}>
+      <div id="shop-grid" style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginTop: 28, position: 'relative', zIndex: 10 }}>
+        <div className="store-collection-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '12px 24px', display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 12, justifyContent: 'space-between' }}>
 
-          {/* Category filter pills (Horizontal Scroll, 1 single line) */}
-          <div className="store-filter-pills" style={{ display: 'flex', flexWrap: 'nowrap', gap: 8, overflowX: 'auto', flex: 1, minWidth: 0, padding: '2px 0' }}>
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                style={{
-                  padding: '6px 16px',
-                  borderRadius: 999,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  border: activeCategory === cat ? '2px solid #E23636' : '2px solid #DCDCDC',
-                  background: activeCategory === cat ? '#E23636' : '#fff',
-                  color: activeCategory === cat ? '#fff' : '#555',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s',
-                  boxShadow: activeCategory === cat ? '0 2px 10px rgba(226,54,54,0.32)' : 'none',
-                  flexShrink: 0,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {cat}
-              </button>
-            ))}
+          {/* Left / Right Category Navigation Arrows + Hidden Scrollbar Pill Container */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0 }}>
+            {/* Scroll Left Arrow */}
+            <button
+              onClick={() => categoryScrollRef.current?.scrollBy({ left: -200, behavior: 'smooth' })}
+              aria-label="Scroll categories left"
+              className="store-category-arrow"
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: '50%',
+                border: '1.5px solid #E5E5E5',
+                background: '#fff',
+                color: '#333',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                flexShrink: 0,
+                boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#F7F7F7'; e.currentTarget.style.borderColor = '#CCC'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#E5E5E5'; }}
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            {/* Category filter pills (Horizontal Scroll without scrollbars) */}
+            <div
+              ref={categoryScrollRef}
+              className="store-filter-pills"
+              style={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                gap: 8,
+                overflowX: 'auto',
+                flex: 1,
+                minWidth: 0,
+                padding: '2px 0',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+              }}
+            >
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  style={{
+                    padding: '6px 16px',
+                    borderRadius: 999,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    border: activeCategory === cat ? '2px solid #E23636' : '2px solid #DCDCDC',
+                    background: activeCategory === cat ? '#E23636' : '#fff',
+                    color: activeCategory === cat ? '#fff' : '#555',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s',
+                    boxShadow: activeCategory === cat ? '0 2px 10px rgba(226,54,54,0.32)' : 'none',
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Scroll Right Arrow */}
+            <button
+              onClick={() => categoryScrollRef.current?.scrollBy({ left: 200, behavior: 'smooth' })}
+              aria-label="Scroll categories right"
+              className="store-category-arrow"
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: '50%',
+                border: '1.5px solid #E5E5E5',
+                background: '#fff',
+                color: '#333',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                flexShrink: 0,
+                boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#F7F7F7'; e.currentTarget.style.borderColor = '#CCC'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#E5E5E5'; }}
+            >
+              <ChevronRight size={16} />
+            </button>
           </div>
 
-          {/* Sort selection (Fixed right on same row) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <select
-              value={sortBy}
-              onChange={e => setSortBy(e.target.value as any)}
-              style={{ border: '1.5px solid #DCDCDC', borderRadius: 8, padding: '6px 12px', fontSize: 13, color: '#1A1A1A', background: '#fff', cursor: 'pointer', outline: 'none', fontWeight: 700, whiteSpace: 'nowrap' }}
+          {/* Filter / Sort Icon Button */}
+          <div style={{ position: 'relative', flexShrink: 0 }}>
+            <button
+              onClick={() => setSortDropdownOpen(prev => !prev)}
+              aria-label="Filter & Sort"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 7,
+                background: sortDropdownOpen ? 'rgba(226,54,54,0.08)' : '#fff',
+                border: sortDropdownOpen ? '1.5px solid #E23636' : '1.5px solid #DCDCDC',
+                borderRadius: 10,
+                padding: '7px 13px',
+                fontSize: 13,
+                fontWeight: 700,
+                color: sortDropdownOpen ? '#E23636' : '#1A1A1A',
+                cursor: 'pointer',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease',
+              }}
             >
-              <option value="featured">Featured</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="rating">Best Rated</option>
-            </select>
+              <SlidersHorizontal size={15} color={sortDropdownOpen ? '#E23636' : '#111'} />
+              <span>Filter</span>
+              <ChevronDown size={13} color={sortDropdownOpen ? '#E23636' : '#888'} />
+            </button>
+
+            {/* Dropdown Popup */}
+            {sortDropdownOpen && (
+              <div
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  top: 'calc(100% + 8px)',
+                  background: '#fff',
+                  borderRadius: 12,
+                  border: '1.5px solid #EAEAEA',
+                  boxShadow: '0 12px 36px rgba(0,0,0,0.16)',
+                  padding: 6,
+                  zIndex: 40,
+                  minWidth: 175,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 3,
+                }}
+              >
+                {[
+                  { id: 'featured', label: 'Featured Drops' },
+                  { id: 'price-low', label: 'Price: Low to High' },
+                  { id: 'price-high', label: 'Price: High to Low' },
+                  { id: 'rating', label: 'Top Rated' },
+                ].map(opt => (
+                  <button
+                    key={opt.id}
+                    onClick={() => { setSortBy(opt.id as any); setSortDropdownOpen(false); }}
+                    style={{
+                      padding: '8px 12px',
+                      textAlign: 'left',
+                      fontSize: 12.5,
+                      fontWeight: sortBy === opt.id ? 800 : 600,
+                      color: sortBy === opt.id ? '#E23636' : '#222',
+                      background: sortBy === opt.id ? 'rgba(226,54,54,0.08)' : 'transparent',
+                      border: 'none',
+                      borderRadius: 8,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      transition: 'background 0.15s',
+                    }}
+                    onMouseEnter={e => { if (sortBy !== opt.id) e.currentTarget.style.background = '#F7F7F7'; }}
+                    onMouseLeave={e => { if (sortBy !== opt.id) e.currentTarget.style.background = 'transparent'; }}
+                  >
+                    <span>{opt.label}</span>
+                    {sortBy === opt.id && <Check size={14} color="#E23636" />}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
         </div>
       </div>
+
 
 
       {/* ── PRODUCT GRID ── */}
