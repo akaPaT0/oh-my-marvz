@@ -79,24 +79,16 @@ export default function ShopPage() {
         🚚 Free Lebanon delivery &nbsp;·&nbsp; 🏫 BAU Beirut pickup &nbsp;·&nbsp; ✅ 100% Authentic
       </div>
 
-      {/* ── FLOATING NAV ── */}
-      <div style={{ position: 'sticky', top: 12, zIndex: 50, display: 'flex', justifyContent: 'center', padding: '0 16px', pointerEvents: 'none' }}>
-        <header style={{
-          pointerEvents: 'auto',
-          width: '100%',
-          maxWidth: 1100,
-          background: 'rgba(255,255,255,0.96)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderRadius: 16,
-          boxShadow: '0 4px 24px rgba(0,0,0,0.12), 0 1px 0 rgba(0,0,0,0.06)',
-          border: '1px solid rgba(0,0,0,0.07)',
-          display: 'flex',
-          alignItems: 'center',
-          height: 56,
-          padding: '0 20px',
-          gap: 16,
-        }}>
+      {/* ── HEADER ── */}
+      <header style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
+        background: '#fff',
+        borderBottom: '1px solid #E8E8E8',
+        boxShadow: '0 2px 16px rgba(0,0,0,0.08)',
+      }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 12 }}>
 
           {/* Logo */}
           <Link href="/2" style={{ fontWeight: 900, fontSize: 16, letterSpacing: '-0.03em', color: '#1A1A1A', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
@@ -184,9 +176,8 @@ export default function ShopPage() {
               </span>
             )}
           </button>
-        </header>
-      </div>
-
+        </div>
+      </header>
 
       {/* ── COLLECTION HEADER ── */}
       <div style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
