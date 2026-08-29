@@ -332,22 +332,19 @@ export default function ShopPage() {
 
         return (
           <div style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 28px 0' }}>
-            {/* Top Bar with Header & Swiper Controls */}
+            {/* Top Bar with Header & Explore Button */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Sparkles size={16} color="#C96A00" />
-                  <h2 style={{ fontSize: 20, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.02em' }}>
-                    Featured Spotlight
-                  </h2>
-                </div>
+                <h2 style={{ fontSize: 20, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.02em' }}>
+                  Featured Spotlight
+                </h2>
                 <p style={{ fontSize: 13, color: '#777', margin: '4px 0 0' }}>
                   Hand-picked grail items and high-demand collector editions
                 </p>
               </div>
 
-              {/* Controls: Explore Button + Clean Swipe Arrows */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              {/* Controls: Explore Button */}
+              <div>
                 <button
                   onClick={() => {
                     setSortBy('featured');
@@ -375,55 +372,9 @@ export default function ShopPage() {
                   <span>Explore Featured Products</span>
                   <ArrowRight size={14} />
                 </button>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <button
-                    onClick={() => setFeaturedIndex(prev => (prev === 0 ? featuredProducts.length - 1 : prev - 1))}
-                    aria-label="Previous Featured Product"
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: '50%',
-                      background: '#fff',
-                      border: '1.5px solid #DCDCDC',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      color: '#1A1A1A',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
-                      transition: 'all 0.15s',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#1A1A1A'; e.currentTarget.style.transform = 'scale(1.05)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#DCDCDC'; e.currentTarget.style.transform = 'scale(1)'; }}
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
-                  <button
-                    onClick={() => setFeaturedIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1))}
-                    aria-label="Next Featured Product"
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: '50%',
-                      background: '#fff',
-                      border: '1.5px solid #DCDCDC',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      color: '#1A1A1A',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
-                      transition: 'all 0.15s',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#1A1A1A'; e.currentTarget.style.transform = 'scale(1.05)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#DCDCDC'; e.currentTarget.style.transform = 'scale(1)'; }}
-                  >
-                    <ChevronRight size={18} />
-                  </button>
-                </div>
               </div>
             </div>
+
 
             {/* Featured Banner: Cropped Product Image as Full Background + Frosted Blur Glass Card */}
             <div
@@ -449,7 +400,7 @@ export default function ShopPage() {
                   style={{
                     objectFit: 'cover',
                     objectPosition: 'center 15%',
-                    transform: `translateX(${IMAGE_SHIFT_X_PX}px)`, // <-- Shift image horizontally
+                    transform: `translateX(${110}px)`, // <-- Shift image horizontally
                     transition: 'all 0.4s ease',
                   }}
                 />
