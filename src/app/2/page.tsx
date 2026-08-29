@@ -247,16 +247,19 @@ export default function ShopPage() {
           {/* Cart */}
           <button
             onClick={() => setCartOpen(true)}
-            style={{ display: 'flex', alignItems: 'center', gap: 7, background: '#1A1A1A', color: '#fff', border: 'none', borderRadius: 10, padding: '8px 16px', fontSize: 13, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)', whiteSpace: 'nowrap' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 7, background: '#E23636', color: '#fff', border: 'none', borderRadius: 10, padding: '8px 16px', fontSize: 13, fontWeight: 800, cursor: 'pointer', boxShadow: '0 3px 12px rgba(226,54,54,0.38)', whiteSpace: 'nowrap', transition: 'background 0.15s' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#C52222')}
+            onMouseLeave={e => (e.currentTarget.style.background = '#E23636')}
           >
             <ShoppingBag size={15} />
             <span>Cart</span>
             {cartCount > 0 && (
-              <span style={{ background: '#C96A00', color: '#fff', borderRadius: 999, fontSize: 11, fontWeight: 800, padding: '1px 7px' }}>
+              <span style={{ background: '#111', color: '#fff', borderRadius: 999, fontSize: 11, fontWeight: 900, padding: '1px 7px' }}>
                 {cartCount}
               </span>
             )}
           </button>
+
         </div>
       </header>
 
@@ -669,21 +672,23 @@ export default function ShopPage() {
                             style={{
                               width: 130,
                               height: 44,
-                              background: isProdAdded ? '#16a34a' : '#fff',
-                              color: isProdAdded ? '#fff' : '#1A1A1A',
-                              border: '1.5px solid #DCDCDC',
+                              background: isProdAdded ? '#16a34a' : '#E23636',
+                              color: '#fff',
+                              border: 'none',
                               borderRadius: 10,
                               fontSize: 13,
-                              fontWeight: 700,
+                              fontWeight: 800,
                               cursor: 'pointer',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
                               gap: 6,
-                              boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                              boxShadow: '0 4px 14px rgba(226,54,54,0.35)',
                               transition: 'all 0.15s',
                               flexShrink: 0,
                             }}
+                            onMouseEnter={e => { if (!isProdAdded) e.currentTarget.style.background = '#C52222'; }}
+                            onMouseLeave={e => { if (!isProdAdded) e.currentTarget.style.background = '#E23636'; }}
                           >
                             {isProdAdded ? (
                               <><Check size={15} /> Added</>
@@ -691,6 +696,7 @@ export default function ShopPage() {
                               <><ShoppingBag size={14} /> Quick Add</>
                             )}
                           </button>
+
                         </div>
                       </div>
                     </div>
@@ -804,19 +810,20 @@ export default function ShopPage() {
                   padding: '6px 16px',
                   borderRadius: 999,
                   fontSize: 13,
-                  fontWeight: 600,
-                  border: activeCategory === cat ? '2px solid #1A1A1A' : '2px solid #DCDCDC',
-                  background: activeCategory === cat ? '#1A1A1A' : '#fff',
+                  fontWeight: 700,
+                  border: activeCategory === cat ? '2px solid #E23636' : '2px solid #DCDCDC',
+                  background: activeCategory === cat ? '#E23636' : '#fff',
                   color: activeCategory === cat ? '#fff' : '#555',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
-                  boxShadow: activeCategory === cat ? '0 2px 8px rgba(0,0,0,0.15)' : 'none',
+                  boxShadow: activeCategory === cat ? '0 2px 10px rgba(226,54,54,0.32)' : 'none',
                   flexShrink: 0,
                 }}
               >
                 {cat}
               </button>
             ))}
+
           </div>
 
           {/* Sort selection */}
@@ -894,16 +901,16 @@ export default function ShopPage() {
                         padding: '11px',
                         borderRadius: 10,
                         fontSize: 13,
-                        fontWeight: 700,
+                        fontWeight: 800,
                         border: 'none',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: 8,
-                        background: justAdded ? '#16a34a' : '#1A1A1A',
+                        background: justAdded ? '#16a34a' : '#E23636',
                         color: '#fff',
-                        boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                        boxShadow: '0 4px 16px rgba(226,54,54,0.45)',
                         transition: 'background 0.2s',
                       }}
                     >
@@ -943,7 +950,7 @@ export default function ShopPage() {
                       className="mobile-quick-add-btn"
                       aria-label="Add to cart"
                       style={{
-                        background: justAdded ? '#16a34a' : '#1A1A1A',
+                        background: justAdded ? '#16a34a' : '#E23636',
                         color: '#fff',
                         border: 'none',
                         borderRadius: 8,
@@ -953,12 +960,13 @@ export default function ShopPage() {
                         justifyContent: 'center',
                         cursor: 'pointer',
                         flexShrink: 0,
-                        boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                        boxShadow: '0 2px 8px rgba(226,54,54,0.35)',
                       }}
                     >
                       {justAdded ? <Check size={14} /> : <Plus size={15} />}
                     </button>
                   </div>
+
 
                 </div>
               </div>
