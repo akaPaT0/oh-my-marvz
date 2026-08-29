@@ -271,54 +271,64 @@ export default function ShopPage() {
                     document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   style={{
-                    background: '#fff',
+                    position: 'relative',
                     borderRadius: 16,
                     overflow: 'hidden',
-                    border: '1px solid #E5E5E5',
+                    border: '1px solid rgba(0,0,0,0.1)',
                     display: 'flex',
                     flexDirection: 'column',
+                    justifyContent: 'flex-end',
                     cursor: 'pointer',
-                    boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
                     transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
-                    padding: 0,
+                    padding: '20px 18px',
                     textAlign: 'left',
+                    minHeight: 240,
+                    background: '#1A1A1A',
                   }}
                   onMouseEnter={e => {
                     (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-4px)';
-                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 10px 28px rgba(0,0,0,0.12)';
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#1A1A1A';
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 12px 32px rgba(0,0,0,0.18)';
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 10px rgba(0,0,0,0.06)';
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#E5E5E5';
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
                   }}
                 >
-                  {/* Artwork Header */}
-                  <div style={{ position: 'relative', aspectRatio: '1.2', background: '#1A1A1A', overflow: 'hidden', width: '100%' }}>
-                    <Image
-                      src={item.img}
-                      alt={item.name}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
+                  {/* Full-bleed Background Artwork */}
+                  <Image
+                    src={item.img}
+                    alt={item.name}
+                    fill
+                    style={{ objectFit: 'cover', transition: 'transform 0.3s ease' }}
+                  />
 
+                  {/* Gradient Scrim for Legibility */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0.88) 100%)',
+                      pointerEvents: 'none',
+                    }}
+                  />
 
-                  <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4, width: '100%', borderTop: '1px solid #EBEBEB' }}>
-                    <p style={{ fontSize: 15, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.01em' }}>
+                  {/* Direct Text Overlay */}
+                  <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <p style={{ fontSize: 18, fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.02em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
                       {item.name}
                     </p>
-                    <p style={{ fontSize: 12, color: '#777', margin: '0 0 6px', lineHeight: 1.35 }}>
+                    <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', margin: '0 0 6px', lineHeight: 1.35, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                       {item.desc}
                     </p>
-                    <span style={{ fontSize: 12, fontWeight: 800, color: '#1A1A1A', display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 'auto' }}>
+                    <span style={{ fontSize: 13, fontWeight: 800, color: '#fff', display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
                       Shop {item.id} →
                     </span>
                   </div>
                 </button>
               ))}
             </div>
+
 
 
 
