@@ -79,22 +79,35 @@ export default function ShopPage() {
         🚚 Free Lebanon delivery &nbsp;·&nbsp; 🏫 BAU Beirut pickup &nbsp;·&nbsp; ✅ 100% Authentic
       </div>
 
-      {/* ── HEADER ── */}
-      <header style={{ background: '#fff', position: 'sticky', top: 0, zIndex: 50, boxShadow: '0 1px 0 #E2E2E2, 0 4px 16px rgba(0,0,0,0.07)' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', height: 60, gap: 24 }}>
-
-          {/* Mobile menu button */}
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ display: 'none', padding: 6, color: '#555', cursor: 'pointer' }} className="mobile-menu-btn">
-            <Menu size={20} />
-          </button>
+      {/* ── FLOATING NAV ── */}
+      <div style={{ position: 'sticky', top: 12, zIndex: 50, display: 'flex', justifyContent: 'center', padding: '0 16px', pointerEvents: 'none' }}>
+        <header style={{
+          pointerEvents: 'auto',
+          width: '100%',
+          maxWidth: 1100,
+          background: 'rgba(255,255,255,0.96)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderRadius: 16,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.12), 0 1px 0 rgba(0,0,0,0.06)',
+          border: '1px solid rgba(0,0,0,0.07)',
+          display: 'flex',
+          alignItems: 'center',
+          height: 56,
+          padding: '0 20px',
+          gap: 16,
+        }}>
 
           {/* Logo */}
-          <Link href="/2" style={{ fontWeight: 900, fontSize: 17, letterSpacing: '-0.03em', color: '#1A1A1A', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <Link href="/2" style={{ fontWeight: 900, fontSize: 16, letterSpacing: '-0.03em', color: '#1A1A1A', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
             OH MY MARVZ
           </Link>
 
+          {/* Divider */}
+          <div style={{ width: 1, height: 20, background: '#E0E0E0', flexShrink: 0 }} />
+
           {/* Nav links */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 8 }}>
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             {[
               { id: 'All', label: 'All' },
               { id: 'Marvel', label: 'Marvel' },
@@ -109,7 +122,7 @@ export default function ShopPage() {
                   fontSize: 13,
                   fontWeight: activeFranchise === f.id ? 700 : 500,
                   background: activeFranchise === f.id ? '#1A1A1A' : 'transparent',
-                  color: activeFranchise === f.id ? '#fff' : '#555',
+                  color: activeFranchise === f.id ? '#fff' : '#666',
                   border: 'none',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
@@ -123,18 +136,18 @@ export default function ShopPage() {
           {/* Spacer */}
           <div style={{ flex: 1 }} />
 
-          {/* Search dropdown */}
+          {/* Search */}
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              style={{ padding: 8, color: '#555', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+              style={{ padding: '7px 8px', color: '#666', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', borderRadius: 8 }}
             >
-              <Search size={20} />
+              <Search size={18} />
             </button>
             {searchOpen && (
-              <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 8px)', background: '#fff', borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.14), 0 1px 0 rgba(0,0,0,0.06)', width: 280, padding: 12, zIndex: 100, border: '1px solid #E8E8E8' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#F4F4F4', borderRadius: 8, padding: '8px 12px', border: '1.5px solid #DCDCDC' }}>
-                  <Search size={14} color="#888" />
+              <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 10px)', background: '#fff', borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.14)', width: 260, padding: 10, zIndex: 100, border: '1px solid #E8E8E8' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#F4F4F4', borderRadius: 8, padding: '7px 12px', border: '1.5px solid #DCDCDC' }}>
+                  <Search size={13} color="#888" />
                   <input
                     autoFocus
                     value={searchQuery}
@@ -142,17 +155,17 @@ export default function ShopPage() {
                     placeholder="Search collectibles..."
                     style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 13, color: '#1A1A1A' }}
                   />
-                  {searchQuery && <button onClick={() => setSearchQuery('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#aaa', padding: 0 }}><X size={14} /></button>}
+                  {searchQuery && <button onClick={() => setSearchQuery('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#aaa', padding: 0, display: 'flex' }}><X size={13} /></button>}
                 </div>
               </div>
             )}
           </div>
 
           {/* Wishlist */}
-          <button style={{ position: 'relative', padding: 8, color: '#555', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-            <Heart size={20} />
+          <button style={{ position: 'relative', padding: '7px 8px', color: '#666', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', borderRadius: 8 }}>
+            <Heart size={18} />
             {wishlist.length > 0 && (
-              <span style={{ position: 'absolute', top: 4, right: 4, width: 14, height: 14, background: '#ef4444', color: '#fff', borderRadius: '50%', fontSize: 9, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ position: 'absolute', top: 3, right: 3, width: 14, height: 14, background: '#ef4444', color: '#fff', borderRadius: '50%', fontSize: 9, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {wishlist.length}
               </span>
             )}
@@ -161,25 +174,19 @@ export default function ShopPage() {
           {/* Cart */}
           <button
             onClick={() => setCartOpen(true)}
-            style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#1A1A1A', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 18px', fontSize: 13, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.18)', transition: 'background 0.15s', whiteSpace: 'nowrap' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 7, background: '#1A1A1A', color: '#fff', border: 'none', borderRadius: 10, padding: '8px 16px', fontSize: 13, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)', whiteSpace: 'nowrap' }}
           >
-            <ShoppingBag size={16} />
+            <ShoppingBag size={15} />
             <span>Cart</span>
             {cartCount > 0 && (
-              <span style={{ background: '#C96A00', color: '#fff', borderRadius: 999, fontSize: 11, fontWeight: 800, padding: '1px 7px', marginLeft: 2 }}>
+              <span style={{ background: '#C96A00', color: '#fff', borderRadius: 999, fontSize: 11, fontWeight: 800, padding: '1px 7px' }}>
                 {cartCount}
               </span>
             )}
           </button>
-        </div>
+        </header>
+      </div>
 
-        {/* Mobile nav */}
-        <style>{`
-          @media (max-width: 640px) {
-            .mobile-menu-btn { display: flex !important; }
-          }
-        `}</style>
-      </header>
 
       {/* ── COLLECTION HEADER ── */}
       <div style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
