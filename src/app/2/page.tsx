@@ -195,17 +195,11 @@ export default function ShopPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, alignItems: 'center' }}>
             
             {/* Left: Copy & Actions */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(201,106,0,0.08)', border: '1px solid rgba(201,106,0,0.25)', padding: '5px 12px', borderRadius: 999, width: 'fit-content' }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#C96A00' }} />
-                <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                  Authentic Collectibles Vault
-                </span>
-              </div>
-
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <h1 style={{ fontSize: 46, fontWeight: 900, color: '#1A1A1A', margin: 0, lineHeight: 1.1, letterSpacing: '-0.03em' }}>
                 Marvel & Anime Collectibles, Delivered.
               </h1>
+
 
               <p style={{ fontSize: 15, color: '#666', margin: 0, lineHeight: 1.65, maxWidth: 480 }}>
                 High-articulation figures, collector statues, metal keychains & sticker packs. Verified authentic with Lebanon-wide doorstep delivery or BAU Beirut pickup.
