@@ -4,20 +4,17 @@ import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  ShoppingCart,
+  ShoppingBag,
   Search,
   Heart,
   Star,
-  ChevronDown,
-  SlidersHorizontal,
-  X,
   Check,
   Truck,
   ShieldCheck,
-  RotateCcw,
-  User,
+  MapPin,
+  X,
   Menu,
-  Tag,
+  Plus,
 } from 'lucide-react';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import { ModernProductModal } from '@/components/ModernProductModal';
@@ -26,213 +23,199 @@ import { CheckoutModal } from '@/components/CheckoutModal';
 import { ViewSwitcher } from '@/components/ViewSwitcher';
 
 const CATEGORIES = ['All', 'Figures', 'Statues', 'Keychains', 'Funko Pops', 'Stickers'];
-const FRANCHISES = ['All', 'Marvel', 'Anime'];
 
 export default function ShopPage() {
   const [products] = useState<Product[]>(INITIAL_PRODUCTS);
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeFranchise, setActiveFranchise] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [quickView, setQuickView] = useState<Product | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [addedId, setAddedId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleAddToCart = (product: Product, quantity = 1) => {
-    setCartItems((prev) => {
-      const idx = prev.findIndex((i) => i.product.id === product.id);
-      if (idx > -1) {
-        const updated = [...prev];
-        updated[idx].quantity += quantity;
-        return updated;
-      }
-      return [...prev, { product, quantity }];
+  const addToCart = (product: Product, qty = 1) => {
+    setCartItems(prev => {
+      const i = prev.findIndex(x => x.product.id === product.id);
+      if (i > -1) { const u = [...prev]; u[i].quantity += qty; return u; }
+      return [...prev, { product, quantity: qty }];
     });
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 1800);
   };
 
   const toggleWishlist = (id: string) =>
-    setWishlist((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+    setWishlist(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
-  const filteredProducts = useMemo(() => {
-    return products
-      .filter((p) => {
-        const cat = activeCategory === 'All' || p.category.toLowerCase().includes(activeCategory.toLowerCase()) ||
-          (activeCategory === 'Funko Pops' && p.category.toLowerCase().includes('pop')) ||
-          (activeCategory === 'Keychains' && p.category.toLowerCase().includes('keychain'));
-        const franchise = activeFranchise === 'All' || p.franchise.toLowerCase() === activeFranchise.toLowerCase();
-        const search = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
-        return cat && franchise && search;
-      })
-      .sort((a, b) => {
-        if (sortBy === 'price-low') return a.price - b.price;
-        if (sortBy === 'price-high') return b.price - a.price;
-        if (sortBy === 'rating') return b.rating - a.rating;
-        return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
-      });
-  }, [products, activeCategory, activeFranchise, searchQuery, sortBy]);
+  const filtered = useMemo(() => products
+    .filter(p => {
+      const cat = activeCategory === 'All'
+        || p.category.toLowerCase().includes(activeCategory.toLowerCase())
+        || (activeCategory === 'Funko Pops' && p.category.toLowerCase().includes('pop'))
+        || (activeCategory === 'Keychains' && p.category.toLowerCase().includes('keychain'));
+      const franchise = activeFranchise === 'All' || p.franchise.toLowerCase() === activeFranchise.toLowerCase();
+      const search = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return cat && franchise && search;
+    })
+    .sort((a, b) => {
+      if (sortBy === 'price-low') return a.price - b.price;
+      if (sortBy === 'price-high') return b.price - a.price;
+      if (sortBy === 'rating') return b.rating - a.rating;
+      return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
+    }), [products, activeCategory, activeFranchise, searchQuery, sortBy]);
 
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-[#D6D6D6] text-[#1A1A1A]" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: '#F4F4F4', minHeight: '100vh', color: '#1A1A1A' }}>
 
-      {/* ── ANNOUNCEMENT BAR ── */}
-      <div className="bg-[#1A1A1A] text-white text-[12px] font-medium text-center py-2 px-4">
-        🚚 Free delivery across Lebanon &nbsp;·&nbsp; 🏫 BAU Beirut pickup available &nbsp;·&nbsp; ✅ 100% Authentic collectibles
+      {/* ── ANNOUNCEMENT ── */}
+      <div style={{ background: '#1A1A1A', color: '#fff', fontSize: '12px', fontWeight: 500, textAlign: 'center', padding: '9px 16px', letterSpacing: '0.02em' }}>
+        🚚 Free Lebanon delivery &nbsp;·&nbsp; 🏫 BAU Beirut pickup &nbsp;·&nbsp; ✅ 100% Authentic
       </div>
 
       {/* ── HEADER ── */}
-      <header className="bg-white sticky top-0 z-50" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.12), 0 1px 0 rgba(0,0,0,0.06)' }}>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+      <header style={{ background: '#fff', position: 'sticky', top: 0, zIndex: 50, boxShadow: '0 1px 0 #E2E2E2, 0 4px 16px rgba(0,0,0,0.07)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', height: 60, gap: 24 }}>
 
-          {/* Main row */}
-          <div className="flex items-center gap-4 h-[64px]">
+          {/* Mobile menu button */}
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ display: 'none', padding: 6, color: '#555', cursor: 'pointer' }} className="mobile-menu-btn">
+            <Menu size={20} />
+          </button>
 
-            {/* Mobile menu */}
-            <button className="md:hidden p-2 text-[#555]" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              <Menu className="w-5 h-5" />
-            </button>
+          {/* Logo */}
+          <Link href="/2" style={{ fontWeight: 900, fontSize: 17, letterSpacing: '-0.03em', color: '#1A1A1A', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
+            OH MY MARVZ
+          </Link>
 
-            {/* Logo */}
-            <Link href="/2" className="font-black text-[18px] tracking-tight text-[#1A1A1A] hover:text-[#C96A00] transition-colors shrink-0 mr-2">
-              OH MY MARVZ
-            </Link>
-
-            {/* Search — prominent center */}
-            <div className="flex-1 max-w-xl hidden sm:block">
-              <div className="flex items-center bg-[#F0F0F0] border-2 border-[#CCCCCC] rounded-lg overflow-hidden focus-within:border-[#1A1A1A] transition-all">
-                <input
-                  type="text"
-                  placeholder="Search collectibles..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 px-4 py-2.5 bg-transparent text-[14px] text-[#1A1A1A] placeholder:text-[#888] focus:outline-none"
-                />
-                <button className="px-4 py-2.5 bg-[#1A1A1A] hover:bg-[#333] transition-colors">
-                  <Search className="w-4 h-4 text-white" />
-                </button>
-              </div>
-            </div>
-
-            {/* Right actions */}
-            <div className="flex items-center gap-1 ml-auto">
-              <button className="sm:hidden p-2 text-[#555]">
-                <Search className="w-5 h-5" />
-              </button>
-              <button className="relative p-2 text-[#555] hover:text-[#1A1A1A] transition-colors">
-                <Heart className="w-5 h-5" />
-                {wishlist.length > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                    {wishlist.length}
-                  </span>
-                )}
-              </button>
+          {/* Nav links */}
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 8 }}>
+            {[
+              { id: 'All', label: 'All' },
+              { id: 'Marvel', label: 'Marvel' },
+              { id: 'Anime', label: 'Anime' },
+            ].map(f => (
               <button
-                onClick={() => setCartOpen(true)}
-                className="relative flex items-center gap-2 bg-[#C96A00] hover:bg-[#B05A00] text-white px-4 py-2 rounded-lg font-semibold text-[14px] transition-colors ml-1"
-                style={{ boxShadow: '0 2px 8px rgba(201,106,0,0.4)' }}
+                key={f.id}
+                onClick={() => setActiveFranchise(f.id)}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: 8,
+                  fontSize: 13,
+                  fontWeight: activeFranchise === f.id ? 700 : 500,
+                  background: activeFranchise === f.id ? '#1A1A1A' : 'transparent',
+                  color: activeFranchise === f.id ? '#fff' : '#555',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                }}
               >
-                <ShoppingCart className="w-4 h-4" />
-                <span className="hidden sm:inline">Cart</span>
-                {cartCount > 0 && (
-                  <span className="bg-white text-[#C96A00] text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Nav bar */}
-          <nav className="hidden md:flex items-center gap-6 h-[40px] border-t border-[#EBEBEB] text-[13px] font-medium text-[#666]">
-            {FRANCHISES.map((f) => (
-              <button
-                key={f}
-                onClick={() => setActiveFranchise(f)}
-                className={`h-full border-b-2 transition-colors ${
-                  activeFranchise === f
-                    ? 'border-[#C96A00] text-[#C96A00] font-semibold'
-                    : 'border-transparent hover:text-[#1A1A1A] hover:border-[#DCDCDC]'
-                }`}
-              >
-                {f === 'All' ? 'All Collections' : f}
+                {f.label}
               </button>
             ))}
-            <Link href="/" className="ml-auto h-full flex items-center border-transparent hover:text-[#1A1A1A] transition-colors">
-              Classic View →
-            </Link>
           </nav>
+
+          {/* Spacer */}
+          <div style={{ flex: 1 }} />
+
+          {/* Search dropdown */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
+              style={{ padding: 8, color: '#555', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            >
+              <Search size={20} />
+            </button>
+            {searchOpen && (
+              <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 8px)', background: '#fff', borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.14), 0 1px 0 rgba(0,0,0,0.06)', width: 280, padding: 12, zIndex: 100, border: '1px solid #E8E8E8' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#F4F4F4', borderRadius: 8, padding: '8px 12px', border: '1.5px solid #DCDCDC' }}>
+                  <Search size={14} color="#888" />
+                  <input
+                    autoFocus
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    placeholder="Search collectibles..."
+                    style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 13, color: '#1A1A1A' }}
+                  />
+                  {searchQuery && <button onClick={() => setSearchQuery('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#aaa', padding: 0 }}><X size={14} /></button>}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Wishlist */}
+          <button style={{ position: 'relative', padding: 8, color: '#555', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+            <Heart size={20} />
+            {wishlist.length > 0 && (
+              <span style={{ position: 'absolute', top: 4, right: 4, width: 14, height: 14, background: '#ef4444', color: '#fff', borderRadius: '50%', fontSize: 9, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {wishlist.length}
+              </span>
+            )}
+          </button>
+
+          {/* Cart */}
+          <button
+            onClick={() => setCartOpen(true)}
+            style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#1A1A1A', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 18px', fontSize: 13, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.18)', transition: 'background 0.15s', whiteSpace: 'nowrap' }}
+          >
+            <ShoppingBag size={16} />
+            <span>Cart</span>
+            {cartCount > 0 && (
+              <span style={{ background: '#C96A00', color: '#fff', borderRadius: 999, fontSize: 11, fontWeight: 800, padding: '1px 7px', marginLeft: 2 }}>
+                {cartCount}
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-[#EBEBEB] bg-white px-4 py-3 space-y-2">
-            <div className="flex items-center bg-[#F0F0F0] border-2 border-[#CCCCCC] rounded-lg overflow-hidden">
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 px-3 py-2.5 bg-transparent text-[14px] focus:outline-none"
-              />
-              <button className="px-3 py-2.5">
-                <Search className="w-4 h-4 text-[#555]" />
-              </button>
-            </div>
-            {FRANCHISES.map((f) => (
-              <button
-                key={f}
-                onClick={() => { setActiveFranchise(f); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-2 py-1.5 text-[14px] rounded ${activeFranchise === f ? 'text-[#C96A00] font-semibold' : 'text-[#555]'}`}
-              >
-                {f === 'All' ? 'All Collections' : f}
-              </button>
-            ))}
-          </div>
-        )}
+        {/* Mobile nav */}
+        <style>{`
+          @media (max-width: 640px) {
+            .mobile-menu-btn { display: flex !important; }
+          }
+        `}</style>
       </header>
 
-      {/* ── TRUST BAR ── */}
-      <div className="bg-[#F0F0F0] border-b-2 border-[#C8C8C8]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap justify-center gap-x-8 gap-y-2">
-          {[
-            { icon: Truck, text: 'Lebanon-wide delivery' },
-            { icon: ShieldCheck, text: '100% Authentic' },
-            { icon: RotateCcw, text: 'BAU Beirut pickup' },
-          ].map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-2 text-[13px] text-[#333] font-medium">
-              <Icon className="w-4 h-4 text-[#C96A00]" />
-              <span>{text}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* ── COLLECTION HEADER ── */}
+      <div style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 24px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, justifyContent: 'space-between' }}>
 
-
-      {/* ── MAIN CONTENT ── */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-6">
-
-        {/* Page heading + sort */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-          <div>
-            <h1 className="text-[22px] font-black text-[#1A1A1A]">
-              {activeFranchise === 'All' ? 'All Collectibles' : `${activeFranchise} Collection`}
-            </h1>
-            <p className="text-[13px] text-[#888] mt-0.5">{filteredProducts.length} products</p>
+          {/* Category filter pills */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                style={{
+                  padding: '6px 16px',
+                  borderRadius: 999,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  border: activeCategory === cat ? '2px solid #1A1A1A' : '2px solid #DCDCDC',
+                  background: activeCategory === cat ? '#1A1A1A' : '#fff',
+                  color: activeCategory === cat ? '#fff' : '#555',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                  boxShadow: activeCategory === cat ? '0 2px 8px rgba(0,0,0,0.15)' : 'none',
+                }}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
 
-          <div className="flex items-center gap-2">
-            <label className="text-[13px] text-[#555] font-medium">Sort by:</label>
+          {/* Sort + count */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 13, color: '#888' }}>{filtered.length} products</span>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="border border-[#DCDCDC] rounded-lg px-3 py-2 text-[13px] text-[#1A1A1A] bg-white focus:outline-none focus:border-[#1A1A1A] cursor-pointer"
+              onChange={e => setSortBy(e.target.value as any)}
+              style={{ border: '1.5px solid #DCDCDC', borderRadius: 8, padding: '6px 12px', fontSize: 13, color: '#1A1A1A', background: '#fff', cursor: 'pointer', outline: 'none', fontWeight: 600 }}
             >
               <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>
@@ -241,28 +224,13 @@ export default function ShopPage() {
             </select>
           </div>
         </div>
+      </div>
 
-        {/* Category filter chips */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-1.5 rounded-full text-[13px] font-medium border transition-all ${
-                activeCategory === cat
-                  ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
-                  : 'bg-white text-[#555] border-[#DCDCDC] hover:border-[#999] hover:text-[#1A1A1A]'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* ── PRODUCT GRID ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredProducts.map((product) => {
-            const isWishlisted = wishlist.includes(product.id);
+      {/* ── PRODUCT GRID ── */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 24px 60px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20 }}>
+          {filtered.map(product => {
+            const wishlisted = wishlist.includes(product.id);
             const justAdded = addedId === product.id;
             const discount = product.originalPrice
               ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -271,165 +239,168 @@ export default function ShopPage() {
             return (
               <div
                 key={product.id}
-                className="bg-white rounded-xl overflow-hidden flex flex-col transition-all duration-200 hover:-translate-y-1"
-                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.08)' }}
-                onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 28px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.10)'}
-                onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.08)'}
+                className="product-card"
+                style={{ background: '#fff', borderRadius: 16, overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 1px 4px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06)', transition: 'box-shadow 0.2s, transform 0.2s', cursor: 'default' }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.08)';
+                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-3px)';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = '0 1px 4px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06)';
+                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+                }}
               >
                 {/* Image */}
                 <div
-                  className="relative aspect-square bg-[#E8E8E8] cursor-pointer overflow-hidden"
-                  onClick={() => setQuickViewProduct(product)}
+                  className="card-image-wrap"
+                  style={{ position: 'relative', aspectRatio: '1', background: '#ECECEC', overflow: 'hidden', cursor: 'pointer' }}
+                  onClick={() => setQuickView(product)}
                 >
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-400"
-                  />
+                  <Image src={product.image} alt={product.name} fill style={{ objectFit: 'cover', transition: 'transform 0.4s' }} className="card-img" />
 
                   {/* Badges */}
-                  <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5">
-                    {discount && (
-                      <span className="bg-red-500 text-white text-[11px] font-bold px-2 py-0.5 rounded">
-                        -{discount}%
-                      </span>
-                    )}
-                    {product.isFeatured && (
-                      <span className="bg-[#C96A00] text-white text-[11px] font-bold px-2 py-0.5 rounded">
-                        Featured
-                      </span>
-                    )}
+                  <div style={{ position: 'absolute', top: 10, left: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {discount && <span style={{ background: '#DC2626', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 4 }}>−{discount}%</span>}
+                    {product.isFeatured && <span style={{ background: '#C96A00', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 4 }}>Featured</span>}
                   </div>
 
                   {/* Wishlist */}
                   <button
-                    onClick={(e) => { e.stopPropagation(); toggleWishlist(product.id); }}
-                    className="absolute top-2.5 right-2.5 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center border border-[#E8E8E8] hover:scale-110 transition-transform"
+                    onClick={e => { e.stopPropagation(); toggleWishlist(product.id); }}
+                    style={{ position: 'absolute', top: 10, right: 10, width: 32, height: 32, background: 'rgba(255,255,255,0.95)', border: '1px solid #E0E0E0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}
                   >
-                    <Heart
-                      className="w-4 h-4"
-                      style={{
-                        fill: isWishlisted ? '#ef4444' : 'none',
-                        color: isWishlisted ? '#ef4444' : '#888',
-                      }}
-                    />
+                    <Heart size={14} style={{ fill: wishlisted ? '#ef4444' : 'none', color: wishlisted ? '#ef4444' : '#888' }} />
                   </button>
+
+                  {/* Hover add to cart overlay */}
+                  <div
+                    className="card-add-overlay"
+                    style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '10px 10px', transform: 'translateY(100%)', transition: 'transform 0.25s ease' }}
+                  >
+                    <button
+                      onClick={e => { e.stopPropagation(); addToCart(product); }}
+                      style={{
+                        width: '100%',
+                        padding: '11px',
+                        borderRadius: 10,
+                        fontSize: 13,
+                        fontWeight: 700,
+                        border: 'none',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        background: justAdded ? '#16a34a' : '#1A1A1A',
+                        color: '#fff',
+                        boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                        transition: 'background 0.2s',
+                      }}
+                    >
+                      {justAdded ? <><Check size={15} /> Added!</> : <><Plus size={15} /> Add to Cart</>}
+                    </button>
+                  </div>
                 </div>
 
                 {/* Info */}
-                <div className="p-3 flex flex-col gap-2 flex-1 border-t border-[#E0E0E0]">
-                  {/* Category label */}
-                  <p className="text-[11px] text-[#999] uppercase tracking-wider font-medium">{product.subtitle}</p>
-
-                  {/* Name */}
+                <div style={{ padding: '12px 14px 14px', display: 'flex', flexDirection: 'column', gap: 6, flex: 1, borderTop: '1px solid #EBEBEB' }}>
+                  <p style={{ fontSize: 11, color: '#B0B0B0', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: 0 }}>{product.subtitle}</p>
                   <h3
-                    className="text-[13px] font-semibold text-[#1A1A1A] line-clamp-2 leading-snug cursor-pointer hover:text-[#C96A00] transition-colors"
-                    onClick={() => setQuickViewProduct(product)}
+                    onClick={() => setQuickView(product)}
+                    style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', lineHeight: 1.35, margin: 0, cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
                   >
                     {product.name}
                   </h3>
 
                   {/* Stars */}
-                  <div className="flex items-center gap-1">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-3 h-3"
-                        style={{
-                          fill: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB',
-                          color: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB',
-                        }}
-                      />
+                      <Star key={i} size={12} style={{ fill: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB', color: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB' }} />
                     ))}
-                    <span className="text-[11px] text-[#888] ml-0.5">({product.reviewsCount})</span>
+                    <span style={{ fontSize: 11, color: '#aaa', marginLeft: 2 }}>({product.reviewsCount})</span>
                   </div>
 
-                  {/* Price row */}
-                  <div className="flex items-center gap-2 mt-auto">
-                    <span className="text-[16px] font-black text-[#1A1A1A]">${product.price.toFixed(2)}</span>
+                  {/* Price */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 'auto', paddingTop: 6 }}>
+                    <span style={{ fontSize: 17, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em' }}>${product.price.toFixed(2)}</span>
                     {product.originalPrice && (
-                      <span className="text-[12px] text-[#AAA] line-through">${product.originalPrice.toFixed(2)}</span>
+                      <span style={{ fontSize: 13, color: '#bbb', textDecoration: 'line-through' }}>${product.originalPrice.toFixed(2)}</span>
                     )}
                   </div>
-
-                  {/* Add to cart */}
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className={`w-full py-2.5 rounded-lg text-[13px] font-semibold transition-all active:scale-95 mt-1 flex items-center justify-center gap-2 ${
-                      justAdded
-                        ? 'bg-green-600 text-white'
-                        : 'bg-[#1A1A1A] hover:bg-[#333] text-white'
-                    }`}
-                  >
-                    {justAdded ? (
-                      <><Check className="w-4 h-4" /> Added!</>
-                    ) : (
-                      <><ShoppingCart className="w-3.5 h-3.5" /> Add to Cart</>
-                    )}
-                  </button>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-20 text-[#999]">
-            <p className="text-[18px] font-semibold mb-2">No products found</p>
-            <p className="text-[14px]">Try a different category or search term.</p>
+        {filtered.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '80px 0', color: '#aaa' }}>
+            <p style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>No products found</p>
+            <p style={{ fontSize: 14 }}>Try adjusting your filters.</p>
           </div>
         )}
       </div>
 
+      {/* ── TRUST ROW ── */}
+      <div style={{ background: '#fff', borderTop: '1.5px solid #E2E2E2', boxShadow: '0 -2px 8px rgba(0,0,0,0.04)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 24px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, textAlign: 'center' }}>
+          {[
+            { icon: Truck, title: 'Lebanon-Wide Delivery', desc: '24–48h to your door' },
+            { icon: ShieldCheck, title: '100% Authenticated', desc: 'Every item verified' },
+            { icon: MapPin, title: 'BAU Beirut Pickup', desc: 'Free campus collection' },
+          ].map(({ icon: Icon, title, desc }) => (
+            <div key={title} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+              <Icon size={22} color="#C96A00" />
+              <p style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A', margin: 0 }}>{title}</p>
+              <p style={{ fontSize: 12, color: '#999', margin: 0 }}>{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ── FOOTER ── */}
-      <footer className="bg-[#1A1A1A] text-white mt-12 py-10">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid sm:grid-cols-3 gap-8">
+      <footer style={{ background: '#111', color: '#fff', padding: '40px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 32 }}>
           <div>
-            <div className="font-black text-[16px] mb-2">OH MY MARVZ</div>
-            <p className="text-[13px] text-white/50 leading-relaxed">Lebanon's premier collectibles store. Marvel, anime, and more — sourced, verified, and delivered.</p>
+            <p style={{ fontWeight: 900, fontSize: 15, marginBottom: 8 }}>OH MY MARVZ</p>
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, marginTop: 0 }}>Lebanon's premier collectibles store. Sourced, verified, delivered.</p>
           </div>
           <div>
-            <div className="font-semibold text-[13px] text-white/60 uppercase tracking-widest mb-3">Shop</div>
-            <div className="space-y-2 text-[13px] text-white/50">
-              <Link href="/marvel" className="block hover:text-white transition-colors">Marvel Collection</Link>
-              <Link href="/anime" className="block hover:text-white transition-colors">Anime Collection</Link>
-              <Link href="/" className="block hover:text-white transition-colors">Classic View</Link>
-            </div>
+            <p style={{ fontWeight: 700, fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>Shop</p>
+            {[['Marvel Collection', '/marvel'], ['Anime Collection', '/anime'], ['Classic View', '/']].map(([label, href]) => (
+              <Link key={href} href={href} style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: 13, textDecoration: 'none', marginBottom: 8 }}>{label}</Link>
+            ))}
           </div>
           <div>
-            <div className="font-semibold text-[13px] text-white/60 uppercase tracking-widest mb-3">Info</div>
-            <div className="space-y-2 text-[13px] text-white/50">
-              <p>📍 BAU Beirut pickup available</p>
-              <p>🚚 Lebanon-wide delivery</p>
-              <p>✅ 100% authentic products</p>
-            </div>
+            <p style={{ fontWeight: 700, fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>Info</p>
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 2, margin: 0 }}>📍 BAU Beirut pickup<br />🚚 Lebanon-wide delivery<br />✅ 100% authentic</p>
           </div>
         </div>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-[12px] text-white/30">
+        <div style={{ maxWidth: 1280, margin: '24px auto 0', paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'rgba(255,255,255,0.25)' }}>
           <span>© 2025 Oh My Marvz</span>
           <span>Powered by Meta Pylon</span>
         </div>
       </footer>
 
-      <ModernProductModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} onAddToCart={handleAddToCart} />
+      {/* Card hover styles */}
+      <style>{`
+        .card-image-wrap:hover .card-img { transform: scale(1.06); }
+        .card-image-wrap:hover .card-add-overlay { transform: translateY(0) !important; }
+      `}</style>
+
+      <ModernProductModal product={quickView} onClose={() => setQuickView(null)} onAddToCart={addToCart} />
       <CartDrawer
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
         items={cartItems}
         onUpdateQuantity={(i, q) => {
-          if (q <= 0) setCartItems((p) => p.filter((_, idx) => idx !== i));
-          else setCartItems((p) => { const u = [...p]; u[i].quantity = q; return u; });
+          if (q <= 0) setCartItems(p => p.filter((_, idx) => idx !== i));
+          else setCartItems(p => { const u = [...p]; u[i].quantity = q; return u; });
         }}
-        onRemoveItem={(i) => setCartItems((p) => p.filter((_, idx) => idx !== i))}
+        onRemoveItem={i => setCartItems(p => p.filter((_, idx) => idx !== i))}
         onCheckout={() => { setCartOpen(false); setCheckoutOpen(true); }}
       />
-      <CheckoutModal
-        isOpen={checkoutOpen}
-        onClose={() => setCheckoutOpen(false)}
-        items={cartItems}
-        onClearCart={() => setCartItems([])}
-      />
+      <CheckoutModal isOpen={checkoutOpen} onClose={() => setCheckoutOpen(false)} items={cartItems} onClearCart={() => setCartItems([])} />
       <ViewSwitcher />
     </div>
   );
