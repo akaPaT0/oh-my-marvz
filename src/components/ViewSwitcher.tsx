@@ -11,7 +11,8 @@ export function ViewSwitcher() {
   return (
     <Link
       href={isModern ? '/' : '/2'}
-      className="fixed bottom-6 right-6 z-[90] flex items-center gap-2.5 px-4 py-3 rounded-full font-bold text-[13px] transition-all hover:scale-105 active:scale-95 select-none"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[90] flex items-center gap-2.5 px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-full font-bold text-[12px] sm:text-[13px] transition-all hover:scale-105 active:scale-95 select-none"
+
       style={{
         background: isModern ? '#111' : '#fff',
         color: isModern ? '#fff' : '#111',

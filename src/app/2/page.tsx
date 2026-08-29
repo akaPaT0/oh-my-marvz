@@ -98,6 +98,7 @@ export default function ShopPage() {
         .product-card:hover .card-img { transform: scale(1.05); }
         .product-card:hover .card-add-overlay { transform: translateY(0); }
         .product-card:hover { border-color: #1A1A1A; }
+        .mobile-quick-add-btn { display: none; }
 
         /* Mobile Responsive Adjustments (<= 768px) */
         @media (max-width: 768px) {
@@ -126,11 +127,13 @@ export default function ShopPage() {
           .store-product-grid-wrap { padding: 16px 14px 48px !important; width: 100% !important; overflow: hidden !important; }
           .store-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; width: 100% !important; }
           .store-product-card-body { padding: 10px 10px 12px !important; min-width: 0 !important; }
-          .card-add-overlay { position: static !important; transform: translateY(0) !important; padding: 8px 10px 10px !important; }
+          .card-add-overlay { display: none !important; }
+          .mobile-quick-add-btn { display: flex !important; }
           .store-trust-strip { grid-template-columns: 1fr !important; gap: 16px !important; padding: 20px 14px !important; width: 100% !important; }
           .store-footer-inner { padding: 32px 14px !important; flex-direction: column !important; gap: 20px !important; text-align: center !important; width: 100% !important; }
           .store-footer-links { justify-content: center !important; }
         }
+
 
         @media (max-width: 420px) {
           .store-hero-cards { grid-template-columns: 1fr !important; }
@@ -805,13 +808,36 @@ export default function ShopPage() {
                     <span style={{ fontSize: 11, color: '#aaa', marginLeft: 2 }}>({product.reviewsCount})</span>
                   </div>
 
-                  {/* Price */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 'auto', paddingTop: 6 }}>
-                    <span style={{ fontSize: 17, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em' }}>${product.price.toFixed(2)}</span>
-                    {product.originalPrice && (
-                      <span style={{ fontSize: 13, color: '#bbb', textDecoration: 'line-through' }}>${product.originalPrice.toFixed(2)}</span>
-                    )}
+                  {/* Price & Mobile Quick Add */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, marginTop: 'auto', paddingTop: 6 }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                      <span style={{ fontSize: 16, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em' }}>${product.price.toFixed(2)}</span>
+                      {product.originalPrice && (
+                        <span style={{ fontSize: 12, color: '#bbb', textDecoration: 'line-through' }}>${product.originalPrice.toFixed(2)}</span>
+                      )}
+                    </div>
+                    <button
+                      onClick={e => { e.stopPropagation(); addToCart(product); }}
+                      className="mobile-quick-add-btn"
+                      aria-label="Add to cart"
+                      style={{
+                        background: justAdded ? '#16a34a' : '#1A1A1A',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 8,
+                        width: 32,
+                        height: 32,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        flexShrink: 0,
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                      }}
+                    >
+                      {justAdded ? <Check size={14} /> : <Plus size={15} />}
+                    </button>
                   </div>
+
                 </div>
               </div>
             );

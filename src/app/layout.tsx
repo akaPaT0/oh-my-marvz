@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -14,10 +14,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: "Oh my Marvz | All M@rvel Gadgets & Anime Grails",
   description: "Lebanon's premier shop for Marvel action figures, statues, metal keychains, 3D rubber straps, and sticker packs. Delivery across Lebanon & BAU Beirut pickup.",
 };
+
+
 
 export default function RootLayout({
   children,

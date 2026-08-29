@@ -32,9 +32,10 @@ export const ScrollToTop: React.FC = () => {
     <button
       onClick={scrollToTop}
       aria-label="Scroll back to top"
-      className="fixed bottom-6 right-6 z-40 w-11 h-11 bg-yellow-300 hover:bg-yellow-400 text-black border-3 border-black shadow-[4px_4px_0_#000] flex items-center justify-center font-black transition-all transform hover:-translate-y-1"
+      className="fixed bottom-20 right-4 z-40 w-10 h-10 bg-yellow-300 hover:bg-yellow-400 text-black border-2 border-black shadow-[3px_3px_0_#000] flex items-center justify-center font-black transition-all transform hover:-translate-y-1"
     >
-      <ChevronUp className="w-6 h-6 stroke-[3]" />
+      <ChevronUp className="w-5 h-5 stroke-[3]" />
     </button>
+
   );
 };
