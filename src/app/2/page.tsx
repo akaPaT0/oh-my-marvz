@@ -251,29 +251,30 @@ export default function ShopPage() {
               </div>
             </div>
 
-            {/* Right: Featured Product Showcase (Identical style to catalog cards) */}
+            {/* Right: Marvel & Anime Franchise Collection Cards */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {[
                 {
-                  id: 'marvel-fig-01',
-                  name: 'Iron Man Mark 46 Action Figure',
-                  tag: 'FEATURED MARVEL',
-                  price: 49.99,
-                  orig: 65.00,
+                  id: 'Marvel',
+                  tag: 'MARVEL UNIVERSE',
+                  name: 'Marvel Series',
+                  desc: 'Iron Man, Deadpool & Avengers',
                   img: '/products/ironman_figure.png',
                 },
                 {
-                  id: 'anime-fig-01',
-                  name: 'Luffy Wano Captain Resin Statue',
-                  tag: 'FEATURED ANIME',
-                  price: 89.99,
-                  orig: 110.00,
+                  id: 'Anime',
+                  tag: 'ANIME COLLECTION',
+                  name: 'Anime Series',
+                  desc: 'One Piece, Demon Slayer & Naruto',
                   img: '/products/luffy_wano_statue.png',
                 }
               ].map(item => (
-                <Link
+                <button
                   key={item.id}
-                  href={`/2/${item.id}`}
+                  onClick={() => {
+                    setActiveFranchise(item.id);
+                    document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                   style={{
                     background: '#fff',
                     borderRadius: 16,
@@ -281,39 +282,44 @@ export default function ShopPage() {
                     border: '1px solid #E5E5E5',
                     display: 'flex',
                     flexDirection: 'column',
-                    textDecoration: 'none',
+                    cursor: 'pointer',
                     boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
                     transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
+                    padding: 0,
+                    textAlign: 'left',
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-4px)';
-                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 10px 28px rgba(0,0,0,0.12)';
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = '#C96A00';
+                    (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-4px)';
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 10px 28px rgba(0,0,0,0.12)';
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#1A1A1A';
                   }}
                   onMouseLeave={e => {
-                    (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)';
-                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 2px 10px rgba(0,0,0,0.06)';
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = '#E5E5E5';
+                    (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 10px rgba(0,0,0,0.06)';
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#E5E5E5';
                   }}
                 >
-                  <div style={{ position: 'relative', aspectRatio: '1', background: '#ECECEC', overflow: 'hidden' }}>
+                  <div style={{ position: 'relative', aspectRatio: '1.05', background: '#ECECEC', overflow: 'hidden', width: '100%' }}>
                     <Image src={item.img} alt={item.name} fill style={{ objectFit: 'cover' }} />
-                    <span style={{ position: 'absolute', top: 10, left: 10, background: '#C96A00', color: '#fff', fontSize: 10, fontWeight: 800, padding: '3px 8px', borderRadius: 4, letterSpacing: '0.04em' }}>
+                    <span style={{ position: 'absolute', top: 10, left: 10, background: '#C96A00', color: '#fff', fontSize: 10, fontWeight: 800, padding: '3px 8px', borderRadius: 4, letterSpacing: '0.05em' }}>
                       {item.tag}
                     </span>
                   </div>
-                  <div style={{ padding: '12px 14px 14px', display: 'flex', flexDirection: 'column', gap: 4, borderTop: '1px solid #EBEBEB' }}>
-                    <p style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A', margin: 0, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
+                  <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4, width: '100%', borderTop: '1px solid #EBEBEB' }}>
+                    <p style={{ fontSize: 15, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.01em' }}>
                       {item.name}
                     </p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
-                      <span style={{ fontSize: 16, fontWeight: 900, color: '#1A1A1A' }}>${item.price.toFixed(2)}</span>
-                      <span style={{ fontSize: 12, color: '#aaa', textDecoration: 'line-through' }}>${item.orig.toFixed(2)}</span>
-                    </div>
+                    <p style={{ fontSize: 12, color: '#777', margin: '0 0 6px', lineHeight: 1.35 }}>
+                      {item.desc}
+                    </p>
+                    <span style={{ fontSize: 12, fontWeight: 800, color: '#1A1A1A', display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 'auto' }}>
+                      Shop {item.id} →
+                    </span>
                   </div>
-                </Link>
+                </button>
               ))}
             </div>
+
 
           </div>
         </div>
@@ -616,82 +622,10 @@ export default function ShopPage() {
 
 
 
-      {/* ── CATEGORY TILES (Image-Backed, High Contrast, No Emojis) ── */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '32px 28px 0' }}>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-          {[
-            {
-              id: 'Marvel',
-              title: 'Marvel Universe',
-              subtitle: 'Iron Man · Captain America · Deadpool · Keychains',
-              img: '/products/ironman_figure.png',
-              badge: 'MARVEL HEROES',
-            },
-            {
-              id: 'Anime',
-              title: 'Anime Collection',
-              subtitle: 'One Piece · Demon Slayer · Naruto · Statues',
-              img: '/products/zoro_figure.png',
-              badge: 'ANIME GRAILS',
-            },
-          ].map(tile => (
-            <button
-              key={tile.id}
-              onClick={() => { setActiveFranchise(tile.id); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }}
-              style={{
-                position: 'relative',
-                background: '#fff',
-                borderRadius: 16,
-                padding: '24px 28px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                border: '1px solid #E2E2E2',
-                cursor: 'pointer',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
-                transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
-                textAlign: 'left',
-                overflow: 'hidden',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-3px)';
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 12px 30px rgba(0,0,0,0.12)';
-                (e.currentTarget as HTMLButtonElement).style.borderColor = '#1A1A1A';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
-                (e.currentTarget as HTMLButtonElement).style.borderColor = '#E2E2E2';
-              }}
-            >
-              <div style={{ zIndex: 2, maxWidth: '65%' }}>
-                <span style={{ fontSize: 10, fontWeight: 800, color: '#C96A00', letterSpacing: '0.1em', background: 'rgba(201,106,0,0.08)', padding: '3px 9px', borderRadius: 4, display: 'inline-block', marginBottom: 8 }}>
-                  {tile.badge}
-                </span>
-                <h3 style={{ fontSize: 24, fontWeight: 900, color: '#1A1A1A', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
-                  {tile.title}
-                </h3>
-                <p style={{ fontSize: 13, color: '#777', margin: '0 0 12px', lineHeight: 1.4 }}>
-                  {tile.subtitle}
-                </p>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                  Shop Series →
-                </span>
-              </div>
-
-              {/* Product Thumbnail Frame */}
-              <div style={{ width: 110, height: 110, position: 'relative', borderRadius: 12, overflow: 'hidden', background: '#F4F4F4', border: '1px solid #E8E8E8', flexShrink: 0 }}>
-                <Image src={tile.img} alt={tile.title} fill style={{ objectFit: 'cover' }} />
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
 
       {/* ── COLLECTION HEADER ── */}
       <div id="shop-grid" style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginTop: 28 }}>
+
 
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 24px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, justifyContent: 'space-between' }}>
 
