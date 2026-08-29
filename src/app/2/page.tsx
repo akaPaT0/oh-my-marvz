@@ -459,99 +459,69 @@ export default function ShopPage() {
                 />
               </div>
 
-              {/* Floating Frosted Glass Product Context Card */}
+              {/* Minimalist Floating Frosted Glass Product Context Card */}
               <div
                 style={{
                   position: 'relative',
                   zIndex: 2,
-                  margin: '36px 0 36px 36px',
-                  maxWidth: 520,
-                  background: 'rgba(255,255,255,0.88)',
+                  margin: '32px 0 32px 32px',
+                  maxWidth: 420,
+                  background: 'rgba(255,255,255,0.85)',
                   backdropFilter: 'blur(28px) saturate(180%)',
                   WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-                  borderRadius: 18,
-                  padding: '32px 34px',
-                  border: '1px solid rgba(255,255,255,0.7)',
-                  boxShadow: '0 16px 48px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.06)',
+                  borderRadius: 16,
+                  padding: '26px 28px',
+                  border: '1px solid rgba(255,255,255,0.75)',
+                  boxShadow: '0 16px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 14,
+                  gap: 12,
                 }}
               >
-                {/* Badge & Slide Info */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '4px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                    {item.franchise} · {item.category.replace(/-/g, ' ')}
+                {/* Tag & Counter */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 10, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '3px 8px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                    {item.franchise} SPOTLIGHT
                   </span>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#666', background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(0,0,0,0.08)', padding: '4px 10px', borderRadius: 6 }}>
-                    Featured 0{featuredIndex + 1} of 0{featuredProducts.length}
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#888' }}>
+                    0{featuredIndex + 1} / 0{featuredProducts.length}
                   </span>
                 </div>
 
-                {/* Title & Subtitle */}
-                <div>
-                  <p style={{ fontSize: 11, color: '#777', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: '0 0 4px' }}>
-                    {item.subtitle}
-                  </p>
-                  <Link
-                    href={`/2/${item.id}`}
-                    style={{ textDecoration: 'none', color: '#1A1A1A' }}
-                  >
-                    <h3 style={{ fontSize: 26, fontWeight: 900, margin: 0, lineHeight: 1.25, letterSpacing: '-0.02em', cursor: 'pointer' }}>
-                      {item.name}
-                    </h3>
-                  </Link>
-                </div>
+                {/* Title */}
+                <Link
+                  href={`/2/${item.id}`}
+                  style={{ textDecoration: 'none', color: '#1A1A1A' }}
+                >
+                  <h3 style={{ fontSize: 24, fontWeight: 900, margin: 0, lineHeight: 1.2, letterSpacing: '-0.02em', cursor: 'pointer' }}>
+                    {item.name}
+                  </h3>
+                </Link>
 
-                {/* Rating Stars */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div style={{ display: 'flex', gap: 2 }}>
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={14}
-                        style={{
-                          fill: i < Math.round(item.rating) ? '#F59E0B' : '#E5E7EB',
-                          color: i < Math.round(item.rating) ? '#F59E0B' : '#E5E7EB',
-                        }}
-                      />
-                    ))}
-                  </div>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{item.rating.toFixed(1)}</span>
-                  <span style={{ fontSize: 12, color: '#666' }}>({item.reviewsCount} reviews)</span>
-                </div>
-
-                {/* Price Row */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
-                  <span style={{ fontSize: 28, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
+                {/* Price & Discount */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 26, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
                     ${item.price.toFixed(2)}
                   </span>
                   {item.originalPrice && (
-                    <span style={{ fontSize: 15, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
+                    <span style={{ fontSize: 14, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
                       ${item.originalPrice.toFixed(2)}
                     </span>
                   )}
                   {itemDiscount && (
-                    <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 6 }}>
-                      −{itemDiscount}% OFF
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '2px 7px', borderRadius: 4 }}>
+                      −{itemDiscount}%
                     </span>
                   )}
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#16a34a', background: 'rgba(22,163,74,0.12)', padding: '3px 10px', borderRadius: 20, marginLeft: 'auto' }}>
-                    ✓ In Stock
-                  </span>
                 </div>
 
-                {/* Description Snippet */}
-                <p style={{ fontSize: 13, color: '#444', lineHeight: 1.55, margin: '2px 0 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
-                  {item.description}
-                </p>
-
                 {/* Actions */}
-                <div style={{ display: 'flex', gap: 10, marginTop: 6, flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                   <Link
                     href={`/2/${item.id}`}
                     style={{
-                      padding: '12px 22px',
+                      flex: 1,
+                      padding: '11px 18px',
                       background: '#1A1A1A',
                       color: '#fff',
                       borderRadius: 10,
@@ -560,19 +530,20 @@ export default function ShopPage() {
                       fontWeight: 800,
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: 8,
-                      boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+                      justifyContent: 'center',
+                      gap: 6,
+                      boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
                       transition: 'background 0.15s',
                     }}
                   >
-                    <span>Explore Product</span>
-                    <ArrowRight size={15} />
+                    <span>View Piece</span>
+                    <ArrowRight size={14} />
                   </Link>
 
                   <button
                     onClick={() => addToCart(item)}
                     style={{
-                      padding: '12px 18px',
+                      padding: '11px 16px',
                       background: justAdded ? '#16a34a' : '#fff',
                       color: justAdded ? '#fff' : '#1A1A1A',
                       border: '1.5px solid #DCDCDC',
@@ -582,18 +553,19 @@ export default function ShopPage() {
                       cursor: 'pointer',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: 7,
+                      gap: 6,
                       transition: 'all 0.15s',
                     }}
                   >
                     {justAdded ? (
-                      <><Check size={16} /> Added</>
+                      <><Check size={15} /> Added</>
                     ) : (
-                      <><ShoppingBag size={15} /> Quick Add</>
+                      <><ShoppingBag size={14} /> Add</>
                     )}
                   </button>
                 </div>
               </div>
+
 
               {/* Side Floating Next/Prev Overlay Arrows on the Banner */}
               <button
