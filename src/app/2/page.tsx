@@ -85,14 +85,15 @@ export default function ShopPage() {
     [products]
   );
 
-  // Auto-scroll Featured Carousel one-by-one every 4.2s (pauses on hover)
+  // Auto-scroll Featured Carousel one-by-one every 2.6s (pauses on hover)
   useEffect(() => {
     if (featuredProducts.length <= 1 || isCarouselHovered) return;
     const interval = setInterval(() => {
       setFeaturedIndex(prev => (prev + 1) % featuredProducts.length);
-    }, 4200);
+    }, 2600);
     return () => clearInterval(interval);
   }, [featuredProducts.length, isCarouselHovered]);
+
 
 
   const addToCart = (product: Product, qty = 1) => {
