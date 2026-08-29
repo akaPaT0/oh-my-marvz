@@ -447,18 +447,8 @@ export default function ShopPage() {
                   justifyContent: 'space-between',
                 }}
               >
-                {/* Top: Tag, Title, Subtitle */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {/* Tag & Counter */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '4px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                      {item.franchise} SPOTLIGHT
-                    </span>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: '#888' }}>
-                      0{featuredIndex + 1} / 0{featuredProducts.length}
-                    </span>
-                  </div>
-
+                {/* Top: Title & Subtitle */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 6 }}>
                   {/* Title (Fixed height block) */}
                   <Link
                     href={`/2/${item.id}`}
@@ -474,6 +464,7 @@ export default function ShopPage() {
                     {item.subtitle}
                   </p>
                 </div>
+
 
                 {/* Bottom: Price + Action Buttons (Permanently Anchored) */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -665,9 +656,8 @@ export default function ShopPage() {
             ))}
           </div>
 
-          {/* Sort + count */}
+          {/* Sort selection */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 13, color: '#888' }}>{filtered.length} products</span>
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value as any)}
@@ -679,6 +669,7 @@ export default function ShopPage() {
               <option value="rating">Best Rated</option>
             </select>
           </div>
+
         </div>
       </div>
 
