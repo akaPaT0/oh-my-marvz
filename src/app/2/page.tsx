@@ -215,25 +215,6 @@ export default function ShopPage() {
       }}>
         <div className="store-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 12 }}>
 
-          {/* Mobile Menu Icon Button */}
-          <button
-            onClick={() => setMobileMenuOpen(prev => !prev)}
-            aria-label="Toggle navigation menu"
-            className="store-mobile-menu-btn"
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#1A1A1A',
-              cursor: 'pointer',
-              padding: '6px',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 8,
-            }}
-          >
-            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-
           {/* Real Brand Logo */}
           <Link href="/2" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
             <Image
@@ -245,8 +226,6 @@ export default function ShopPage() {
               priority
             />
           </Link>
-
-
 
           {/* Divider */}
           <div className="store-nav-links" style={{ width: 1, height: 20, background: '#E0E0E0', flexShrink: 0 }} />
@@ -277,7 +256,6 @@ export default function ShopPage() {
               </button>
             ))}
           </nav>
-
 
           {/* Spacer */}
           <div style={{ flex: 1 }} />
@@ -325,9 +303,7 @@ export default function ShopPage() {
             )}
           </div>
 
-
           {/* Cart */}
-
           <button
             onClick={() => setCartOpen(true)}
             style={{ display: 'flex', alignItems: 'center', gap: 7, background: '#E23636', color: '#fff', border: 'none', borderRadius: 10, padding: '8px 16px', fontSize: 13, fontWeight: 800, cursor: 'pointer', boxShadow: '0 3px 12px rgba(226,54,54,0.38)', whiteSpace: 'nowrap', transition: 'background 0.15s' }}
@@ -341,6 +317,26 @@ export default function ShopPage() {
                 {cartCount}
               </span>
             )}
+          </button>
+
+          {/* Mobile Hamburger Menu Icon Button (Placed on the Right) */}
+          <button
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+            aria-label="Toggle navigation menu"
+            className="store-mobile-menu-btn"
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#1A1A1A',
+              cursor: 'pointer',
+              padding: '6px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 8,
+              marginLeft: 2,
+            }}
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
           {/* User Profile Avatar (PC only) */}
@@ -381,11 +377,10 @@ export default function ShopPage() {
             </button>
           </div>
 
-
         </div>
       </header>
 
-      {/* ── MOBILE MENU DRAWER ── */}
+      {/* ── MOBILE MENU DRAWER (Slides from Right) ── */}
       {mobileMenuOpen && (
         <div
           style={{
@@ -395,6 +390,7 @@ export default function ShopPage() {
             background: 'rgba(0,0,0,0.55)',
             backdropFilter: 'blur(4px)',
             display: 'flex',
+            justifyContent: 'flex-end',
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
@@ -408,10 +404,11 @@ export default function ShopPage() {
               display: 'flex',
               flexDirection: 'column',
               gap: 22,
-              boxShadow: '6px 0 28px rgba(0,0,0,0.25)',
+              boxShadow: '-6px 0 28px rgba(0,0,0,0.25)',
             }}
             onClick={e => e.stopPropagation()}
           >
+
             {/* Header of Drawer */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #EFEFEF', paddingBottom: 14 }}>
               <Image
