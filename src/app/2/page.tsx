@@ -17,7 +17,6 @@ import {
   Plus,
 } from 'lucide-react';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
-import { ModernProductModal } from '@/components/ModernProductModal';
 import { CartDrawer, CartItem } from '@/components/CartDrawer';
 import { CheckoutModal } from '@/components/CheckoutModal';
 import { ViewSwitcher } from '@/components/ViewSwitcher';
@@ -33,11 +32,11 @@ export default function ShopPage() {
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const [quickView, setQuickView] = useState<Product | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [addedId, setAddedId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
   const addToCart = (product: Product, qty = 1) => {
     setCartItems(prev => {
@@ -249,10 +248,10 @@ export default function ShopPage() {
                 }}
               >
                 {/* Image */}
-                <div
+                <Link
+                  href={`/2/${product.id}`}
                   className="card-image-wrap"
-                  style={{ position: 'relative', aspectRatio: '1', background: '#ECECEC', overflow: 'hidden', cursor: 'pointer' }}
-                  onClick={() => setQuickView(product)}
+                  style={{ position: 'relative', aspectRatio: '1', background: '#ECECEC', overflow: 'hidden', cursor: 'pointer', display: 'block' }}
                 >
                   <Image src={product.image} alt={product.name} fill style={{ objectFit: 'cover', transition: 'transform 0.4s' }} className="card-img" />
 
@@ -298,17 +297,17 @@ export default function ShopPage() {
                       {justAdded ? <><Check size={15} /> Added!</> : <><Plus size={15} /> Add to Cart</>}
                     </button>
                   </div>
-                </div>
+                </Link>
 
                 {/* Info */}
                 <div style={{ padding: '12px 14px 14px', display: 'flex', flexDirection: 'column', gap: 6, flex: 1, borderTop: '1px solid #EBEBEB' }}>
                   <p style={{ fontSize: 11, color: '#B0B0B0', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: 0 }}>{product.subtitle}</p>
-                  <h3
-                    onClick={() => setQuickView(product)}
-                    style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', lineHeight: 1.35, margin: 0, cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                  <Link
+                    href={`/2/${product.id}`}
+                    style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', lineHeight: 1.35, margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textDecoration: 'none' } as React.CSSProperties}
                   >
                     {product.name}
-                  </h3>
+                  </Link>
 
                   {/* Stars */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -386,7 +385,6 @@ export default function ShopPage() {
         .card-image-wrap:hover .card-add-overlay { transform: translateY(0) !important; }
       `}</style>
 
-      <ModernProductModal product={quickView} onClose={() => setQuickView(null)} onAddToCart={addToCart} />
       <CartDrawer
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}

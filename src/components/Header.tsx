@@ -77,9 +77,9 @@ export const Header: React.FC<HeaderProps> = ({
               <img
                 src="/logo.png"
                 alt="OH MY MARVZ"
-                className="h-10 sm:h-18 w-auto object-contain"
+                className="h-10 sm:h-13 w-auto object-contain"
               />
-              <span className="text-[9px] font-black text-black font-mono hidden sm:inline-block border-2 border-black bg-yellow-300 px-2 py-0.5 shadow-[2px_2px_0_#000]">
+              <span className="text-[14px] font-black text-black font-mono hidden sm:inline-block border-2 border-black bg-yellow-300 px-2 py-0.5 shadow-[2px_2px_0_#000]">
                 LEBANON
               </span>
             </Link>
