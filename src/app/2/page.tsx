@@ -31,7 +31,13 @@ import {
   Bell,
   Gift,
   Flame,
+  MessageCircle,
+  Mail,
+  Phone,
+  ExternalLink,
+  Shield,
 } from 'lucide-react';
+
 
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import { CartDrawer, CartItem } from '@/components/CartDrawer';
@@ -1566,36 +1572,248 @@ export default function ShopPage() {
         </div>
       </div>
 
-      {/* ── FOOTER ── */}
-      <footer style={{ background: '#111', color: '#fff', padding: '40px 24px' }}>
-        <div className="store-footer-inner" style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 32 }}>
-          <div>
-            <Image
-              src="/logo.png"
-              alt="Oh My Marvz"
-              width={130}
-              height={36}
-              style={{ objectFit: 'contain', height: 28, width: 'auto', marginBottom: 12, filter: 'brightness(1.1)' }}
-            />
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, marginTop: 0 }}>Lebanon's premier collectibles store. Sourced, verified, delivered.</p>
-          </div>
+      {/* ── MODERN FOOTER ── */}
+      <footer style={{ background: '#0D0D0D', color: '#fff', borderTop: '1px solid #1E1E1E' }}>
+        
+        {/* Top VIP Collector Club Newsletter Strip */}
+        <div style={{ borderBottom: '1px solid #1A1A1A', background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(226,54,54,0.15), transparent 70%)', padding: '48px 24px' }}>
+          <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
+            <div style={{ maxWidth: 520 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(226,54,54,0.12)', border: '1px solid rgba(226,54,54,0.25)', padding: '4px 10px', borderRadius: 999, marginBottom: 12 }}>
+                <Sparkles size={13} color="#E23636" />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#E23636', textTransform: 'uppercase', letterSpacing: '0.05em' }}>VIP Vault Access</span>
+              </div>
+              <h3 style={{ fontSize: 24, fontWeight: 950, margin: '0 0 6px', color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+                Join the Beirut Collector Vault
+              </h3>
+              <p style={{ fontSize: 13.5, color: '#888', margin: 0, lineHeight: 1.5 }}>
+                Get instant WhatsApp & email alerts for rare Marvel drops, One Piece restocks, and secret coupon codes across Lebanon.
+              </p>
+            </div>
 
-          <div>
-            <p style={{ fontWeight: 700, fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>Shop</p>
-            {[['Marvel Collection', '/marvel'], ['Anime Collection', '/anime'], ['Classic View', '/']].map(([label, href]) => (
-              <Link key={href} href={href} style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: 13, textDecoration: 'none', marginBottom: 8 }}>{label}</Link>
-            ))}
-          </div>
-          <div>
-            <p style={{ fontWeight: 700, fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>Info</p>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 2, margin: 0 }}>📍 BAU Beirut pickup<br />🚚 Lebanon-wide delivery<br />✅ 100% authentic</p>
+            {/* Newsletter Input Box */}
+            <div style={{ display: 'flex', gap: 8, width: '100%', maxWidth: 420 }}>
+              <div style={{ position: 'relative', flex: 1 }}>
+                <Mail size={15} color="#666" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }} />
+                <input
+                  type="text"
+                  placeholder="WhatsApp (+961) or Email..."
+                  style={{
+                    width: '100%',
+                    background: '#1A1A1A',
+                    border: '1px solid #2E2E2E',
+                    borderRadius: 12,
+                    padding: '12px 14px 12px 38px',
+                    fontSize: 13,
+                    color: '#fff',
+                    outline: 'none',
+                    transition: 'border-color 0.15s',
+                  }}
+                  onFocus={e => (e.currentTarget.style.borderColor = '#E23636')}
+                  onBlur={e => (e.currentTarget.style.borderColor = '#2E2E2E')}
+                />
+              </div>
+              <button
+                style={{
+                  background: '#E23636',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 12,
+                  padding: '12px 20px',
+                  fontSize: 13,
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  boxShadow: '0 4px 14px rgba(226,54,54,0.4)',
+                  transition: 'background 0.15s',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = '#C52222')}
+                onMouseLeave={e => (e.currentTarget.style.background = '#E23636')}
+              >
+                Join Vault
+              </button>
+            </div>
           </div>
         </div>
-        <div style={{ maxWidth: 1280, margin: '24px auto 0', paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'rgba(255,255,255,0.25)' }}>
-          <span>© 2025 Oh My Marvz</span>
-          <span>Powered by Meta Pylon</span>
+
+        {/* Main 4-Column Directory Grid */}
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 24px 40px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 40 }}>
+            
+            {/* Col 1: Brand & Mission */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <Link href="/2" style={{ display: 'inline-block', textDecoration: 'none' }}>
+                <Image
+                  src="/logo.png"
+                  alt="Oh My Marvz"
+                  width={150}
+                  height={42}
+                  style={{ objectFit: 'contain', height: 34, width: 'auto', filter: 'brightness(1.1)' }}
+                />
+              </Link>
+              <p style={{ fontSize: 13, color: '#888', lineHeight: 1.65, margin: 0 }}>
+                Lebanon's premier destination for authentic Marvel statues, Anime scale figures, metal keychains, and limited collector editions.
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 4 }}>
+                <a
+                  href="https://wa.me/96170123456"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    background: '#1A1A1A',
+                    border: '1px solid #2B2B2B',
+                    color: '#25D366',
+                    padding: '6px 12px',
+                    borderRadius: 8,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = '#25D366')}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = '#2B2B2B')}
+                >
+                  <MessageCircle size={14} />
+                  <span>WhatsApp Support</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Col 2: Universes & Categories */}
+            <div>
+              <p style={{ fontWeight: 800, fontSize: 12, color: '#E23636', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 16px' }}>
+                Explore Universes
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {[
+                  ['Marvel Cinematic & Comics', () => { setActiveFranchise('Marvel'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }],
+                  ['Anime & Manga Vault', () => { setActiveFranchise('Anime'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }],
+                  ['High-Detail Figures', () => { setActiveCategory('Figurines'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }],
+                  ['Metal Keychains & Props', () => { setActiveCategory('Keychains'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }],
+                  ['Anime Stickers & Phone Pins', () => { setActiveCategory('Stickers'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }],
+                  ['Funko Pops & Desk Toys', () => { setActiveCategory('Funko Pops'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }],
+                ].map(([label, action], i) => (
+                  <button
+                    key={i}
+                    onClick={action as any}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      padding: 0,
+                      color: '#888',
+                      fontSize: 13,
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      transition: 'color 0.15s',
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#FFFFFF')}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#888')}
+                  >
+                    {label as string}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Col 3: Lebanese Fulfillment & Trust */}
+            <div>
+              <p style={{ fontWeight: 800, fontSize: 12, color: '#E23636', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 16px' }}>
+                Lebanon Logistics
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 13, color: '#888' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                  <MapPin size={16} color="#E23636" style={{ flexShrink: 0, marginTop: 2 }} />
+                  <div>
+                    <strong style={{ color: '#fff' }}>BAU Beirut Campus Pickup:</strong>
+                    <p style={{ margin: '2px 0 0', fontSize: 12, color: '#777' }}>Free daily pickup at Beirut Arab University main gate.</p>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                  <Truck size={16} color="#E23636" style={{ flexShrink: 0, marginTop: 2 }} />
+                  <div>
+                    <strong style={{ color: '#fff' }}>Doorstep Delivery:</strong>
+                    <p style={{ margin: '2px 0 0', fontSize: 12, color: '#777' }}>24-48h fast dispatch across Beirut, Metn, Tripoli & South.</p>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                  <ShieldCheck size={16} color="#E23636" style={{ flexShrink: 0, marginTop: 2 }} />
+                  <div>
+                    <strong style={{ color: '#fff' }}>100% Quality Inspected:</strong>
+                    <p style={{ margin: '2px 0 0', fontSize: 12, color: '#777' }}>Every piece physically checked before packaging.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Col 4: Quick Links & Store Views */}
+            <div>
+              <p style={{ fontWeight: 800, fontSize: 12, color: '#E23636', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 16px' }}>
+                Store Directory
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <Link href="/" style={{ color: '#888', fontSize: 13, textDecoration: 'none', transition: 'color 0.15s' }}>
+                  Switch to Classic Comic View →
+                </Link>
+                <Link href="/marvel" style={{ color: '#888', fontSize: 13, textDecoration: 'none', transition: 'color 0.15s' }}>
+                  Marvel Dedicated Vault →
+                </Link>
+                <Link href="/anime" style={{ color: '#888', fontSize: 13, textDecoration: 'none', transition: 'color 0.15s' }}>
+                  Anime Dedicated Vault →
+                </Link>
+                <Link href="/meta" style={{ color: '#888', fontSize: 13, textDecoration: 'none', transition: 'color 0.15s' }}>
+                  Enterprise Meta Portal →
+                </Link>
+                <button
+                  onClick={() => setCartOpen(true)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    color: '#888',
+                    fontSize: 13,
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    transition: 'color 0.15s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#888')}
+                >
+                  View My Cart ({cartCount}) →
+                </button>
+              </div>
+
+              {/* Payment Support Badge */}
+              <div style={{ marginTop: 20, padding: '12px 14px', background: '#141414', border: '1px solid #222', borderRadius: 10 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#777', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: 6 }}>
+                  Accepted in Lebanon
+                </span>
+                <p style={{ fontSize: 11.5, color: '#bbb', margin: 0, lineHeight: 1.4 }}>
+                  💵 Cash on Delivery (USD / LBP) • 📱 Whish Money • OMT Pay
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Bottom Copyright Bar */}
+        <div style={{ borderTop: '1px solid #1A1A1A', padding: '20px 24px', background: '#080808' }}>
+          <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, fontSize: 12, color: '#555' }}>
+            <span>© 2025 OH MY MARVZ LEBANON • ALL RIGHTS RESERVED</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <span>📍 Beirut, Lebanon</span>
+              <span>•</span>
+              <span style={{ color: '#777' }}>Powered by Meta Pylon</span>
+            </div>
+          </div>
         </div>
       </footer>
+
 
       {/* Card hover styles */}
       <style>{`
