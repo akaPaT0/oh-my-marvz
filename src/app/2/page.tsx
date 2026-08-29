@@ -1551,24 +1551,8 @@ export default function ShopPage() {
         )}
       </div>
 
-      {/* ── TRUST ROW ── */}
-      <div style={{ background: '#fff', borderTop: '1.5px solid #E2E2E2', boxShadow: '0 -2px 8px rgba(0,0,0,0.04)' }}>
-        <div className="store-trust-strip" style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 24px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, textAlign: 'center' }}>
-          {[
-            { icon: Truck, title: 'Lebanon-Wide Delivery', desc: '24–48h to your door' },
-            { icon: ShieldCheck, title: '100% Authenticated', desc: 'Every item verified' },
-            { icon: MapPin, title: 'BAU Beirut Pickup', desc: 'Free campus collection' },
-          ].map(({ icon: Icon, title, desc }) => (
-            <div key={title} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-              <Icon size={22} color="#C96A00" />
-              <p style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A', margin: 0 }}>{title}</p>
-              <p style={{ fontSize: 12, color: '#999', margin: 0 }}>{desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* ── MODERN FOOTER ── */}
+
       <footer style={{ background: '#0D0D0D', color: '#fff', borderTop: '1px solid #1E1E1E' }}>
         
         {/* Main 4-Column Directory Grid */}
