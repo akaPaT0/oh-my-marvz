@@ -436,12 +436,10 @@ export default function ShopPage() {
                       <Image src="/avatar.png" alt="Pat" width={44} height={44} style={{ objectFit: 'cover' }} />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span style={{ fontSize: 14, fontWeight: 900, color: '#111' }}>Pat</span>
-                        <span style={{ fontSize: 9.5, fontWeight: 800, background: '#FFE8E8', color: '#E23636', padding: '2px 6px', borderRadius: 6, textTransform: 'uppercase' }}>VIP</span>
-                      </div>
+                      <span style={{ fontSize: 14, fontWeight: 900, color: '#111' }}>Pat</span>
                       <span style={{ fontSize: 12, color: '#777', fontWeight: 500 }}>@collector_pat</span>
                     </div>
+
                   </div>
 
                   {/* User Menu Buttons */}
@@ -565,12 +563,10 @@ export default function ShopPage() {
                   />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ fontSize: 14, fontWeight: 900, color: '#111' }}>Pat</span>
-                    <span style={{ fontSize: 9.5, fontWeight: 800, background: '#FFE8E8', color: '#E23636', padding: '2px 6px', borderRadius: 6, textTransform: 'uppercase' }}>VIP</span>
-                  </div>
+                  <span style={{ fontSize: 14, fontWeight: 900, color: '#111' }}>Pat</span>
                   <span style={{ fontSize: 12, color: '#777', fontWeight: 500 }}>@collector_pat</span>
                 </div>
+
               </div>
 
               <button
@@ -1575,70 +1571,10 @@ export default function ShopPage() {
       {/* ── MODERN FOOTER ── */}
       <footer style={{ background: '#0D0D0D', color: '#fff', borderTop: '1px solid #1E1E1E' }}>
         
-        {/* Top VIP Collector Club Newsletter Strip */}
-        <div style={{ borderBottom: '1px solid #1A1A1A', background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(226,54,54,0.15), transparent 70%)', padding: '48px 24px' }}>
-          <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
-            <div style={{ maxWidth: 520 }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(226,54,54,0.12)', border: '1px solid rgba(226,54,54,0.25)', padding: '4px 10px', borderRadius: 999, marginBottom: 12 }}>
-                <Sparkles size={13} color="#E23636" />
-                <span style={{ fontSize: 11, fontWeight: 800, color: '#E23636', textTransform: 'uppercase', letterSpacing: '0.05em' }}>VIP Vault Access</span>
-              </div>
-              <h3 style={{ fontSize: 24, fontWeight: 950, margin: '0 0 6px', color: '#FFFFFF', letterSpacing: '-0.02em' }}>
-                Join the Beirut Collector Vault
-              </h3>
-              <p style={{ fontSize: 13.5, color: '#888', margin: 0, lineHeight: 1.5 }}>
-                Get instant WhatsApp & email alerts for rare Marvel drops, One Piece restocks, and secret coupon codes across Lebanon.
-              </p>
-            </div>
-
-            {/* Newsletter Input Box */}
-            <div style={{ display: 'flex', gap: 8, width: '100%', maxWidth: 420 }}>
-              <div style={{ position: 'relative', flex: 1 }}>
-                <Mail size={15} color="#666" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }} />
-                <input
-                  type="text"
-                  placeholder="WhatsApp (+961) or Email..."
-                  style={{
-                    width: '100%',
-                    background: '#1A1A1A',
-                    border: '1px solid #2E2E2E',
-                    borderRadius: 12,
-                    padding: '12px 14px 12px 38px',
-                    fontSize: 13,
-                    color: '#fff',
-                    outline: 'none',
-                    transition: 'border-color 0.15s',
-                  }}
-                  onFocus={e => (e.currentTarget.style.borderColor = '#E23636')}
-                  onBlur={e => (e.currentTarget.style.borderColor = '#2E2E2E')}
-                />
-              </div>
-              <button
-                style={{
-                  background: '#E23636',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: 12,
-                  padding: '12px 20px',
-                  fontSize: 13,
-                  fontWeight: 800,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  boxShadow: '0 4px 14px rgba(226,54,54,0.4)',
-                  transition: 'background 0.15s',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#C52222')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#E23636')}
-              >
-                Join Vault
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Main 4-Column Directory Grid */}
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 24px 40px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px 24px 40px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 40 }}>
+
             
             {/* Col 1: Brand & Mission */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
