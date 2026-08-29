@@ -13,6 +13,8 @@ import { CartDrawer, CartItem } from '@/components/CartDrawer';
 import { CheckoutModal } from '@/components/CheckoutModal';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import { ArrowUpDown } from 'lucide-react';
+import { ViewSwitcher } from '@/components/ViewSwitcher';
+
 
 export default function Home() {
   const [products] = useState<Product[]>(INITIAL_PRODUCTS);
@@ -190,6 +192,7 @@ export default function Home() {
         items={cartItems}
         onClearCart={() => setCartItems([])}
       />
+      <ViewSwitcher />
     </div>
   );
 }

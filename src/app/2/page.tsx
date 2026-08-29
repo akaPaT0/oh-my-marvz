@@ -20,6 +20,8 @@ import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import { ModernProductModal } from '@/components/ModernProductModal';
 import { CartDrawer, CartItem } from '@/components/CartDrawer';
 import { CheckoutModal } from '@/components/CheckoutModal';
+import { ViewSwitcher } from '@/components/ViewSwitcher';
+
 
 const CATEGORIES = [
   { id: 'all', label: 'All Products' },
@@ -554,6 +556,7 @@ export default function ModernShop() {
         items={cartItems}
         onClearCart={() => setCartItems([])}
       />
+      <ViewSwitcher />
     </div>
   );
 }
