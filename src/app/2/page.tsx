@@ -209,10 +209,15 @@ export default function ShopPage() {
                   Explore Full Vault
                 </button>
                 <button
-                  onClick={() => { setActiveFranchise('Marvel'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }}
-                  style={{ padding: '13px 24px', background: '#fff', color: '#1A1A1A', border: '1.5px solid #DCDCDC', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer', transition: 'border-color 0.15s' }}
+                  onClick={() => {
+                    setActiveFranchise('All');
+                    setActiveCategory('All');
+                    document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  style={{ padding: '13px 24px', background: '#fff', color: '#1A1A1A', border: '1.5px solid #DCDCDC', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer', transition: 'border-color 0.15s', display: 'inline-flex', alignItems: 'center', gap: 6 }}
                 >
-                  Marvel Grails →
+                  <span>Discover New Drops</span>
+                  <span style={{ fontSize: 16 }}>→</span>
                 </button>
               </div>
 
