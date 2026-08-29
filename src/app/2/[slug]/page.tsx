@@ -56,30 +56,42 @@ export default function ProductPage() {
 
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: '#F4F4F4', minHeight: '100vh', color: '#1A1A1A' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .slug-header-inner { padding: 0 16px !important; }
+          .slug-breadcrumb { padding: 10px 16px !important; font-size: 12px !important; overflow-x: auto; white-space: nowrap; }
+          .slug-main-grid { grid-template-columns: 1fr !important; gap: 24px !important; padding: 0 16px 48px !important; }
+          .slug-img-col { position: static !important; }
+          .slug-related-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+          .slug-related-inner { padding: 0 16px !important; }
+          .slug-h1 { font-size: 22px !important; }
+        }
+      `}</style>
 
       {/* ── HEADER ── */}
       <header style={{ position: 'sticky', top: 0, zIndex: 50, background: '#fff', borderBottom: '1px solid #E8E8E8', boxShadow: '0 2px 16px rgba(0,0,0,0.08)' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 16 }}>
+        <div className="slug-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 16 }}>
           <Link href="/2" style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#555', textDecoration: 'none', fontSize: 14, fontWeight: 600, transition: 'color 0.15s' }}>
             <ArrowLeft size={16} />
-            Back to shop
+            <span>Shop</span>
           </Link>
           <div style={{ width: 1, height: 20, background: '#E0E0E0' }} />
           <Link href="/2" style={{ fontWeight: 900, fontSize: 16, letterSpacing: '-0.03em', color: '#1A1A1A', textDecoration: 'none' }}>
             OH MY MARVZ
           </Link>
           <div style={{ flex: 1 }} />
-          <button
-            style={{ display: 'flex', alignItems: 'center', gap: 7, background: '#1A1A1A', color: '#fff', border: 'none', borderRadius: 10, padding: '8px 16px', fontSize: 13, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
+          <Link
+            href="/2"
+            style={{ display: 'flex', alignItems: 'center', gap: 7, background: '#1A1A1A', color: '#fff', textDecoration: 'none', borderRadius: 10, padding: '8px 16px', fontSize: 13, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
           >
             <ShoppingCart size={15} />
-            Cart
-          </button>
+            <span>Cart</span>
+          </Link>
         </div>
       </header>
 
       {/* ── BREADCRUMB ── */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '14px 28px', display: 'flex', gap: 8, fontSize: 13, color: '#999', alignItems: 'center' }}>
+      <div className="slug-breadcrumb" style={{ maxWidth: 1280, margin: '0 auto', padding: '14px 28px', display: 'flex', gap: 8, fontSize: 13, color: '#999', alignItems: 'center' }}>
         <Link href="/2" style={{ color: '#999', textDecoration: 'none' }}>Shop</Link>
         <span>/</span>
         <span style={{ color: '#999', textTransform: 'capitalize' }}>{product.franchise}</span>
@@ -88,10 +100,10 @@ export default function ProductPage() {
       </div>
 
       {/* ── PRODUCT BODY ── */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px 60px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start' }}>
+      <div className="slug-main-grid" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px 60px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start' }}>
 
         {/* Left: Images */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'sticky', top: 82 }}>
+        <div className="slug-img-col" style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'sticky', top: 82 }}>
           {/* Main image */}
           <div style={{ position: 'relative', aspectRatio: '1', background: '#ECECEC', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.1)' }}>
             <img
@@ -141,7 +153,7 @@ export default function ProductPage() {
           {/* Name */}
           <div>
             <p style={{ fontSize: 12, color: '#B0B0B0', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: '0 0 8px' }}>{product.subtitle}</p>
-            <h1 style={{ fontSize: 28, fontWeight: 900, color: '#1A1A1A', margin: 0, lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+            <h1 className="slug-h1" style={{ fontSize: 28, fontWeight: 900, color: '#1A1A1A', margin: 0, lineHeight: 1.2, letterSpacing: '-0.02em' }}>
               {product.name}
             </h1>
           </div>
@@ -248,9 +260,9 @@ export default function ProductPage() {
       {/* ── RELATED PRODUCTS ── */}
       {related.length > 0 && (
         <div style={{ background: '#fff', borderTop: '1.5px solid #E8E8E8', padding: '40px 0' }}>
-          <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px' }}>
+          <div className="slug-related-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px' }}>
             <h2 style={{ fontSize: 20, fontWeight: 800, color: '#1A1A1A', margin: '0 0 20px', letterSpacing: '-0.02em' }}>More from {product.franchise === 'marvel' ? 'Marvel' : 'Anime'}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+            <div className="slug-related-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
               {related.map(p => {
                 const disc = p.originalPrice ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : null;
                 return (
@@ -281,3 +293,4 @@ export default function ProductPage() {
     </div>
   );
 }
+

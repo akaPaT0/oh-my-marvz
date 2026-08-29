@@ -90,6 +90,50 @@ export default function ShopPage() {
       </div>
 
       {/* ── HEADER ── */}
+      <style>{`
+        /* Desktop base card hover */
+        .product-card:hover .card-img { transform: scale(1.05); }
+        .product-card:hover .card-add-overlay { transform: translateY(0); }
+        .product-card:hover { border-color: #1A1A1A; }
+
+        /* Mobile Responsive Adjustments (<= 768px) */
+        @media (max-width: 768px) {
+          .store-header-inner { padding: 0 16px !important; gap: 8px !important; }
+          .store-nav-links { display: none !important; }
+          .store-hero-wrap { padding: 28px 16px 36px !important; }
+          .store-hero-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+          .store-hero-h1 { font-size: 30px !important; line-height: 1.15 !important; }
+          .store-hero-desc { font-size: 14px !important; }
+          .store-hero-cards { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+          .store-hero-card-tile { min-height: 180px !important; padding: 14px 12px !important; }
+          .store-hero-card-desc { display: none !important; }
+          .store-hero-stats { gap: 14px !important; }
+          .store-featured-wrap { padding: 20px 16px 0 !important; }
+          .store-featured-banner { min-height: 400px !important; }
+          .store-featured-img { transform: translateX(0px) !important; }
+          .store-featured-content { padding: 24px 20px !important; max-width: 100% !important; height: auto !important; min-height: 350px !important; }
+          .store-featured-title { font-size: 22px !important; min-height: auto !important; }
+          .store-featured-arrows { display: none !important; }
+          .store-collection-header-inner { padding: 12px 16px !important; }
+          .store-filter-pills { overflow-x: auto !important; flex-wrap: nowrap !important; max-width: 100% !important; padding-bottom: 4px !important; -webkit-overflow-scrolling: touch !important; }
+          .store-filter-pills::-webkit-scrollbar { display: none; }
+          .store-product-grid-wrap { padding: 20px 16px 60px !important; }
+          .store-product-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+          .store-product-card-body { padding: 10px 10px 12px !important; }
+          .card-add-overlay { position: static !important; transform: translateY(0) !important; padding: 8px 10px 10px !important; }
+          .store-trust-strip { grid-template-columns: 1fr !important; padding: 24px 16px !important; }
+          .store-footer-inner { padding: 36px 16px !important; flex-direction: column !important; gap: 24px !important; text-align: center !important; }
+          .store-footer-links { justify-content: center !important; }
+        }
+
+        @media (max-width: 420px) {
+          .store-hero-cards { grid-template-columns: 1fr !important; }
+          .store-featured-actions { flex-direction: column !important; gap: 8px !important; }
+          .store-featured-btn-view, .store-featured-btn-add { width: 100% !important; }
+        }
+      `}</style>
+
+      {/* ── HEADER ── */}
       <header style={{
         position: 'sticky',
         top: 0,
@@ -98,7 +142,7 @@ export default function ShopPage() {
         borderBottom: '1px solid #E8E8E8',
         boxShadow: '0 2px 16px rgba(0,0,0,0.08)',
       }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 12 }}>
+        <div className="store-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 12 }}>
 
           {/* Logo */}
           <Link href="/2" style={{ fontWeight: 900, fontSize: 16, letterSpacing: '-0.03em', color: '#1A1A1A', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
@@ -106,10 +150,10 @@ export default function ShopPage() {
           </Link>
 
           {/* Divider */}
-          <div style={{ width: 1, height: 20, background: '#E0E0E0', flexShrink: 0 }} />
+          <div className="store-nav-links" style={{ width: 1, height: 20, background: '#E0E0E0', flexShrink: 0 }} />
 
           {/* Nav links */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <nav className="store-nav-links" style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             {[
               { id: 'All', label: 'All' },
               { id: 'Marvel', label: 'Marvel' },
@@ -189,19 +233,15 @@ export default function ShopPage() {
         </div>
       </header>
 
-      {/* ── HERO (Clean Store Light Theme) ── */}
-      <div style={{ background: '#fff', borderBottom: '1.5px solid #E8E8E8', boxShadow: '0 2px 12px rgba(0,0,0,0.03)' }}>
+      {/* ── HERO ── */}
+      <div className="store-hero-wrap" style={{ background: '#fff', borderBottom: '1.5px solid #E8E8E8' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 28px 56px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, alignItems: 'center' }}>
-            
-            {/* Left: Copy & Actions */}
+          <div className="store-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, alignItems: 'center' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h1 style={{ fontSize: 46, fontWeight: 900, color: '#1A1A1A', margin: 0, lineHeight: 1.1, letterSpacing: '-0.03em' }}>
+              <h1 className="store-hero-h1" style={{ fontSize: 46, fontWeight: 900, color: '#1A1A1A', margin: 0, lineHeight: 1.1, letterSpacing: '-0.03em' }}>
                 Marvel & Anime Collectibles, Delivered.
               </h1>
-
-
-              <p style={{ fontSize: 15, color: '#666', margin: 0, lineHeight: 1.65, maxWidth: 480 }}>
+              <p className="store-hero-desc" style={{ fontSize: 15, color: '#666', margin: 0, lineHeight: 1.65, maxWidth: 480 }}>
                 High-articulation figures, collector statues, metal keychains & sticker packs. Verified authentic with Lebanon-wide doorstep delivery or BAU Beirut pickup.
               </p>
 
@@ -227,7 +267,7 @@ export default function ShopPage() {
               </div>
 
               {/* Highlights bar */}
-              <div style={{ display: 'flex', gap: 24, paddingTop: 18, borderTop: '1px solid #EFEFEF', flexWrap: 'wrap' }}>
+              <div className="store-hero-stats" style={{ display: 'flex', gap: 24, paddingTop: 18, borderTop: '1px solid #EFEFEF', flexWrap: 'wrap' }}>
                 <div>
                   <p style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0 }}>4.9 ★</p>
                   <p style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Customer Rating</p>
@@ -246,18 +286,16 @@ export default function ShopPage() {
             </div>
 
             {/* Right: Marvel & Anime Franchise Collection Cards with Authentic Artwork */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="store-hero-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {[
                 {
                   id: 'Marvel',
-                  tag: 'MARVEL UNIVERSE',
                   name: 'Marvel Series',
                   desc: 'Avengers, Iron Man, Spider-Man & X-Men',
                   img: '/banners/marvel_comic_art.jpg',
                 },
                 {
                   id: 'Anime',
-                  tag: 'ANIME COLLECTION',
                   name: 'Anime Series',
                   desc: 'One Piece, Naruto, Hunter x Hunter & more',
                   img: '/banners/anime_collage.jpg',
@@ -266,6 +304,7 @@ export default function ShopPage() {
 
                 <button
                   key={item.id}
+                  className="store-hero-card-tile"
                   onClick={() => {
                     setActiveFranchise(item.id);
                     document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
@@ -315,10 +354,10 @@ export default function ShopPage() {
 
                   {/* Direct Text Overlay */}
                   <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: 4 }}>
-                    <p style={{ fontSize: 18, fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.02em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+                    <p className="store-hero-card-title" style={{ fontSize: 18, fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.02em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
                       {item.name}
                     </p>
-                    <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', margin: '0 0 6px', lineHeight: 1.35, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+                    <p className="store-hero-card-desc" style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', margin: '0 0 6px', lineHeight: 1.35, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                       {item.desc}
                     </p>
                     <span style={{ fontSize: 13, fontWeight: 800, color: '#fff', display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
@@ -330,12 +369,10 @@ export default function ShopPage() {
             </div>
 
 
-
-
-
           </div>
         </div>
       </div>
+
 
       {/* ── FEATURED SPOTLIGHT CAROUSEL (Image BG + Blur Glass Overlay) ── */}
       {featuredProducts.length > 0 && (() => {
@@ -345,11 +382,8 @@ export default function ShopPage() {
           : null;
         const justAdded = addedId === item.id;
 
-        // 👉 ADJUST THIS VALUE TO SHIFT IMAGE RIGHT (+) OR LEFT (-) IN PIXELS:
-        const IMAGE_SHIFT_X_PX = 80; 
-
         return (
-          <div style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 28px 0' }}>
+          <div className="store-featured-wrap" style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 28px 0' }}>
             {/* Top Bar with Header & Explore Button */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
               <div>
@@ -393,9 +427,9 @@ export default function ShopPage() {
               </div>
             </div>
 
-
-            {/* Featured Banner: Cropped Product Image as Full Background + Frosted Blur Glass Card */}
+            {/* Featured Banner: Cropped Product Image as Full Background + Soft Gradient Scrim */}
             <div
+              className="store-featured-banner"
               style={{
                 position: 'relative',
                 borderRadius: 22,
@@ -408,17 +442,18 @@ export default function ShopPage() {
                 background: '#ECECEC',
               }}
             >
-              {/* Full Background Product Image with Adjustable Shift */}
+              {/* Full Background Product Image */}
               <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
                   priority
+                  className="store-featured-img"
                   style={{
                     objectFit: 'cover',
                     objectPosition: 'center 15%',
-                    transform: `translateX(${110}px)`, // <-- Shift image horizontally
+                    transform: 'translateX(110px)',
                     transition: 'all 0.4s ease',
                   }}
                 />
@@ -436,6 +471,7 @@ export default function ShopPage() {
 
               {/* Direct Content Overlay with Anchored Bottom Action Area */}
               <div
+                className="store-featured-content"
                 style={{
                   position: 'relative',
                   zIndex: 2,
@@ -449,12 +485,12 @@ export default function ShopPage() {
               >
                 {/* Top: Title & Subtitle */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 6 }}>
-                  {/* Title (Fixed height block) */}
+                  {/* Title */}
                   <Link
                     href={`/2/${item.id}`}
                     style={{ textDecoration: 'none', color: '#1A1A1A' }}
                   >
-                    <h3 style={{ fontSize: 30, fontWeight: 900, margin: 0, lineHeight: 1.18, letterSpacing: '-0.03em', cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: 72 } as React.CSSProperties}>
+                    <h3 className="store-featured-title" style={{ fontSize: 30, fontWeight: 900, margin: 0, lineHeight: 1.18, letterSpacing: '-0.03em', cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: 72 } as React.CSSProperties}>
                       {item.name}
                     </h3>
                   </Link>
@@ -464,7 +500,6 @@ export default function ShopPage() {
                     {item.subtitle}
                   </p>
                 </div>
-
 
                 {/* Bottom: Price + Action Buttons (Permanently Anchored) */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -485,10 +520,11 @@ export default function ShopPage() {
                     )}
                   </div>
 
-                  {/* Actions (Fixed Dimensions, Permanently Anchored) */}
-                  <div style={{ display: 'flex', gap: 12 }}>
+                  {/* Actions */}
+                  <div className="store-featured-actions" style={{ display: 'flex', gap: 12 }}>
                     <Link
                       href={`/2/${item.id}`}
+                      className="store-featured-btn-view"
                       style={{
                         width: 145,
                         height: 46,
@@ -513,6 +549,7 @@ export default function ShopPage() {
 
                     <button
                       onClick={() => addToCart(item)}
+                      className="store-featured-btn-add"
                       style={{
                         width: 135,
                         height: 46,
@@ -542,13 +579,11 @@ export default function ShopPage() {
                 </div>
               </div>
 
-
-
-
-              {/* Side Floating Next/Prev Overlay Arrows on the Banner */}
+              {/* Side Floating Next/Prev Overlay Arrows */}
               <button
                 onClick={() => setFeaturedIndex(prev => (prev === 0 ? featuredProducts.length - 1 : prev - 1))}
                 aria-label="Previous slide"
+                className="store-featured-arrows"
                 style={{
                   position: 'absolute',
                   left: 12,
@@ -575,6 +610,7 @@ export default function ShopPage() {
               <button
                 onClick={() => setFeaturedIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1))}
                 aria-label="Next slide"
+                className="store-featured-arrows"
                 style={{
                   position: 'absolute',
                   right: 18,
@@ -623,17 +659,12 @@ export default function ShopPage() {
         );
       })()}
 
-
-
-
       {/* ── COLLECTION HEADER ── */}
       <div id="shop-grid" style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginTop: 28 }}>
-
-
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 24px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, justifyContent: 'space-between' }}>
+        <div className="store-collection-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 24px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, justifyContent: 'space-between' }}>
 
           {/* Category filter pills */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          <div className="store-filter-pills" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
@@ -649,6 +680,7 @@ export default function ShopPage() {
                   cursor: 'pointer',
                   transition: 'all 0.15s',
                   boxShadow: activeCategory === cat ? '0 2px 8px rgba(0,0,0,0.15)' : 'none',
+                  flexShrink: 0,
                 }}
               >
                 {cat}
@@ -674,8 +706,8 @@ export default function ShopPage() {
       </div>
 
       {/* ── PRODUCT GRID ── */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 24px 60px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20 }}>
+      <div className="store-product-grid-wrap" style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 24px 60px' }}>
+        <div className="store-product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20 }}>
           {filtered.map(product => {
             const wishlisted = wishlist.includes(product.id);
             const justAdded = addedId === product.id;
@@ -750,7 +782,7 @@ export default function ShopPage() {
                 </Link>
 
                 {/* Info */}
-                <div style={{ padding: '12px 14px 14px', display: 'flex', flexDirection: 'column', gap: 6, flex: 1, borderTop: '1px solid #EBEBEB' }}>
+                <div className="store-product-card-body" style={{ padding: '12px 14px 14px', display: 'flex', flexDirection: 'column', gap: 6, flex: 1, borderTop: '1px solid #EBEBEB' }}>
                   <p style={{ fontSize: 11, color: '#B0B0B0', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: 0 }}>{product.subtitle}</p>
                   <Link
                     href={`/2/${product.id}`}
@@ -790,7 +822,7 @@ export default function ShopPage() {
 
       {/* ── TRUST ROW ── */}
       <div style={{ background: '#fff', borderTop: '1.5px solid #E2E2E2', boxShadow: '0 -2px 8px rgba(0,0,0,0.04)' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 24px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, textAlign: 'center' }}>
+        <div className="store-trust-strip" style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 24px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, textAlign: 'center' }}>
           {[
             { icon: Truck, title: 'Lebanon-Wide Delivery', desc: '24–48h to your door' },
             { icon: ShieldCheck, title: '100% Authenticated', desc: 'Every item verified' },
@@ -807,7 +839,7 @@ export default function ShopPage() {
 
       {/* ── FOOTER ── */}
       <footer style={{ background: '#111', color: '#fff', padding: '40px 24px' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 32 }}>
+        <div className="store-footer-inner" style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 32 }}>
           <div>
             <p style={{ fontWeight: 900, fontSize: 15, marginBottom: 8 }}>OH MY MARVZ</p>
             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, marginTop: 0 }}>Lebanon's premier collectibles store. Sourced, verified, delivered.</p>
