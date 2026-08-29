@@ -253,7 +253,7 @@ export default function ShopPage() {
                   tag: 'MARVEL UNIVERSE',
                   name: 'Marvel Collection',
                   desc: 'Avengers, Spider-Man, Deadpool & MCU',
-                  img: '/products/avengers_stickers.png',
+                  img: '/banners/marvel_banner.jpg',
                   accent: '#DC2626',
                 },
                 {
@@ -261,10 +261,11 @@ export default function ShopPage() {
                   tag: 'ANIME COLLECTION',
                   name: 'Anime Collection',
                   desc: 'One Piece, Demon Slayer, Naruto & more',
-                  img: '/products/animemix_stickers.png',
+                  img: '/banners/anime_banner.jpg',
                   accent: '#7C3AED',
                 }
               ].map(item => (
+
                 <button
                   key={item.id}
                   onClick={() => {
