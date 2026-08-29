@@ -327,6 +327,9 @@ export default function ShopPage() {
           : null;
         const justAdded = addedId === item.id;
 
+        // 👉 ADJUST THIS VALUE TO SHIFT IMAGE RIGHT (+) OR LEFT (-) IN PIXELS:
+        const IMAGE_SHIFT_X_PX = 80; 
+
         return (
           <div style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 28px 0' }}>
             {/* Top Bar with Header & Swiper Controls */}
@@ -436,7 +439,7 @@ export default function ShopPage() {
                 background: '#ECECEC',
               }}
             >
-              {/* Full Background Product Image with Proper Top Focal Point */}
+              {/* Full Background Product Image with Adjustable Shift */}
               <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
                 <Image
                   src={item.image}
@@ -446,15 +449,17 @@ export default function ShopPage() {
                   style={{
                     objectFit: 'cover',
                     objectPosition: 'center 15%',
+                    transform: `translateX(${IMAGE_SHIFT_X_PX}px)`, // <-- Shift image horizontally
                     transition: 'all 0.4s ease',
                   }}
                 />
+
                 {/* Soft gradient fade on the left for crystal clear typography */}
                 <div
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.94) 38%, rgba(255,255,255,0.55) 70%, transparent 100%)',
+                    background: 'linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.94) 30%, rgba(255,255,255,0.55) 50%, transparent 100%)',
                     pointerEvents: 'none',
                   }}
                 />
