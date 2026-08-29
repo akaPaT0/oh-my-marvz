@@ -165,12 +165,9 @@ export default function ShopPage() {
           .store-featured-arrows { display: none !important; }
           .store-featured-dots { bottom: 8px !important; right: 10px !important; padding: 3px 8px !important; }
 
-          .store-collection-header-inner { padding: 12px 14px !important; width: 100% !important; flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+          .store-collection-header-inner { padding: 12px 14px !important; width: 100% !important; flex-direction: row !important; align-items: center !important; gap: 10px !important; justify-content: space-between !important; }
+          .store-filter-pills { overflow-x: auto !important; flex-wrap: nowrap !important; max-width: 100% !important; width: 100% !important; padding-bottom: 2px !important; -webkit-overflow-scrolling: touch !important; white-space: nowrap !important; }
 
-
-
-
-          .store-filter-pills { overflow-x: auto !important; flex-wrap: nowrap !important; max-width: 100% !important; width: 100% !important; padding-bottom: 4px !important; -webkit-overflow-scrolling: touch !important; white-space: nowrap !important; }
           .store-filter-pills::-webkit-scrollbar { display: none; }
           .store-product-grid-wrap { padding: 16px 14px 48px !important; width: 100% !important; overflow: hidden !important; }
           .store-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; width: 100% !important; }
@@ -825,12 +822,12 @@ export default function ShopPage() {
 
 
 
-      {/* ── COLLECTION HEADER ── */}
+      {/* ── COLLECTION HEADER (Single Row Bar) ── */}
       <div id="shop-grid" style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginTop: 28 }}>
-        <div className="store-collection-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 24px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, justifyContent: 'space-between' }}>
+        <div className="store-collection-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '14px 24px', display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 16, justifyContent: 'space-between' }}>
 
-          {/* Category filter pills */}
-          <div className="store-filter-pills" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          {/* Category filter pills (Horizontal Scroll, 1 single line) */}
+          <div className="store-filter-pills" style={{ display: 'flex', flexWrap: 'nowrap', gap: 8, overflowX: 'auto', flex: 1, minWidth: 0, padding: '2px 0' }}>
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
@@ -847,20 +844,20 @@ export default function ShopPage() {
                   transition: 'all 0.15s',
                   boxShadow: activeCategory === cat ? '0 2px 10px rgba(226,54,54,0.32)' : 'none',
                   flexShrink: 0,
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {cat}
               </button>
             ))}
-
           </div>
 
-          {/* Sort selection */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {/* Sort selection (Fixed right on same row) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value as any)}
-              style={{ border: '1.5px solid #DCDCDC', borderRadius: 8, padding: '6px 12px', fontSize: 13, color: '#1A1A1A', background: '#fff', cursor: 'pointer', outline: 'none', fontWeight: 600 }}
+              style={{ border: '1.5px solid #DCDCDC', borderRadius: 8, padding: '6px 12px', fontSize: 13, color: '#1A1A1A', background: '#fff', cursor: 'pointer', outline: 'none', fontWeight: 700, whiteSpace: 'nowrap' }}
             >
               <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>
@@ -871,6 +868,7 @@ export default function ShopPage() {
 
         </div>
       </div>
+
 
       {/* ── PRODUCT GRID ── */}
       <div className="store-product-grid-wrap" style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 24px 60px' }}>
