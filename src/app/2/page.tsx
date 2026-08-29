@@ -245,24 +245,22 @@ export default function ShopPage() {
               </div>
             </div>
 
-            {/* Right: Marvel & Anime Franchise Portal Cards */}
+            {/* Right: Marvel & Anime Franchise Collection Cards */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {[
                 {
                   id: 'Marvel',
                   tag: 'MARVEL UNIVERSE',
-                  name: 'Marvel Collection',
-                  desc: 'Avengers, Spider-Man, Deadpool & MCU',
+                  name: 'Marvel Series',
+                  desc: 'Avengers, MCU, Spider-Man & Deadpool',
                   img: '/banners/marvel_banner.jpg',
-                  accent: '#DC2626',
                 },
                 {
                   id: 'Anime',
                   tag: 'ANIME COLLECTION',
-                  name: 'Anime Collection',
+                  name: 'Anime Series',
                   desc: 'One Piece, Demon Slayer, Naruto & more',
                   img: '/banners/anime_banner.jpg',
-                  accent: '#7C3AED',
                 }
               ].map(item => (
 
@@ -272,72 +270,50 @@ export default function ShopPage() {
                     setActiveFranchise(item.id);
                     document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="franchise-hero-card"
                   style={{
-                    position: 'relative',
-                    height: 240,
+                    background: '#fff',
                     borderRadius: 16,
                     overflow: 'hidden',
-                    border: '1px solid #E2E2E2',
+                    border: '1px solid #E5E5E5',
+                    display: 'flex',
+                    flexDirection: 'column',
                     cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
+                    transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
                     padding: 0,
                     textAlign: 'left',
-                    background: '#1A1A1A',
                   }}
                   onMouseEnter={e => {
                     (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-4px)';
-                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 12px 32px rgba(0,0,0,0.18)';
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 10px 28px rgba(0,0,0,0.12)';
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#1A1A1A';
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 10px rgba(0,0,0,0.06)';
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#E5E5E5';
                   }}
                 >
-                  {/* Franchise Artwork Background */}
-                  <Image
-                    src={item.img}
-                    alt={item.name}
-                    fill
-                    style={{
-                      objectFit: 'cover',
-                      transition: 'transform 0.4s ease',
-                    }}
-                    className="franchise-bg-img"
-                  />
-
-                  {/* Gradient Scrim for crystal clear readability */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 100%)',
-                    }}
-                  />
-
-                  {/* Content on top */}
-                  <div style={{ position: 'relative', zIndex: 2, height: '100%', padding: '16px 18px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: 10, fontWeight: 800, color: '#fff', background: item.accent, padding: '3px 8px', borderRadius: 4, letterSpacing: '0.06em', width: 'fit-content' }}>
+                  <div style={{ position: 'relative', aspectRatio: '1.05', background: '#ECECEC', overflow: 'hidden', width: '100%' }}>
+                    <Image src={item.img} alt={item.name} fill style={{ objectFit: 'cover' }} />
+                    <span style={{ position: 'absolute', top: 10, left: 10, background: '#C96A00', color: '#fff', fontSize: 10, fontWeight: 800, padding: '3px 8px', borderRadius: 4, letterSpacing: '0.05em' }}>
                       {item.tag}
                     </span>
-
-                    <div>
-                      <h3 style={{ fontSize: 18, fontWeight: 900, color: '#fff', margin: '0 0 3px', letterSpacing: '-0.01em' }}>
-                        {item.name}
-                      </h3>
-                      <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', margin: '0 0 8px', lineHeight: 1.3 }}>
-                        {item.desc}
-                      </p>
-                      <span style={{ fontSize: 12, fontWeight: 800, color: '#fff', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                        Explore Series →
-                      </span>
-                    </div>
+                  </div>
+                  <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4, width: '100%', borderTop: '1px solid #EBEBEB' }}>
+                    <p style={{ fontSize: 15, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.01em' }}>
+                      {item.name}
+                    </p>
+                    <p style={{ fontSize: 12, color: '#777', margin: '0 0 6px', lineHeight: 1.35 }}>
+                      {item.desc}
+                    </p>
+                    <span style={{ fontSize: 12, fontWeight: 800, color: '#1A1A1A', display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 'auto' }}>
+                      Shop {item.id} →
+                    </span>
                   </div>
                 </button>
               ))}
             </div>
-
 
 
           </div>
