@@ -140,9 +140,10 @@ export default function ShopPage() {
         @media (max-width: 768px) {
           .store-header-inner { padding: 0 14px !important; gap: 8px !important; width: 100% !important; max-width: 100% !important; }
           .store-nav-links { display: none !important; }
-          .store-hero-wrap { padding: 0 !important; width: 100% !important; overflow: hidden !important; }
+          .store-hero-wrap { padding-top: 62px !important; padding-bottom: 0 !important; width: 100% !important; overflow: hidden !important; }
           .store-hero-inner { padding: 20px 14px 18px !important; }
           .store-hero-grid { grid-template-columns: 1fr !important; gap: 18px !important; width: 100% !important; text-align: center !important; }
+
           .store-hero-h1 { font-size: 28px !important; line-height: 1.15 !important; text-align: center !important; }
           .store-hero-desc { font-size: 14px !important; text-align: center !important; margin: 0 auto !important; }
           .store-hero-ctas { justify-content: center !important; }
@@ -191,16 +192,21 @@ export default function ShopPage() {
       `}</style>
 
 
-      {/* ── HEADER ── */}
+      {/* ── FIXED HEADER ── */}
       <header style={{
-        position: 'sticky',
+        position: 'fixed',
         top: 0,
-        zIndex: 50,
-        background: '#fff',
+        left: 0,
+        right: 0,
+        width: '100%',
+        zIndex: 100,
+        background: 'rgba(255,255,255,0.97)',
+        backdropFilter: 'blur(12px)',
         borderBottom: '1px solid #E8E8E8',
-        boxShadow: '0 2px 16px rgba(0,0,0,0.08)',
+        boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
       }}>
         <div className="store-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 12 }}>
+
 
           {/* Real Brand Logo */}
           <Link href="/2" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
@@ -303,7 +309,8 @@ export default function ShopPage() {
       </header>
 
       {/* ── HERO (Signature Red, Black & White Energy) ── */}
-      <div className="store-hero-wrap" style={{ background: 'radial-gradient(ellipse 90% 60% at 15% -5%, rgba(226,54,54,0.07) 0%, #FFFFFF 65%)', borderBottom: '1.5px solid #E8E8E8' }}>
+      <div className="store-hero-wrap" style={{ background: 'radial-gradient(ellipse 90% 60% at 15% -5%, rgba(226,54,54,0.07) 0%, #FFFFFF 65%)', borderBottom: '1.5px solid #E8E8E8', paddingTop: 62 }}>
+
         <div className="store-hero-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 28px 56px' }}>
           <div className="store-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, alignItems: 'center' }}>
 
