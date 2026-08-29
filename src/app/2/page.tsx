@@ -933,15 +933,8 @@ export default function ShopPage() {
                     {product.name}
                   </Link>
 
-                  {/* Stars */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 1 }}>
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={11} style={{ fill: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB', color: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB' }} />
-                    ))}
-                    <span style={{ fontSize: 10.5, color: '#aaa', marginLeft: 2 }}>({product.reviewsCount})</span>
-                  </div>
-
                   {/* Price & Mobile Quick Add */}
+
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, marginTop: 'auto', paddingTop: 4 }}>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
                       <span style={{ fontSize: 16, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em' }}>${product.price.toFixed(2)}</span>
