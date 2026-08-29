@@ -306,6 +306,45 @@ export default function ShopPage() {
             )}
           </button>
 
+          {/* User Profile Avatar (PC only) */}
+          <div className="store-nav-links" style={{ display: 'flex', alignItems: 'center', marginLeft: 4 }}>
+            <button
+              aria-label="User Profile"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                overflow: 'hidden',
+                border: '2px solid #E23636',
+                background: '#F0F0F0',
+                cursor: 'pointer',
+                padding: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'scale(1.06)';
+                e.currentTarget.style.boxShadow = '0 3px 12px rgba(226,54,54,0.35)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+              }}
+            >
+              <Image
+                src="/avatar.png"
+                alt="User Profile"
+                width={36}
+                height={36}
+                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+              />
+            </button>
+          </div>
+
+
         </div>
       </header>
 
