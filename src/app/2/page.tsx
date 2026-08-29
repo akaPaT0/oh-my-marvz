@@ -265,16 +265,11 @@ export default function ShopPage() {
         <div className="store-hero-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 28px 56px' }}>
           <div className="store-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, alignItems: 'center' }}>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-              {/* Official Red Brand Badge */}
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, width: 'fit-content', background: 'rgba(226,54,54,0.08)', border: '1px solid rgba(226,54,54,0.22)', padding: '5px 13px', borderRadius: 999, fontSize: 11, fontWeight: 800, color: '#E23636', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#E23636', boxShadow: '0 0 6px #E23636' }} />
-                <span>AUTHENTIC LEBANON COLLECTIBLES VAULT</span>
-              </div>
-
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <h1 className="store-hero-h1" style={{ fontSize: 46, fontWeight: 950, color: '#111', margin: 0, lineHeight: 1.08, letterSpacing: '-0.035em' }}>
                 Marvel & Anime Collectibles, <span style={{ color: '#E23636', position: 'relative', display: 'inline-block' }}>Delivered.</span>
               </h1>
+
 
               <p className="store-hero-desc" style={{ fontSize: 15, color: '#555', margin: 0, lineHeight: 1.65, maxWidth: 480 }}>
                 High-articulation figures, collector statues, metal keychains & sticker packs. Verified authentic with Lebanon-wide doorstep delivery or BAU Beirut pickup.
