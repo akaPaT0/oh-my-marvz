@@ -108,18 +108,20 @@ export default function ShopPage() {
         @media (max-width: 768px) {
           .store-header-inner { padding: 0 14px !important; gap: 8px !important; width: 100% !important; max-width: 100% !important; }
           .store-nav-links { display: none !important; }
-          .store-hero-wrap { padding: 24px 14px 28px !important; width: 100% !important; overflow: hidden !important; }
-          .store-hero-grid { grid-template-columns: 1fr !important; gap: 24px !important; width: 100% !important; }
+          .store-hero-wrap { padding: 0 !important; width: 100% !important; overflow: hidden !important; }
+          .store-hero-inner { padding: 20px 14px 18px !important; }
+          .store-hero-grid { grid-template-columns: 1fr !important; gap: 18px !important; width: 100% !important; }
           .store-hero-h1 { font-size: 28px !important; line-height: 1.15 !important; }
           .store-hero-desc { font-size: 14px !important; }
           .store-hero-cards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; width: 100% !important; }
-          .store-hero-card-tile { min-height: 180px !important; padding: 14px 12px !important; }
+          .store-hero-card-tile { min-height: 170px !important; padding: 14px 12px !important; }
           .store-hero-card-desc { display: none !important; }
           .store-hero-stats { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 4px !important; text-align: center !important; width: 100% !important; }
           .store-hero-stats-divider { display: none !important; }
           .store-hero-stat-val { font-size: 15px !important; }
           .store-hero-stat-lbl { font-size: 9.5px !important; letter-spacing: 0 !important; }
           .store-featured-wrap { padding: 16px 14px 0 !important; width: 100% !important; overflow: hidden !important; }
+
 
           .store-featured-banner { min-height: 230px !important; height: 230px !important; border-radius: 16px !important; }
           .store-featured-img { object-position: right center !important; transform: translateX(0px) !important; }
@@ -260,8 +262,9 @@ export default function ShopPage() {
 
       {/* ── HERO ── */}
       <div className="store-hero-wrap" style={{ background: '#fff', borderBottom: '1.5px solid #E8E8E8' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 28px 56px' }}>
+        <div className="store-hero-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 28px 56px' }}>
           <div className="store-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, alignItems: 'center' }}>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <h1 className="store-hero-h1" style={{ fontSize: 46, fontWeight: 900, color: '#1A1A1A', margin: 0, lineHeight: 1.1, letterSpacing: '-0.03em' }}>
                 Marvel & Anime Collectibles, Delivered.
