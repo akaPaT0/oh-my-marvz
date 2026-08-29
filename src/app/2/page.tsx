@@ -114,14 +114,13 @@ export default function ShopPage() {
           .store-hero-stats { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; text-align: center !important; }
           .store-hero-stats-divider { display: none !important; }
           .store-featured-wrap { padding: 16px 14px 0 !important; width: 100% !important; overflow: hidden !important; }
-          .store-featured-banner { min-height: auto !important; width: 100% !important; overflow: hidden !important; }
-          .store-featured-img { transform: translateX(0px) !important; }
-          .store-featured-content { padding: 20px 16px !important; max-width: 100% !important; width: 100% !important; height: auto !important; min-height: 320px !important; }
-          .store-featured-title { font-size: 20px !important; min-height: auto !important; }
-          .store-featured-actions { flex-direction: column !important; width: 100% !important; gap: 8px !important; }
-          .store-featured-btn-view, .store-featured-btn-add { width: 100% !important; max-width: 100% !important; }
-          .store-featured-arrows { display: none !important; }
+          .store-spotlight-box { grid-template-columns: 1fr !important; border-radius: 16px !important; }
+          .store-spotlight-img-wrap { order: -1 !important; aspect-ratio: 1.4 !important; border-left: none !important; border-bottom: 1px solid #ECECEC !important; }
+          .store-spotlight-details { padding: 18px 16px 20px !important; gap: 12px !important; }
+          .store-spotlight-h3 { font-size: 19px !important; }
+          .store-spotlight-btn-group { width: 100% !important; min-width: 100% !important; }
           .store-collection-header-inner { padding: 12px 14px !important; width: 100% !important; flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+
           .store-filter-pills { overflow-x: auto !important; flex-wrap: nowrap !important; max-width: 100% !important; width: 100% !important; padding-bottom: 4px !important; -webkit-overflow-scrolling: touch !important; white-space: nowrap !important; }
           .store-filter-pills::-webkit-scrollbar { display: none; }
           .store-product-grid-wrap { padding: 16px 14px 48px !important; width: 100% !important; overflow: hidden !important; }
@@ -383,9 +382,9 @@ export default function ShopPage() {
       </div>
 
 
-      {/* ── FEATURED SPOTLIGHT CAROUSEL (Image BG + Blur Glass Overlay) ── */}
+      {/* ── FEATURED SPOTLIGHT (Clean Proportioned Card, No Swiping) ── */}
       {featuredProducts.length > 0 && (() => {
-        const item = featuredProducts[featuredIndex] || featuredProducts[0];
+        const item = featuredProducts[0];
         const itemDiscount = item.originalPrice
           ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
           : null;
@@ -394,17 +393,16 @@ export default function ShopPage() {
         return (
           <div className="store-featured-wrap" style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 28px 0' }}>
             {/* Top Bar with Header & Explore Button */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
               <div>
                 <h2 style={{ fontSize: 20, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.02em' }}>
-                  Featured Spotlight
+                  Featured Grail Spotlight
                 </h2>
-                <p style={{ fontSize: 13, color: '#777', margin: '4px 0 0' }}>
-                  Hand-picked grail items and high-demand collector editions
+                <p style={{ fontSize: 13, color: '#777', margin: '3px 0 0' }}>
+                  Hand-picked grail item and high-demand collector edition
                 </p>
               </div>
 
-              {/* Controls: Explore Button */}
               <div>
                 <button
                   onClick={() => {
@@ -414,11 +412,11 @@ export default function ShopPage() {
                     document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   style={{
-                    padding: '8px 16px',
+                    padding: '7px 14px',
                     borderRadius: 8,
                     background: '#fff',
                     border: '1.5px solid #DCDCDC',
-                    fontSize: 13,
+                    fontSize: 12,
                     fontWeight: 700,
                     color: '#1A1A1A',
                     cursor: 'pointer',
@@ -430,243 +428,143 @@ export default function ShopPage() {
                   onMouseEnter={e => (e.currentTarget.style.borderColor = '#1A1A1A')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = '#DCDCDC')}
                 >
-                  <span>Explore Featured Products</span>
-                  <ArrowRight size={14} />
+                  <span>Explore All Pieces</span>
+                  <ArrowRight size={13} />
                 </button>
               </div>
             </div>
 
-            {/* Featured Banner: Cropped Product Image as Full Background + Soft Gradient Scrim */}
+            {/* Clean Spotlight Card */}
             <div
-              className="store-featured-banner"
+              className="store-spotlight-box"
               style={{
-                position: 'relative',
-                borderRadius: 22,
+                background: '#fff',
+                borderRadius: 20,
                 overflow: 'hidden',
-                border: '1px solid #E2E2E2',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
-                minHeight: 460,
-                display: 'flex',
+                border: '1.5px solid #E5E5E5',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+                display: 'grid',
+                gridTemplateColumns: '1.1fr 0.9fr',
                 alignItems: 'center',
-                background: '#ECECEC',
               }}
             >
-              {/* Full Background Product Image */}
-              <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  priority
-                  className="store-featured-img"
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: 'center 15%',
-                    transform: 'translateX(110px)',
-                    transition: 'all 0.4s ease',
-                  }}
-                />
+              {/* Left Details */}
+              <div style={{ padding: '36px 40px', display: 'flex', flexDirection: 'column', gap: 16 }} className="store-spotlight-details">
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '3px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                    {item.franchise} GRAIL
+                  </span>
+                  {itemDiscount && (
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#DC2626', background: 'rgba(220,38,38,0.1)', padding: '3px 8px', borderRadius: 6 }}>
+                      SAVE {itemDiscount}%
+                    </span>
+                  )}
+                </div>
 
-                {/* Soft gradient fade on the left for crystal clear typography */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.94) 30%, rgba(255,255,255,0.55) 50%, transparent 100%)',
-                    pointerEvents: 'none',
-                  }}
-                />
-              </div>
-
-              {/* Direct Content Overlay with Anchored Bottom Action Area */}
-              <div
-                className="store-featured-content"
-                style={{
-                  position: 'relative',
-                  zIndex: 2,
-                  padding: '44px 48px',
-                  maxWidth: 500,
-                  height: 380,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}
-              >
-                {/* Top: Title & Subtitle */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 6 }}>
-                  {/* Title */}
-                  <Link
-                    href={`/2/${item.id}`}
-                    style={{ textDecoration: 'none', color: '#1A1A1A' }}
-                  >
-                    <h3 className="store-featured-title" style={{ fontSize: 30, fontWeight: 900, margin: 0, lineHeight: 1.18, letterSpacing: '-0.03em', cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: 72 } as React.CSSProperties}>
+                <div>
+                  <Link href={`/2/${item.id}`} style={{ textDecoration: 'none', color: '#1A1A1A' }}>
+                    <h3 style={{ fontSize: 26, fontWeight: 900, margin: 0, lineHeight: 1.2, letterSpacing: '-0.02em', cursor: 'pointer' }} className="store-spotlight-h3">
                       {item.name}
                     </h3>
                   </Link>
-
-                  {/* Subtitle */}
-                  <p style={{ fontSize: 13, color: '#666', margin: 0, lineHeight: 1.4, fontWeight: 500, display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
+                  <p style={{ fontSize: 13, color: '#666', margin: '6px 0 0', lineHeight: 1.45 }}>
                     {item.subtitle}
                   </p>
                 </div>
 
-                {/* Bottom: Price + Action Buttons (Permanently Anchored) */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {/* Price & Discount (Fixed & Stable) */}
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, height: 36 }}>
-                    <span style={{ fontSize: 32, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em', minWidth: 90 }}>
+                {/* Price & Actions */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', paddingTop: 6 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                    <span style={{ fontSize: 28, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
                       ${item.price.toFixed(2)}
                     </span>
                     {item.originalPrice && (
-                      <span style={{ fontSize: 16, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
+                      <span style={{ fontSize: 15, color: '#999', textDecoration: 'line-through' }}>
                         ${item.originalPrice.toFixed(2)}
-                      </span>
-                    )}
-                    {itemDiscount && (
-                      <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 4 }}>
-                        −{itemDiscount}%
                       </span>
                     )}
                   </div>
 
-                  {/* Actions */}
-                  <div className="store-featured-actions" style={{ display: 'flex', gap: 12 }}>
+                  <div style={{ display: 'flex', gap: 10, flex: 1, minWidth: 200 }} className="store-spotlight-btn-group">
                     <Link
                       href={`/2/${item.id}`}
-                      className="store-featured-btn-view"
                       style={{
-                        width: 145,
-                        height: 46,
+                        padding: '11px 20px',
                         background: '#1A1A1A',
                         color: '#fff',
                         borderRadius: 10,
                         textDecoration: 'none',
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: 800,
-                        display: 'flex',
+                        display: 'inline-flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: 8,
-                        boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
-                        transition: 'background 0.15s',
-                        flexShrink: 0,
+                        gap: 6,
+                        boxShadow: '0 3px 12px rgba(0,0,0,0.15)',
+                        flex: 1,
+                        whiteSpace: 'nowrap',
                       }}
                     >
                       <span>View Piece</span>
-                      <ArrowRight size={15} />
+                      <ArrowRight size={14} />
                     </Link>
 
                     <button
                       onClick={() => addToCart(item)}
-                      className="store-featured-btn-add"
                       style={{
-                        width: 135,
-                        height: 46,
+                        padding: '11px 18px',
                         background: justAdded ? '#16a34a' : '#fff',
                         color: justAdded ? '#fff' : '#1A1A1A',
                         border: '1.5px solid #DCDCDC',
                         borderRadius: 10,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: 700,
                         cursor: 'pointer',
-                        display: 'flex',
+                        display: 'inline-flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: 7,
-                        boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                        gap: 6,
                         transition: 'all 0.15s',
-                        flexShrink: 0,
+                        whiteSpace: 'nowrap',
                       }}
                     >
                       {justAdded ? (
-                        <><Check size={16} /> Added</>
+                        <><Check size={15} /> Added</>
                       ) : (
-                        <><ShoppingBag size={15} /> Quick Add</>
+                        <><ShoppingBag size={14} /> Quick Add</>
                       )}
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* Side Floating Next/Prev Overlay Arrows */}
-              <button
-                onClick={() => setFeaturedIndex(prev => (prev === 0 ? featuredProducts.length - 1 : prev - 1))}
-                aria-label="Previous slide"
-                className="store-featured-arrows"
+              {/* Right Image */}
+              <Link
+                href={`/2/${item.id}`}
+                className="store-spotlight-img-wrap"
                 style={{
-                  position: 'absolute',
-                  left: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  zIndex: 3,
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.9)',
-                  backdropFilter: 'blur(8px)',
-                  border: '1px solid rgba(0,0,0,0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  position: 'relative',
+                  aspectRatio: '1.35',
+                  background: '#F7F7F7',
+                  display: 'block',
+                  overflow: 'hidden',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  color: '#1A1A1A',
+                  borderLeft: '1px solid #ECECEC',
                 }}
               >
-                <ChevronLeft size={20} />
-              </button>
-
-              <button
-                onClick={() => setFeaturedIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1))}
-                aria-label="Next slide"
-                className="store-featured-arrows"
-                style={{
-                  position: 'absolute',
-                  right: 18,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  zIndex: 3,
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.9)',
-                  backdropFilter: 'blur(8px)',
-                  border: '1px solid rgba(0,0,0,0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  color: '#1A1A1A',
-                }}
-              >
-                <ChevronRight size={20} />
-              </button>
-
-              {/* Bottom Pagination Dots */}
-              <div style={{ position: 'absolute', bottom: 14, right: 28, zIndex: 3, display: 'flex', gap: 6, background: 'rgba(0,0,0,0.3)', padding: '6px 12px', borderRadius: 20, backdropFilter: 'blur(8px)' }}>
-                {featuredProducts.map((_, dotIdx) => (
-                  <button
-                    key={dotIdx}
-                    onClick={() => setFeaturedIndex(dotIdx)}
-                    aria-label={`Jump to slide ${dotIdx + 1}`}
-                    style={{
-                      width: featuredIndex === dotIdx ? 20 : 7,
-                      height: 7,
-                      borderRadius: 999,
-                      background: featuredIndex === dotIdx ? '#fff' : 'rgba(255,255,255,0.4)',
-                      border: 'none',
-                      cursor: 'pointer',
-                      padding: 0,
-                      transition: 'all 0.2s ease',
-                    }}
-                  />
-                ))}
-              </div>
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  priority
+                  style={{ objectFit: 'cover' }}
+                />
+              </Link>
             </div>
           </div>
         );
       })()}
+
 
       {/* ── COLLECTION HEADER ── */}
       <div id="shop-grid" style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginTop: 28 }}>
