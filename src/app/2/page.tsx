@@ -280,17 +280,8 @@ export default function ShopPage() {
             )}
           </div>
 
-          {/* Wishlist */}
-          <button style={{ position: 'relative', padding: '7px 8px', color: '#666', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', borderRadius: 8 }}>
-            <Heart size={18} />
-            {wishlist.length > 0 && (
-              <span style={{ position: 'absolute', top: 3, right: 3, width: 14, height: 14, background: '#ef4444', color: '#fff', borderRadius: '50%', fontSize: 9, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {wishlist.length}
-              </span>
-            )}
-          </button>
-
           {/* Cart */}
+
           <button
             onClick={() => setCartOpen(true)}
             style={{ display: 'flex', alignItems: 'center', gap: 7, background: '#E23636', color: '#fff', border: 'none', borderRadius: 10, padding: '8px 16px', fontSize: 13, fontWeight: 800, cursor: 'pointer', boxShadow: '0 3px 12px rgba(226,54,54,0.38)', whiteSpace: 'nowrap', transition: 'background 0.15s' }}
