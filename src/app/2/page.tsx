@@ -137,6 +137,7 @@ export default function ShopPage() {
         .mobile-quick-add-btn { display: none; }
         .store-pc-search { display: block; }
         .store-mobile-search-toggle { display: none; }
+        .store-mobile-menu-btn { display: none; }
 
         /* Mobile Responsive Adjustments (<= 768px) */
         @media (max-width: 768px) {
@@ -144,7 +145,9 @@ export default function ShopPage() {
           .store-nav-links { display: none !important; }
           .store-pc-search { display: none !important; }
           .store-mobile-search-toggle { display: block !important; }
+          .store-mobile-menu-btn { display: flex !important; }
           .store-hero-wrap { padding-top: 62px !important; padding-bottom: 0 !important; width: 100% !important; overflow: hidden !important; }
+
 
           .store-hero-inner { padding: 20px 14px 18px !important; }
           .store-hero-grid { grid-template-columns: 1fr !important; gap: 18px !important; width: 100% !important; text-align: center !important; }
@@ -212,6 +215,24 @@ export default function ShopPage() {
       }}>
         <div className="store-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 12 }}>
 
+          {/* Mobile Menu Icon Button */}
+          <button
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+            aria-label="Toggle navigation menu"
+            className="store-mobile-menu-btn"
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#1A1A1A',
+              cursor: 'pointer',
+              padding: '6px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 8,
+            }}
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
 
           {/* Real Brand Logo */}
           <Link href="/2" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
@@ -224,6 +245,7 @@ export default function ShopPage() {
               priority
             />
           </Link>
+
 
 
           {/* Divider */}
@@ -363,8 +385,117 @@ export default function ShopPage() {
         </div>
       </header>
 
+      {/* ── MOBILE MENU DRAWER ── */}
+      {mobileMenuOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 150,
+            background: 'rgba(0,0,0,0.55)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+          }}
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            style={{
+              width: '80%',
+              maxWidth: 320,
+              background: '#fff',
+              height: '100%',
+              padding: '24px 20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 22,
+              boxShadow: '6px 0 28px rgba(0,0,0,0.25)',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Header of Drawer */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #EFEFEF', paddingBottom: 14 }}>
+              <Image
+                src="/logo.png"
+                alt="Oh My Marvz"
+                width={120}
+                height={34}
+                style={{ objectFit: 'contain', height: 30, width: 'auto' }}
+              />
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+                style={{ background: 'none', border: 'none', padding: 6, cursor: 'pointer', color: '#111', display: 'flex' }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Franchise Categories */}
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 800, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px 4px' }}>Franchises</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {[
+                  { id: 'All', label: 'All Universes' },
+                  { id: 'Marvel', label: 'Marvel Collection' },
+                  { id: 'Anime', label: 'Anime Vault' },
+                ].map(f => (
+                  <button
+                    key={f.id}
+                    onClick={() => {
+                      setActiveFranchise(f.id);
+                      setMobileMenuOpen(false);
+                      document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '12px 14px',
+                      borderRadius: 10,
+                      border: 'none',
+                      background: activeFranchise === f.id ? 'rgba(226,54,54,0.08)' : '#F7F7F7',
+                      color: activeFranchise === f.id ? '#E23636' : '#1A1A1A',
+                      fontWeight: activeFranchise === f.id ? 800 : 600,
+                      fontSize: 14,
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <span>{f.label}</span>
+                    {activeFranchise === f.id && <Check size={16} color="#E23636" />}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div style={{ borderTop: '1px solid #EFEFEF', paddingTop: 16 }}>
+              <p style={{ fontSize: 11, fontWeight: 800, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px 4px' }}>Pages</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <Link href="/marvel" onClick={() => setMobileMenuOpen(false)} style={{ color: '#222', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, padding: '6px 8px' }}>
+                  Marvel Dedicated View →
+                </Link>
+                <Link href="/anime" onClick={() => setMobileMenuOpen(false)} style={{ color: '#222', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, padding: '6px 8px' }}>
+                  Anime Dedicated View →
+                </Link>
+                <Link href="/" onClick={() => setMobileMenuOpen(false)} style={{ color: '#222', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, padding: '6px 8px' }}>
+                  Classic Comic View →
+                </Link>
+              </div>
+            </div>
+
+            {/* Pickup Info Banner */}
+            <div style={{ marginTop: 'auto', background: '#F8F8F8', borderRadius: 12, padding: '14px', border: '1px solid #EAEAEA' }}>
+              <p style={{ fontSize: 12, fontWeight: 800, color: '#111', margin: '0 0 4px' }}>🚚 Lebanon Doorstep & Pickup</p>
+              <p style={{ fontSize: 11, color: '#666', margin: 0, lineHeight: 1.45 }}>Fast delivery across all Lebanon or free pickup at Beirut Arab University (BAU).</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── HERO (Signature Red, Black & White Energy) ── */}
       <div className="store-hero-wrap" style={{ background: 'radial-gradient(ellipse 90% 60% at 15% -5%, rgba(226,54,54,0.07) 0%, #FFFFFF 65%)', borderBottom: '1.5px solid #E8E8E8', paddingTop: 62 }}>
+
 
         <div className="store-hero-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 28px 56px' }}>
           <div className="store-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, alignItems: 'center' }}>
