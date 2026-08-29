@@ -15,6 +15,10 @@ import {
   X,
   Menu,
   Plus,
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+  Sparkles,
 } from 'lucide-react';
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import { CartDrawer, CartItem } from '@/components/CartDrawer';
@@ -36,6 +40,13 @@ export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [addedId, setAddedId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [featuredIndex, setFeaturedIndex] = useState(0);
+
+  const featuredProducts = useMemo(
+    () => products.filter((p) => p.isFeatured || p.rating >= 5.0).slice(0, 6),
+    [products]
+  );
+
 
 
   const addToCart = (product: Product, qty = 1) => {
@@ -308,9 +319,337 @@ export default function ShopPage() {
         </div>
       </div>
 
+      {/* ── FEATURED SPOTLIGHT CAROUSEL (Image BG + Blur Glass Overlay) ── */}
+      {featuredProducts.length > 0 && (() => {
+        const item = featuredProducts[featuredIndex] || featuredProducts[0];
+        const itemDiscount = item.originalPrice
+          ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
+          : null;
+        const justAdded = addedId === item.id;
+
+        return (
+          <div style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 28px 0' }}>
+            {/* Top Bar with Header & Swiper Controls */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <Sparkles size={16} color="#C96A00" />
+                  <h2 style={{ fontSize: 20, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.02em' }}>
+                    Featured Spotlight
+                  </h2>
+                </div>
+                <p style={{ fontSize: 13, color: '#777', margin: '4px 0 0' }}>
+                  Hand-picked grail items and high-demand collector editions
+                </p>
+              </div>
+
+              {/* Controls: Explore Button + Clean Swipe Arrows */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <button
+                  onClick={() => {
+                    setSortBy('featured');
+                    setActiveCategory('All');
+                    setActiveFranchise('All');
+                    document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: 8,
+                    background: '#fff',
+                    border: '1.5px solid #DCDCDC',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: '#1A1A1A',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    transition: 'border-color 0.15s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = '#1A1A1A')}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = '#DCDCDC')}
+                >
+                  <span>Explore Featured Products</span>
+                  <ArrowRight size={14} />
+                </button>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <button
+                    onClick={() => setFeaturedIndex(prev => (prev === 0 ? featuredProducts.length - 1 : prev - 1))}
+                    aria-label="Previous Featured Product"
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: '50%',
+                      background: '#fff',
+                      border: '1.5px solid #DCDCDC',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      color: '#1A1A1A',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                      transition: 'all 0.15s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#1A1A1A'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#DCDCDC'; e.currentTarget.style.transform = 'scale(1)'; }}
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button
+                    onClick={() => setFeaturedIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1))}
+                    aria-label="Next Featured Product"
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: '50%',
+                      background: '#fff',
+                      border: '1.5px solid #DCDCDC',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      color: '#1A1A1A',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                      transition: 'all 0.15s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#1A1A1A'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#DCDCDC'; e.currentTarget.style.transform = 'scale(1)'; }}
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Featured Showcase Card with Cropped Image BG & Blur Glass Layer */}
+            <div
+              style={{
+                position: 'relative',
+                borderRadius: 20,
+                overflow: 'hidden',
+                border: '1px solid #E2E2E2',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.07)',
+                minHeight: 380,
+              }}
+            >
+              {/* Cropped Product Image as Background */}
+              <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  style={{
+                    objectFit: 'cover',
+                    transform: 'scale(1.2) translate(10%, -5%)',
+                    filter: 'blur(6px) brightness(0.92)',
+                    transition: 'all 0.4s ease',
+                  }}
+                />
+              </div>
+
+              {/* Blur Frosted Glass Layer Overlay */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(90deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.90) 50%, rgba(255,255,255,0.65) 100%)',
+                  backdropFilter: 'blur(24px)',
+                  WebkitBackdropFilter: 'blur(24px)',
+                }}
+              />
+
+              {/* Foreground Interactive Content Grid */}
+              <div
+                style={{
+                  position: 'relative',
+                  zIndex: 2,
+                  padding: '36px 40px',
+                  display: 'grid',
+                  gridTemplateColumns: '1.2fr 0.8fr',
+                  gap: 36,
+                  alignItems: 'center',
+                }}
+              >
+                {/* Left: Product Context Details */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '4px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                      {item.franchise} · {item.category.replace(/-/g, ' ')}
+                    </span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#555', background: '#fff', border: '1px solid #E0E0E0', padding: '4px 10px', borderRadius: 6 }}>
+                      Slide {featuredIndex + 1} of {featuredProducts.length}
+                    </span>
+                  </div>
+
+                  <div>
+                    <p style={{ fontSize: 11, color: '#888', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: '0 0 4px' }}>
+                      {item.subtitle}
+                    </p>
+                    <Link
+                      href={`/2/${item.id}`}
+                      style={{ textDecoration: 'none', color: '#1A1A1A' }}
+                    >
+                      <h3 style={{ fontSize: 26, fontWeight: 900, margin: 0, lineHeight: 1.25, letterSpacing: '-0.02em', cursor: 'pointer' }}>
+                        {item.name}
+                      </h3>
+                    </Link>
+                  </div>
+
+                  {/* Rating Stars */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <div style={{ display: 'flex', gap: 2 }}>
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={14}
+                          style={{
+                            fill: i < Math.round(item.rating) ? '#F59E0B' : '#E5E7EB',
+                            color: i < Math.round(item.rating) ? '#F59E0B' : '#E5E7EB',
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{item.rating.toFixed(1)}</span>
+                    <span style={{ fontSize: 12, color: '#777' }}>({item.reviewsCount} customer reviews)</span>
+                  </div>
+
+                  {/* Price & Status Row */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
+                    <span style={{ fontSize: 28, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
+                      ${item.price.toFixed(2)}
+                    </span>
+                    {item.originalPrice && (
+                      <span style={{ fontSize: 15, color: '#999', textDecoration: 'line-through', fontWeight: 500 }}>
+                        ${item.originalPrice.toFixed(2)}
+                      </span>
+                    )}
+                    {itemDiscount && (
+                      <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 6 }}>
+                        SAVE {itemDiscount}%
+                      </span>
+                    )}
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#16a34a', background: 'rgba(22,163,74,0.12)', padding: '3px 10px', borderRadius: 20, marginLeft: 'auto' }}>
+                      ✓ In Stock
+                    </span>
+                  </div>
+
+                  {/* Description snippet */}
+                  <p style={{ fontSize: 13, color: '#555', lineHeight: 1.55, margin: '2px 0 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
+                    {item.description}
+                  </p>
+
+                  {/* CTA Actions */}
+                  <div style={{ display: 'flex', gap: 12, marginTop: 6, flexWrap: 'wrap' }}>
+                    <Link
+                      href={`/2/${item.id}`}
+                      style={{
+                        padding: '12px 24px',
+                        background: '#1A1A1A',
+                        color: '#fff',
+                        borderRadius: 10,
+                        textDecoration: 'none',
+                        fontSize: 13,
+                        fontWeight: 800,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
+                        transition: 'background 0.15s',
+                      }}
+                    >
+                      <span>Explore Product Page</span>
+                      <ArrowRight size={15} />
+                    </Link>
+
+                    <button
+                      onClick={() => addToCart(item)}
+                      style={{
+                        padding: '12px 20px',
+                        background: justAdded ? '#16a34a' : '#fff',
+                        color: justAdded ? '#fff' : '#1A1A1A',
+                        border: '1.5px solid #DCDCDC',
+                        borderRadius: 10,
+                        fontSize: 13,
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 7,
+                        transition: 'all 0.15s',
+                      }}
+                    >
+                      {justAdded ? (
+                        <><Check size={16} /> Added to Cart</>
+                      ) : (
+                        <><ShoppingBag size={15} /> Quick Add</>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right: Floating Cutout Frame */}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <Link
+                    href={`/2/${item.id}`}
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      maxWidth: 280,
+                      aspectRatio: '1',
+                      background: '#fff',
+                      borderRadius: 18,
+                      overflow: 'hidden',
+                      border: '1px solid #E0E0E0',
+                      boxShadow: '0 12px 36px rgba(0,0,0,0.12)',
+                      display: 'block',
+                      transition: 'transform 0.25s ease',
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.03)')}
+                    onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                    />
+                    <div style={{ position: 'absolute', bottom: 10, right: 10, background: 'rgba(0,0,0,0.75)', color: '#fff', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6, backdropFilter: 'blur(4px)' }}>
+                      CLICK TO VIEW
+                    </div>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Bottom Pagination Dots */}
+              <div style={{ position: 'relative', zIndex: 2, padding: '0 40px 18px', display: 'flex', justifyContent: 'center', gap: 6 }}>
+                {featuredProducts.map((_, dotIdx) => (
+                  <button
+                    key={dotIdx}
+                    onClick={() => setFeaturedIndex(dotIdx)}
+                    aria-label={`Jump to slide ${dotIdx + 1}`}
+                    style={{
+                      width: featuredIndex === dotIdx ? 24 : 8,
+                      height: 8,
+                      borderRadius: 999,
+                      background: featuredIndex === dotIdx ? '#1A1A1A' : '#DCDCDC',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: 0,
+                      transition: 'all 0.2s ease',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
 
       {/* ── CATEGORY TILES (Image-Backed, High Contrast, No Emojis) ── */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '32px 28px 0' }}>
+
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           {[
             {
