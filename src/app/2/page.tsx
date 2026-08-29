@@ -80,7 +80,7 @@ export default function ShopPage() {
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-[#F2F2F2] text-[#1A1A1A]" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+    <div className="min-h-screen bg-[#D6D6D6] text-[#1A1A1A]" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
 
       {/* ── ANNOUNCEMENT BAR ── */}
       <div className="bg-[#1A1A1A] text-white text-[12px] font-medium text-center py-2 px-4">
@@ -88,7 +88,7 @@ export default function ShopPage() {
       </div>
 
       {/* ── HEADER ── */}
-      <header className="bg-white border-b border-[#E5E5E5] sticky top-0 z-50">
+      <header className="bg-white sticky top-0 z-50" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.12), 0 1px 0 rgba(0,0,0,0.06)' }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
 
           {/* Main row */}
@@ -106,13 +106,13 @@ export default function ShopPage() {
 
             {/* Search — prominent center */}
             <div className="flex-1 max-w-xl hidden sm:block">
-              <div className="flex items-center bg-[#F5F5F5] border border-[#DCDCDC] rounded-lg overflow-hidden focus-within:border-[#1A1A1A] focus-within:ring-1 focus-within:ring-[#1A1A1A] transition-all">
+              <div className="flex items-center bg-[#F0F0F0] border-2 border-[#CCCCCC] rounded-lg overflow-hidden focus-within:border-[#1A1A1A] transition-all">
                 <input
                   type="text"
                   placeholder="Search collectibles..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 px-4 py-2.5 bg-transparent text-[14px] text-[#1A1A1A] placeholder:text-[#999] focus:outline-none"
+                  className="flex-1 px-4 py-2.5 bg-transparent text-[14px] text-[#1A1A1A] placeholder:text-[#888] focus:outline-none"
                 />
                 <button className="px-4 py-2.5 bg-[#1A1A1A] hover:bg-[#333] transition-colors">
                   <Search className="w-4 h-4 text-white" />
@@ -136,6 +136,7 @@ export default function ShopPage() {
               <button
                 onClick={() => setCartOpen(true)}
                 className="relative flex items-center gap-2 bg-[#C96A00] hover:bg-[#B05A00] text-white px-4 py-2 rounded-lg font-semibold text-[14px] transition-colors ml-1"
+                style={{ boxShadow: '0 2px 8px rgba(201,106,0,0.4)' }}
               >
                 <ShoppingCart className="w-4 h-4" />
                 <span className="hidden sm:inline">Cart</span>
@@ -149,7 +150,7 @@ export default function ShopPage() {
           </div>
 
           {/* Nav bar */}
-          <nav className="hidden md:flex items-center gap-6 h-[40px] border-t border-[#F0F0F0] text-[13px] font-medium text-[#555]">
+          <nav className="hidden md:flex items-center gap-6 h-[40px] border-t border-[#EBEBEB] text-[13px] font-medium text-[#666]">
             {FRANCHISES.map((f) => (
               <button
                 key={f}
@@ -171,8 +172,8 @@ export default function ShopPage() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-[#F0F0F0] bg-white px-4 py-3 space-y-2">
-            <div className="flex items-center bg-[#F5F5F5] border border-[#DCDCDC] rounded-lg overflow-hidden">
+          <div className="md:hidden border-t border-[#EBEBEB] bg-white px-4 py-3 space-y-2">
+            <div className="flex items-center bg-[#F0F0F0] border-2 border-[#CCCCCC] rounded-lg overflow-hidden">
               <input
                 type="text"
                 placeholder="Search..."
@@ -198,20 +199,21 @@ export default function ShopPage() {
       </header>
 
       {/* ── TRUST BAR ── */}
-      <div className="bg-white border-b border-[#E5E5E5]">
+      <div className="bg-[#F0F0F0] border-b-2 border-[#C8C8C8]">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap justify-center gap-x-8 gap-y-2">
           {[
             { icon: Truck, text: 'Lebanon-wide delivery' },
             { icon: ShieldCheck, text: '100% Authentic' },
             { icon: RotateCcw, text: 'BAU Beirut pickup' },
           ].map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-2 text-[13px] text-[#444]">
+            <div key={text} className="flex items-center gap-2 text-[13px] text-[#333] font-medium">
               <Icon className="w-4 h-4 text-[#C96A00]" />
               <span>{text}</span>
             </div>
           ))}
         </div>
       </div>
+
 
       {/* ── MAIN CONTENT ── */}
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-6">
@@ -269,11 +271,14 @@ export default function ShopPage() {
             return (
               <div
                 key={product.id}
-                className="bg-white rounded-xl border border-[#E8E8E8] overflow-hidden flex flex-col hover:shadow-[0_4px_20px_rgba(0,0,0,0.10)] hover:-translate-y-0.5 transition-all duration-200"
+                className="bg-white rounded-xl overflow-hidden flex flex-col transition-all duration-200 hover:-translate-y-1"
+                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.08)' }}
+                onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 28px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.10)'}
+                onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.08)'}
               >
                 {/* Image */}
                 <div
-                  className="relative aspect-square bg-[#F8F8F8] cursor-pointer overflow-hidden"
+                  className="relative aspect-square bg-[#E8E8E8] cursor-pointer overflow-hidden"
                   onClick={() => setQuickViewProduct(product)}
                 >
                   <Image
@@ -313,7 +318,7 @@ export default function ShopPage() {
                 </div>
 
                 {/* Info */}
-                <div className="p-3 flex flex-col gap-2 flex-1">
+                <div className="p-3 flex flex-col gap-2 flex-1 border-t border-[#E0E0E0]">
                   {/* Category label */}
                   <p className="text-[11px] text-[#999] uppercase tracking-wider font-medium">{product.subtitle}</p>
 
