@@ -82,15 +82,18 @@ export default function ShopPage() {
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
   return (
-    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: '#F4F4F4', minHeight: '100vh', color: '#1A1A1A' }}>
+    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: '#F4F4F4', minHeight: '100vh', color: '#1A1A1A', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
 
       {/* ── ANNOUNCEMENT ── */}
-      <div style={{ background: '#1A1A1A', color: '#fff', fontSize: '12px', fontWeight: 500, textAlign: 'center', padding: '9px 16px', letterSpacing: '0.02em' }}>
+      <div style={{ background: '#1A1A1A', color: '#fff', fontSize: '12px', fontWeight: 500, textAlign: 'center', padding: '9px 12px', letterSpacing: '0.02em', overflow: 'hidden' }}>
         🚚 Free Lebanon delivery &nbsp;·&nbsp; 🏫 BAU Beirut pickup &nbsp;·&nbsp; ✅ 100% Authentic
       </div>
 
       {/* ── HEADER ── */}
       <style>{`
+        /* Universal box sizing and overflow protection */
+        * { box-sizing: border-box; }
+
         /* Desktop base card hover */
         .product-card:hover .card-img { transform: scale(1.05); }
         .product-card:hover .card-add-overlay { transform: translateY(0); }
@@ -98,40 +101,42 @@ export default function ShopPage() {
 
         /* Mobile Responsive Adjustments (<= 768px) */
         @media (max-width: 768px) {
-          .store-header-inner { padding: 0 16px !important; gap: 8px !important; }
+          .store-header-inner { padding: 0 14px !important; gap: 8px !important; width: 100% !important; max-width: 100% !important; }
           .store-nav-links { display: none !important; }
-          .store-hero-wrap { padding: 28px 16px 36px !important; }
-          .store-hero-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
-          .store-hero-h1 { font-size: 30px !important; line-height: 1.15 !important; }
+          .store-hero-wrap { padding: 24px 14px 28px !important; width: 100% !important; overflow: hidden !important; }
+          .store-hero-grid { grid-template-columns: 1fr !important; gap: 24px !important; width: 100% !important; }
+          .store-hero-h1 { font-size: 28px !important; line-height: 1.15 !important; }
           .store-hero-desc { font-size: 14px !important; }
-          .store-hero-cards { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+          .store-hero-cards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; width: 100% !important; }
           .store-hero-card-tile { min-height: 180px !important; padding: 14px 12px !important; }
           .store-hero-card-desc { display: none !important; }
-          .store-hero-stats { gap: 14px !important; }
-          .store-featured-wrap { padding: 20px 16px 0 !important; }
-          .store-featured-banner { min-height: 400px !important; }
+          .store-hero-stats { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; text-align: center !important; }
+          .store-hero-stats-divider { display: none !important; }
+          .store-featured-wrap { padding: 16px 14px 0 !important; width: 100% !important; overflow: hidden !important; }
+          .store-featured-banner { min-height: auto !important; width: 100% !important; overflow: hidden !important; }
           .store-featured-img { transform: translateX(0px) !important; }
-          .store-featured-content { padding: 24px 20px !important; max-width: 100% !important; height: auto !important; min-height: 350px !important; }
-          .store-featured-title { font-size: 22px !important; min-height: auto !important; }
+          .store-featured-content { padding: 20px 16px !important; max-width: 100% !important; width: 100% !important; height: auto !important; min-height: 320px !important; }
+          .store-featured-title { font-size: 20px !important; min-height: auto !important; }
+          .store-featured-actions { flex-direction: column !important; width: 100% !important; gap: 8px !important; }
+          .store-featured-btn-view, .store-featured-btn-add { width: 100% !important; max-width: 100% !important; }
           .store-featured-arrows { display: none !important; }
-          .store-collection-header-inner { padding: 12px 16px !important; }
-          .store-filter-pills { overflow-x: auto !important; flex-wrap: nowrap !important; max-width: 100% !important; padding-bottom: 4px !important; -webkit-overflow-scrolling: touch !important; }
+          .store-collection-header-inner { padding: 12px 14px !important; width: 100% !important; flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+          .store-filter-pills { overflow-x: auto !important; flex-wrap: nowrap !important; max-width: 100% !important; width: 100% !important; padding-bottom: 4px !important; -webkit-overflow-scrolling: touch !important; white-space: nowrap !important; }
           .store-filter-pills::-webkit-scrollbar { display: none; }
-          .store-product-grid-wrap { padding: 20px 16px 60px !important; }
-          .store-product-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
-          .store-product-card-body { padding: 10px 10px 12px !important; }
+          .store-product-grid-wrap { padding: 16px 14px 48px !important; width: 100% !important; overflow: hidden !important; }
+          .store-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; width: 100% !important; }
+          .store-product-card-body { padding: 10px 10px 12px !important; min-width: 0 !important; }
           .card-add-overlay { position: static !important; transform: translateY(0) !important; padding: 8px 10px 10px !important; }
-          .store-trust-strip { grid-template-columns: 1fr !important; padding: 24px 16px !important; }
-          .store-footer-inner { padding: 36px 16px !important; flex-direction: column !important; gap: 24px !important; text-align: center !important; }
+          .store-trust-strip { grid-template-columns: 1fr !important; gap: 16px !important; padding: 20px 14px !important; width: 100% !important; }
+          .store-footer-inner { padding: 32px 14px !important; flex-direction: column !important; gap: 20px !important; text-align: center !important; width: 100% !important; }
           .store-footer-links { justify-content: center !important; }
         }
 
         @media (max-width: 420px) {
           .store-hero-cards { grid-template-columns: 1fr !important; }
-          .store-featured-actions { flex-direction: column !important; gap: 8px !important; }
-          .store-featured-btn-view, .store-featured-btn-add { width: 100% !important; }
         }
       `}</style>
+
 
       {/* ── HEADER ── */}
       <header style={{
@@ -272,17 +277,18 @@ export default function ShopPage() {
                   <p style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0 }}>4.9 ★</p>
                   <p style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Customer Rating</p>
                 </div>
-                <div style={{ width: 1, background: '#E8E8E8' }} />
+                <div className="store-hero-stats-divider" style={{ width: 1, background: '#E8E8E8' }} />
                 <div>
                   <p style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0 }}>24-48h</p>
                   <p style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Lebanon Delivery</p>
                 </div>
-                <div style={{ width: 1, background: '#E8E8E8' }} />
+                <div className="store-hero-stats-divider" style={{ width: 1, background: '#E8E8E8' }} />
                 <div>
                   <p style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0 }}>Free Pickup</p>
                   <p style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>BAU Beirut Campus</p>
                 </div>
               </div>
+
             </div>
 
             {/* Right: Marvel & Anime Franchise Collection Cards with Authentic Artwork */}

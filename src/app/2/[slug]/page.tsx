@@ -55,15 +55,16 @@ export default function ProductPage() {
   };
 
   return (
-    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: '#F4F4F4', minHeight: '100vh', color: '#1A1A1A' }}>
+    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: '#F4F4F4', minHeight: '100vh', color: '#1A1A1A', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
       <style>{`
+        * { box-sizing: border-box; }
         @media (max-width: 768px) {
-          .slug-header-inner { padding: 0 16px !important; }
-          .slug-breadcrumb { padding: 10px 16px !important; font-size: 12px !important; overflow-x: auto; white-space: nowrap; }
-          .slug-main-grid { grid-template-columns: 1fr !important; gap: 24px !important; padding: 0 16px 48px !important; }
-          .slug-img-col { position: static !important; }
-          .slug-related-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
-          .slug-related-inner { padding: 0 16px !important; }
+          .slug-header-inner { padding: 0 14px !important; width: 100% !important; }
+          .slug-breadcrumb { padding: 10px 14px !important; font-size: 12px !important; overflow-x: auto; white-space: nowrap; width: 100% !important; }
+          .slug-main-grid { grid-template-columns: 1fr !important; gap: 20px !important; padding: 0 14px 40px !important; width: 100% !important; overflow: hidden !important; }
+          .slug-img-col { position: static !important; width: 100% !important; }
+          .slug-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; width: 100% !important; }
+          .slug-related-inner { padding: 0 14px !important; width: 100% !important; }
           .slug-h1 { font-size: 22px !important; }
         }
       `}</style>
@@ -71,6 +72,7 @@ export default function ProductPage() {
       {/* ── HEADER ── */}
       <header style={{ position: 'sticky', top: 0, zIndex: 50, background: '#fff', borderBottom: '1px solid #E8E8E8', boxShadow: '0 2px 16px rgba(0,0,0,0.08)' }}>
         <div className="slug-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 16 }}>
+
           <Link href="/2" style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#555', textDecoration: 'none', fontSize: 14, fontWeight: 600, transition: 'color 0.15s' }}>
             <ArrowLeft size={16} />
             <span>Shop</span>
