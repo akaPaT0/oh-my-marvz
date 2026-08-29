@@ -926,32 +926,41 @@ export default function ShopPage() {
             </button>
           </div>
 
-          {/* Filter / Sort Icon Button */}
+          {/* Pure Filter Icon Button */}
           <div style={{ position: 'relative', flexShrink: 0 }}>
             <button
               onClick={() => setSortDropdownOpen(prev => !prev)}
               aria-label="Filter & Sort"
               style={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
-                gap: 7,
+                justifyContent: 'center',
+                width: 36,
+                height: 36,
                 background: sortDropdownOpen ? 'rgba(226,54,54,0.08)' : '#fff',
                 border: sortDropdownOpen ? '1.5px solid #E23636' : '1.5px solid #DCDCDC',
                 borderRadius: 10,
-                padding: '7px 13px',
-                fontSize: 13,
-                fontWeight: 700,
                 color: sortDropdownOpen ? '#E23636' : '#1A1A1A',
                 cursor: 'pointer',
                 boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
-                whiteSpace: 'nowrap',
                 transition: 'all 0.15s ease',
               }}
+              onMouseEnter={e => {
+                if (!sortDropdownOpen) {
+                  e.currentTarget.style.borderColor = '#111';
+                  e.currentTarget.style.background = '#F7F7F7';
+                }
+              }}
+              onMouseLeave={e => {
+                if (!sortDropdownOpen) {
+                  e.currentTarget.style.borderColor = '#DCDCDC';
+                  e.currentTarget.style.background = '#fff';
+                }
+              }}
             >
-              <SlidersHorizontal size={15} color={sortDropdownOpen ? '#E23636' : '#111'} />
-              <span>Filter</span>
-              <ChevronDown size={13} color={sortDropdownOpen ? '#E23636' : '#888'} />
+              <SlidersHorizontal size={17} color={sortDropdownOpen ? '#E23636' : '#111'} />
             </button>
+
 
             {/* Dropdown Popup */}
             {sortDropdownOpen && (
