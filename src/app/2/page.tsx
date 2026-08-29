@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+
+
 import {
   ShoppingBag,
   Search,
@@ -56,15 +58,25 @@ export default function ShopPage() {
   const [addedId, setAddedId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [featuredIndex, setFeaturedIndex] = useState(0);
+  const [isCarouselHovered, setIsCarouselHovered] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const categoryScrollRef = useRef<HTMLDivElement>(null);
-
 
   const featuredProducts = useMemo(
     () => products.filter((p) => p.isFeatured || p.rating >= 5.0).slice(0, 6),
     [products]
   );
+
+  // Auto-scroll Featured Carousel one-by-one every 4.2s (pauses on hover)
+  useEffect(() => {
+    if (featuredProducts.length <= 1 || isCarouselHovered) return;
+    const interval = setInterval(() => {
+      setFeaturedIndex(prev => (prev + 1) % featuredProducts.length);
+    }, 4200);
+    return () => clearInterval(interval);
+  }, [featuredProducts.length, isCarouselHovered]);
+
 
   const addToCart = (product: Product, qty = 1) => {
     setCartItems(prev => {
@@ -740,7 +752,10 @@ export default function ShopPage() {
             {/* Featured Banner: Cropped Product Image as Background + Gradient Scrim + Smooth Transitions */}
             <div
               className="store-featured-banner"
+              onMouseEnter={() => setIsCarouselHovered(true)}
+              onMouseLeave={() => setIsCarouselHovered(false)}
               onTouchStart={e => {
+
                 setTouchEndX(null);
                 setTouchStartX(e.targetTouches[0].clientX);
               }}
@@ -763,182 +778,176 @@ export default function ShopPage() {
                 border: '1px solid #E2E2E2',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
                 minHeight: 440,
+                display: 'flex',
+                alignItems: 'center',
                 background: '#ECECEC',
                 touchAction: 'pan-y',
               }}
             >
-              {/* Sliding Carousel Track */}
-              <div
-                style={{
-                  display: 'flex',
-                  width: '100%',
-                  height: '100%',
-                  transform: `translateX(-${featuredIndex * 100}%)`,
-                  transition: 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
-                }}
-              >
-                {featuredProducts.map((prod, idx) => {
-                  const prodDiscount = prod.originalPrice
-                    ? Math.round(((prod.originalPrice - prod.price) / prod.originalPrice) * 100)
-                    : null;
-                  const isProdAdded = addedId === prod.id;
+              {featuredProducts.map((prod, idx) => {
+                const isActive = idx === featuredIndex;
+                const prodDiscount = prod.originalPrice
+                  ? Math.round(((prod.originalPrice - prod.price) / prod.originalPrice) * 100)
+                  : null;
+                const isProdAdded = addedId === prod.id;
 
-                  return (
+                return (
+                  <div
+                    key={prod.id}
+                    className="store-featured-slide"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      opacity: isActive ? 1 : 0,
+                      transform: isActive ? 'translateX(0)' : idx < featuredIndex ? 'translateX(-30px)' : 'translateX(30px)',
+                      pointerEvents: isActive ? 'auto' : 'none',
+                      transition: 'opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1), transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)',
+                      zIndex: isActive ? 2 : 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {/* Background Product Image */}
+                    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+                      <Image
+                        src={prod.image}
+                        alt={prod.name}
+                        fill
+                        priority={idx === 0}
+                        className="store-featured-img"
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'center 15%',
+                          transform: isActive ? 'translateX(110px) scale(1)' : 'translateX(130px) scale(1.04)',
+                          transition: 'transform 0.55s cubic-bezier(0.25, 1, 0.5, 1)',
+                        }}
+                      />
+
+                      {/* Gradient fade overlay for typography legibility */}
+                      <div
+                        className="store-featured-gradient"
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.94) 35%, rgba(255,255,255,0.55) 55%, transparent 100%)',
+                          pointerEvents: 'none',
+                        }}
+                      />
+                    </div>
+
+                    {/* Direct Content Overlay */}
                     <div
-                      key={prod.id}
-                      className="store-featured-slide"
+                      className="store-featured-content"
                       style={{
                         position: 'relative',
-                        width: '100%',
-                        flexShrink: 0,
-                        minHeight: 440,
+                        zIndex: 2,
+                        padding: '44px 48px',
+                        maxWidth: 500,
+                        height: 360,
                         display: 'flex',
-                        alignItems: 'center',
-                        overflow: 'hidden',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
                       }}
                     >
-                      {/* Background Product Image */}
-                      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-                        <Image
-                          src={prod.image}
-                          alt={prod.name}
-                          fill
-                          priority={idx === 0}
-                          className="store-featured-img"
-                          style={{
-                            objectFit: 'cover',
-                            objectPosition: 'center 15%',
-                            transform: 'translateX(110px) scale(1)',
-                          }}
-                        />
+                      {/* Title & Subtitle */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                        <Link
+                          href={`/2/${prod.id}`}
+                          style={{ textDecoration: 'none', color: '#1A1A1A' }}
+                        >
+                          <h3 className="store-featured-title" style={{ fontSize: 28, fontWeight: 900, margin: 0, lineHeight: 1.18, letterSpacing: '-0.03em', cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
+                            {prod.name}
+                          </h3>
+                        </Link>
 
-                        {/* Gradient fade overlay for typography legibility */}
-                        <div
-                          className="store-featured-gradient"
-                          style={{
-                            position: 'absolute',
-                            inset: 0,
-                            background: 'linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.94) 35%, rgba(255,255,255,0.55) 55%, transparent 100%)',
-                            pointerEvents: 'none',
-                          }}
-                        />
+                        <p className="store-featured-desc" style={{ fontSize: 13, color: '#666', margin: 0, lineHeight: 1.4, fontWeight: 500, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
+                          {prod.subtitle}
+                        </p>
                       </div>
 
-                      {/* Direct Content Overlay */}
-                      <div
-                        className="store-featured-content"
-                        style={{
-                          position: 'relative',
-                          zIndex: 2,
-                          padding: '44px 48px',
-                          maxWidth: 500,
-                          height: 360,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'space-between',
-                        }}
-                      >
-                        {/* Title & Subtitle */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                          <Link
-                            href={`/2/${prod.id}`}
-                            style={{ textDecoration: 'none', color: '#1A1A1A' }}
-                          >
-                            <h3 className="store-featured-title" style={{ fontSize: 28, fontWeight: 900, margin: 0, lineHeight: 1.18, letterSpacing: '-0.03em', cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
-                              {prod.name}
-                            </h3>
-                          </Link>
-
-                          <p className="store-featured-desc" style={{ fontSize: 13, color: '#666', margin: 0, lineHeight: 1.4, fontWeight: 500, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
-                            {prod.subtitle}
-                          </p>
+                      {/* Price + Action Buttons */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        {/* Price & Discount */}
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+                          <span className="store-featured-price" style={{ fontSize: 30, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
+                            ${prod.price.toFixed(2)}
+                          </span>
+                          {prod.originalPrice && (
+                            <span style={{ fontSize: 15, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
+                              ${prod.originalPrice.toFixed(2)}
+                            </span>
+                          )}
+                          {prodDiscount && (
+                            <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 4 }}>
+                              −{prodDiscount}%
+                            </span>
+                          )}
                         </div>
 
-                        {/* Price + Action Buttons */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                          {/* Price & Discount */}
-                          <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
-                            <span className="store-featured-price" style={{ fontSize: 30, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
-                              ${prod.price.toFixed(2)}
-                            </span>
-                            {prod.originalPrice && (
-                              <span style={{ fontSize: 15, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
-                                ${prod.originalPrice.toFixed(2)}
-                              </span>
+                        {/* Actions */}
+                        <div className="store-featured-actions" style={{ display: 'flex', gap: 10 }}>
+                          <Link
+                            href={`/2/${prod.id}`}
+                            className="store-featured-btn-view"
+                            style={{
+                              width: 140,
+                              height: 44,
+                              background: '#1A1A1A',
+                              color: '#fff',
+                              borderRadius: 10,
+                              textDecoration: 'none',
+                              fontSize: 13,
+                              fontWeight: 800,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: 6,
+                              boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+                              transition: 'background 0.15s',
+                              flexShrink: 0,
+                            }}
+                          >
+                            <span>View Piece</span>
+                            <ArrowRight size={14} />
+                          </Link>
+
+                          <button
+                            onClick={() => addToCart(prod)}
+                            className="store-featured-btn-add"
+                            style={{
+                              width: 130,
+                              height: 44,
+                              background: isProdAdded ? '#16a34a' : '#E23636',
+                              color: '#fff',
+                              border: 'none',
+                              borderRadius: 10,
+                              fontSize: 13,
+                              fontWeight: 800,
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: 6,
+                              boxShadow: '0 4px 14px rgba(226,54,54,0.35)',
+                              transition: 'all 0.15s',
+                              flexShrink: 0,
+                            }}
+                            onMouseEnter={e => { if (!isProdAdded) e.currentTarget.style.background = '#C52222'; }}
+                            onMouseLeave={e => { if (!isProdAdded) e.currentTarget.style.background = '#E23636'; }}
+                          >
+                            {isProdAdded ? (
+                              <><Check size={15} /> Added</>
+                            ) : (
+                              <><ShoppingBag size={14} /> Quick Add</>
                             )}
-                            {prodDiscount && (
-                              <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 4 }}>
-                                −{prodDiscount}%
-                              </span>
-                            )}
-                          </div>
+                          </button>
 
-                          {/* Actions */}
-                          <div className="store-featured-actions" style={{ display: 'flex', gap: 10 }}>
-                            <Link
-                              href={`/2/${prod.id}`}
-                              className="store-featured-btn-view"
-                              style={{
-                                width: 140,
-                                height: 44,
-                                background: '#1A1A1A',
-                                color: '#fff',
-                                borderRadius: 10,
-                                textDecoration: 'none',
-                                fontSize: 13,
-                                fontWeight: 800,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: 6,
-                                boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
-                                transition: 'background 0.15s',
-                                flexShrink: 0,
-                              }}
-                            >
-                              <span>View Piece</span>
-                              <ArrowRight size={14} />
-                            </Link>
-
-                            <button
-                              onClick={() => addToCart(prod)}
-                              className="store-featured-btn-add"
-                              style={{
-                                width: 130,
-                                height: 44,
-                                background: isProdAdded ? '#16a34a' : '#E23636',
-                                color: '#fff',
-                                border: 'none',
-                                borderRadius: 10,
-                                fontSize: 13,
-                                fontWeight: 800,
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: 6,
-                                boxShadow: '0 4px 14px rgba(226,54,54,0.35)',
-                                transition: 'all 0.15s',
-                                flexShrink: 0,
-                              }}
-                              onMouseEnter={e => { if (!isProdAdded) e.currentTarget.style.background = '#C52222'; }}
-                              onMouseLeave={e => { if (!isProdAdded) e.currentTarget.style.background = '#E23636'; }}
-                            >
-                              {isProdAdded ? (
-                                <><Check size={15} /> Added</>
-                              ) : (
-                                <><ShoppingBag size={14} /> Quick Add</>
-                              )}
-                            </button>
-
-                          </div>
                         </div>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-
+                  </div>
+                );
+              })}
 
 
               {/* Navigation Arrows for PC & Mobile */}
