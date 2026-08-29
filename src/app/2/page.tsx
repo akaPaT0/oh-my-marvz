@@ -110,10 +110,12 @@ export default function ShopPage() {
           .store-nav-links { display: none !important; }
           .store-hero-wrap { padding: 0 !important; width: 100% !important; overflow: hidden !important; }
           .store-hero-inner { padding: 20px 14px 18px !important; }
-          .store-hero-grid { grid-template-columns: 1fr !important; gap: 18px !important; width: 100% !important; }
-          .store-hero-h1 { font-size: 28px !important; line-height: 1.15 !important; }
-          .store-hero-desc { font-size: 14px !important; }
+          .store-hero-grid { grid-template-columns: 1fr !important; gap: 18px !important; width: 100% !important; text-align: center !important; }
+          .store-hero-h1 { font-size: 28px !important; line-height: 1.15 !important; text-align: center !important; }
+          .store-hero-desc { font-size: 14px !important; text-align: center !important; margin: 0 auto !important; }
+          .store-hero-ctas { justify-content: center !important; }
           .store-hero-cards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; width: 100% !important; }
+
           .store-hero-card-tile { min-height: 170px !important; padding: 14px 12px !important; }
           .store-hero-card-desc { display: none !important; }
           .store-hero-stats { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 4px !important; text-align: center !important; width: 100% !important; }
@@ -268,18 +270,18 @@ export default function ShopPage() {
         <div className="store-hero-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 28px 56px' }}>
           <div className="store-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, alignItems: 'center' }}>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div className="store-hero-text-col" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <h1 className="store-hero-h1" style={{ fontSize: 46, fontWeight: 950, color: '#111', margin: 0, lineHeight: 1.08, letterSpacing: '-0.035em' }}>
                 Marvel & Anime Collectibles, <span style={{ color: '#E23636', position: 'relative', display: 'inline-block' }}>Delivered.</span>
               </h1>
 
-
-              <p className="store-hero-desc" style={{ fontSize: 15, color: '#555', margin: 0, lineHeight: 1.65, maxWidth: 480 }}>
+              <p className="store-hero-desc" style={{ fontSize: 15, color: '#555', margin: 0, lineHeight: 1.65, maxWidth: 480, textAlign: 'center' }}>
                 High-articulation figures, collector statues, metal keychains & sticker packs. Verified authentic with Lebanon-wide doorstep delivery or BAU Beirut pickup.
               </p>
 
               {/* CTAs with Signature Red & High-Contrast Black */}
-              <div style={{ display: 'flex', gap: 12, marginTop: 4, flexWrap: 'wrap' }}>
+              <div className="store-hero-ctas" style={{ display: 'flex', gap: 12, marginTop: 4, flexWrap: 'wrap' }}>
+
                 <button
                   onClick={() => { setActiveFranchise('All'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }}
                   style={{
