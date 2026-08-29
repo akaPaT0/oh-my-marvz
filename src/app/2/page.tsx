@@ -449,41 +449,35 @@ export default function ShopPage() {
                     transition: 'all 0.4s ease',
                   }}
                 />
-                {/* Subtle gradient vignette over the background */}
+                {/* Subtle soft gradient fade on left for crystal clear typography */}
                 <div
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.2) 100%)',
+                    background: 'linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.82) 42%, rgba(255,255,255,0.15) 75%, transparent 100%)',
+                    pointerEvents: 'none',
                   }}
                 />
               </div>
 
-              {/* Minimalist Floating Frosted Glass Product Context Card */}
+              {/* Direct Unwrapped Content Overlay */}
               <div
                 style={{
                   position: 'relative',
                   zIndex: 2,
-                  margin: '32px 0 32px 32px',
-                  maxWidth: 420,
-                  background: 'rgba(255,255,255,0.85)',
-                  backdropFilter: 'blur(28px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-                  borderRadius: 16,
-                  padding: '26px 28px',
-                  border: '1px solid rgba(255,255,255,0.75)',
-                  boxShadow: '0 16px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04)',
+                  padding: '48px 48px',
+                  maxWidth: 480,
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 12,
+                  gap: 14,
                 }}
               >
                 {/* Tag & Counter */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 10, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '3px 8px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '4px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                     {item.franchise} SPOTLIGHT
                   </span>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#888' }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#888' }}>
                     0{featuredIndex + 1} / 0{featuredProducts.length}
                   </span>
                 </div>
@@ -493,78 +487,83 @@ export default function ShopPage() {
                   href={`/2/${item.id}`}
                   style={{ textDecoration: 'none', color: '#1A1A1A' }}
                 >
-                  <h3 style={{ fontSize: 24, fontWeight: 900, margin: 0, lineHeight: 1.2, letterSpacing: '-0.02em', cursor: 'pointer' }}>
+                  <h3 style={{ fontSize: 32, fontWeight: 900, margin: 0, lineHeight: 1.15, letterSpacing: '-0.03em', cursor: 'pointer' }}>
                     {item.name}
                   </h3>
                 </Link>
 
+                {/* Subtitle */}
+                <p style={{ fontSize: 13, color: '#666', margin: 0, lineHeight: 1.5, fontWeight: 500 }}>
+                  {item.subtitle}
+                </p>
+
                 {/* Price & Discount */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 26, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
+                  <span style={{ fontSize: 30, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
                     ${item.price.toFixed(2)}
                   </span>
                   {item.originalPrice && (
-                    <span style={{ fontSize: 14, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
+                    <span style={{ fontSize: 16, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
                       ${item.originalPrice.toFixed(2)}
                     </span>
                   )}
                   {itemDiscount && (
-                    <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '2px 7px', borderRadius: 4 }}>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 4 }}>
                       −{itemDiscount}%
                     </span>
                   )}
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
+                <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
                   <Link
                     href={`/2/${item.id}`}
                     style={{
-                      flex: 1,
-                      padding: '11px 18px',
+                      padding: '13px 24px',
                       background: '#1A1A1A',
                       color: '#fff',
                       borderRadius: 10,
                       textDecoration: 'none',
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: 800,
                       display: 'inline-flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: 6,
-                      boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+                      gap: 8,
+                      boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
                       transition: 'background 0.15s',
                     }}
                   >
                     <span>View Piece</span>
-                    <ArrowRight size={14} />
+                    <ArrowRight size={15} />
                   </Link>
 
                   <button
                     onClick={() => addToCart(item)}
                     style={{
-                      padding: '11px 16px',
+                      padding: '13px 20px',
                       background: justAdded ? '#16a34a' : '#fff',
                       color: justAdded ? '#fff' : '#1A1A1A',
                       border: '1.5px solid #DCDCDC',
                       borderRadius: 10,
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: 700,
                       cursor: 'pointer',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: 6,
+                      gap: 7,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                       transition: 'all 0.15s',
                     }}
                   >
                     {justAdded ? (
-                      <><Check size={15} /> Added</>
+                      <><Check size={16} /> Added</>
                     ) : (
-                      <><ShoppingBag size={14} /> Add</>
+                      <><ShoppingBag size={15} /> Quick Add</>
                     )}
                   </button>
                 </div>
               </div>
+
 
 
               {/* Side Floating Next/Prev Overlay Arrows on the Banner */}
