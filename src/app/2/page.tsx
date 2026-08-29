@@ -1136,8 +1136,9 @@ export default function ShopPage() {
                         boxShadow: '0 2px 8px rgba(226,54,54,0.35)',
                       }}
                     >
-                      {justAdded ? <Check size={14} /> : <Plus size={15} />}
+                      {justAdded ? <Check size={14} /> : <ShoppingBag size={14} />}
                     </button>
+
                   </div>
 
 
