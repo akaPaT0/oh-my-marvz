@@ -25,7 +25,19 @@ import { CartDrawer, CartItem } from '@/components/CartDrawer';
 import { CheckoutModal } from '@/components/CheckoutModal';
 import { ViewSwitcher } from '@/components/ViewSwitcher';
 
-const CATEGORIES = ['All', 'Figures', 'Statues', 'Keychains', 'Funko Pops', 'Stickers'];
+const CATEGORIES = [
+  'All',
+  'Figurines',
+  'Keychains',
+  'Necklaces',
+  'Stickers',
+  'Funko Pops',
+  'Props',
+  'Spinners',
+  'Phone Pins',
+  '3D Buttons',
+  'Car Accessories',
+];
 
 export default function ShopPage() {
   const [products] = useState<Product[]>(INITIAL_PRODUCTS);
@@ -49,10 +61,6 @@ export default function ShopPage() {
     [products]
   );
 
-
-
-
-
   const addToCart = (product: Product, qty = 1) => {
     setCartItems(prev => {
       const i = prev.findIndex(x => x.product.id === product.id);
@@ -68,13 +76,31 @@ export default function ShopPage() {
 
   const filtered = useMemo(() => products
     .filter(p => {
-      const cat = activeCategory === 'All'
-        || p.category.toLowerCase().includes(activeCategory.toLowerCase())
-        || (activeCategory === 'Funko Pops' && p.category.toLowerCase().includes('pop'))
-        || (activeCategory === 'Keychains' && p.category.toLowerCase().includes('keychain'));
+      const catLower = activeCategory.toLowerCase();
+      const pCat = (p.category || '').toLowerCase();
+      const pName = (p.name || '').toLowerCase();
+      const pSub = (p.subtitle || '').toLowerCase();
+      const pDesc = (p.description || '').toLowerCase();
+      const pHigh = (p.highlightCategory || '').toLowerCase();
+
+      const matchesCategory =
+        activeCategory === 'All' ||
+        pCat.includes(catLower) ||
+        pHigh.includes(catLower) ||
+        (catLower === 'figurines' && (pCat.includes('figurine') || pCat.includes('figure') || pCat.includes('statue'))) ||
+        (catLower === 'keychains' && pCat.includes('keychain')) ||
+        (catLower === 'funko pops' && (pCat.includes('pop') || pName.includes('pop'))) ||
+        (catLower === 'necklaces' && (pCat.includes('necklace') || pName.includes('necklace') || pSub.includes('necklace'))) ||
+        (catLower === 'stickers' && pCat.includes('sticker')) ||
+        (catLower === 'props' && (pCat.includes('prop') || pName.includes('replica') || pName.includes('shield') || pName.includes('hammer') || pName.includes('gauntlet'))) ||
+        (catLower === 'spinners' && (pCat.includes('spinner') || pName.includes('spinner'))) ||
+        (catLower === 'phone pins' && (pCat.includes('phone') || pCat.includes('pin') || pName.includes('pin'))) ||
+        (catLower === '3d buttons' && (pCat.includes('button') || pName.includes('button'))) ||
+        (catLower === 'car accessories' && (pCat.includes('car') || pName.includes('car')));
+
       const franchise = activeFranchise === 'All' || p.franchise.toLowerCase() === activeFranchise.toLowerCase();
-      const search = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return cat && franchise && search;
+      const search = !searchQuery || pName.includes(searchQuery.toLowerCase()) || pSub.includes(searchQuery.toLowerCase()) || pDesc.includes(searchQuery.toLowerCase());
+      return matchesCategory && franchise && search;
     })
     .sort((a, b) => {
       if (sortBy === 'price-low') return a.price - b.price;
@@ -82,6 +108,7 @@ export default function ShopPage() {
       if (sortBy === 'rating') return b.rating - a.rating;
       return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
     }), [products, activeCategory, activeFranchise, searchQuery, sortBy]);
+
 
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
