@@ -286,12 +286,7 @@ export default function AdminDashboardPage() {
 
           {/* Right Action Controls & Distant Business Switcher */}
           <div className="flex items-center gap-3">
-            
-            {/* Supabase Ready Badge */}
-            <div className="hidden md:flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1.5 rounded-xl text-xs font-mono font-extrabold">
-              <Database className="w-3.5 h-3.5" />
-              <span>SUPABASE READY</span>
-            </div>
+
 
             {/* DISTANT BUSINESS SWITCHER BUTTON */}
             <div className="relative">
