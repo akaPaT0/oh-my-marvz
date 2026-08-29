@@ -1,19 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {
-  X,
-  Star,
-  ShoppingBag,
-  Check,
-  Truck,
-  ShieldCheck,
-  MapPin,
-  Minus,
-  Plus,
-  Heart,
-  ArrowRight,
-} from 'lucide-react';
+import { X, Star, ShoppingCart, Check, MapPin, Minus, Plus, Heart, Shield } from 'lucide-react';
 import { Product } from '@/data/products';
 
 interface ModernProductModalProps {
@@ -22,17 +10,12 @@ interface ModernProductModalProps {
   onAddToCart: (product: Product, quantity?: number) => void;
 }
 
-export const ModernProductModal: React.FC<ModernProductModalProps> = ({
-  product,
-  onClose,
-  onAddToCart,
-}) => {
+export const ModernProductModal: React.FC<ModernProductModalProps> = ({ product, onClose, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [wishlisted, setWishlisted] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  // Animate in
   useEffect(() => {
     if (product) {
       setQuantity(1);
@@ -45,7 +28,7 @@ export const ModernProductModal: React.FC<ModernProductModalProps> = ({
 
   const handleClose = () => {
     setVisible(false);
-    setTimeout(onClose, 220);
+    setTimeout(onClose, 200);
   };
 
   const handleAdd = () => {
@@ -62,269 +45,172 @@ export const ModernProductModal: React.FC<ModernProductModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center"
-      style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+      style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, fontFamily: "'Inter', system-ui, sans-serif" }}
     >
       {/* Backdrop */}
       <div
         onClick={handleClose}
-        className="absolute inset-0 transition-opacity duration-200"
         style={{
-          background: 'rgba(0,0,0,0.45)',
-          backdropFilter: 'blur(6px)',
+          position: 'absolute', inset: 0,
+          background: 'rgba(0,0,0,0.5)',
+          transition: 'opacity 0.2s',
           opacity: visible ? 1 : 0,
         }}
       />
 
-      {/* Modal panel */}
+      {/* Modal */}
       <div
-        className="relative w-full sm:max-w-3xl sm:mx-4 sm:rounded-3xl overflow-hidden"
         style={{
-          background: '#FAFAF7',
-          boxShadow: '0 32px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.1)',
+          position: 'relative',
+          width: '100%',
+          maxWidth: 820,
           maxHeight: '92vh',
           overflowY: 'auto',
-          transition: 'transform 220ms cubic-bezier(0.34,1.26,0.64,1), opacity 200ms ease',
-          transform: visible ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.97)',
+          background: '#fff',
+          borderRadius: 16,
+          boxShadow: '0 24px 80px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.1)',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          transition: 'transform 0.22s cubic-bezier(0.34,1.2,0.64,1), opacity 0.2s ease',
+          transform: visible ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(20px)',
           opacity: visible ? 1 : 0,
-          borderRadius: '24px',
         }}
       >
-        {/* ── TOP BAR ── */}
-        <div
-          className="sticky top-0 z-10 flex items-center justify-between px-6 py-4"
-          style={{
-            background: 'rgba(250,250,247,0.92)',
-            backdropFilter: 'blur(16px)',
-            borderBottom: '1px solid rgba(0,0,0,0.06)',
-          }}
-        >
-          <div>
-            <span
-              className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
-              style={{ background: 'rgba(201,106,0,0.1)', color: '#c96a00' }}
-            >
-              {product.franchise} · {product.category}
-            </span>
-          </div>
+        {/* ── LEFT: Image ── */}
+        <div style={{ position: 'relative', background: '#ECECEC', borderRadius: '16px 0 0 16px', overflow: 'hidden', minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img
+            src={product.image}
+            alt={product.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
+          />
+
+          {/* Discount badge */}
+          {discount && (
+            <div style={{ position: 'absolute', top: 14, left: 14, background: '#DC2626', color: '#fff', fontSize: 12, fontWeight: 700, padding: '3px 10px', borderRadius: 6 }}>
+              −{discount}%
+            </div>
+          )}
+
+          {/* Wishlist */}
           <button
-            onClick={handleClose}
-            className="w-9 h-9 flex items-center justify-center rounded-full transition-all hover:scale-110 active:scale-95"
-            style={{
-              background: 'rgba(0,0,0,0.07)',
-              color: 'rgba(0,0,0,0.5)',
-            }}
+            onClick={() => setWishlisted(!wishlisted)}
+            style={{ position: 'absolute', top: 14, right: 14, width: 36, height: 36, background: 'rgba(255,255,255,0.95)', border: '1px solid #E0E0E0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
           >
-            <X className="w-4 h-4" />
+            <Heart size={16} style={{ fill: wishlisted ? '#ef4444' : 'none', color: wishlisted ? '#ef4444' : '#888' }} />
           </button>
         </div>
 
-        {/* ── BODY ── */}
-        <div className="grid sm:grid-cols-2 gap-0">
+        {/* ── RIGHT: Details ── */}
+        <div style={{ padding: '28px 28px 24px', display: 'flex', flexDirection: 'column', gap: 16, position: 'relative' }}>
 
-          {/* Left: Image */}
-          <div
-            className="relative flex items-center justify-center"
-            style={{ background: '#ECEAE2', minHeight: '320px' }}
+          {/* Close */}
+          <button
+            onClick={handleClose}
+            style={{ position: 'absolute', top: 16, right: 16, width: 32, height: 32, background: '#F4F4F4', border: 'none', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#888' }}
           >
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover"
-              style={{ maxHeight: '420px' }}
-            />
+            <X size={16} />
+          </button>
 
-            {/* Discount badge */}
-            {discount && (
-              <div
-                className="absolute top-4 left-4 text-white text-[12px] font-black px-3 py-1 rounded-full"
-                style={{ background: '#c96a00', boxShadow: '0 2px 12px rgba(201,106,0,0.45)' }}
-              >
-                −{discount}%
-              </div>
-            )}
-
-            {/* Wishlist */}
-            <button
-              onClick={() => setWishlisted(!wishlisted)}
-              className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full transition-all hover:scale-110 active:scale-95"
-              style={{
-                background: 'rgba(255,255,255,0.9)',
-                backdropFilter: 'blur(8px)',
-                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-              }}
-            >
-              <Heart
-                className="w-4 h-4 transition-colors"
-                style={{
-                  fill: wishlisted ? '#f43f5e' : 'none',
-                  color: wishlisted ? '#f43f5e' : 'rgba(0,0,0,0.4)',
-                }}
-              />
-            </button>
+          {/* Category badge */}
+          <div>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#C96A00', textTransform: 'uppercase', letterSpacing: '0.08em', background: 'rgba(201,106,0,0.08)', padding: '3px 10px', borderRadius: 20 }}>
+              {product.franchise} · {product.category}
+            </span>
           </div>
 
-          {/* Right: Details */}
-          <div className="p-6 flex flex-col gap-5">
+          {/* Name */}
+          <div>
+            <p style={{ fontSize: 11, color: '#B0B0B0', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: '0 0 6px' }}>{product.subtitle}</p>
+            <h2 style={{ fontSize: 22, fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.25, letterSpacing: '-0.02em' }}>
+              {product.name}
+            </h2>
+          </div>
 
-            {/* Name + subtitle */}
-            <div>
-              <p
-                className="text-[11px] font-mono uppercase tracking-widest mb-1.5"
-                style={{ color: 'rgba(0,0,0,0.35)' }}
-              >
-                {product.subtitle}
-              </p>
-              <h2
-                className="text-2xl font-black tracking-[-0.03em] leading-tight"
-                style={{ color: '#111' }}
-              >
-                {product.name}
-              </h2>
+          {/* Stars */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ display: 'flex', gap: 2 }}>
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={14} style={{ fill: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB', color: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB' }} />
+              ))}
             </div>
+            <span style={{ fontSize: 13, color: '#888', fontWeight: 500 }}>{product.rating.toFixed(1)} · {product.reviewsCount} reviews</span>
+          </div>
 
-            {/* Rating */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-3.5 h-3.5"
-                    style={{
-                      fill: i < Math.round(product.rating) ? '#c96a00' : 'rgba(0,0,0,0.1)',
-                      color: i < Math.round(product.rating) ? '#c96a00' : 'rgba(0,0,0,0.1)',
-                    }}
-                  />
-                ))}
-              </div>
-              <span className="text-[12px] font-semibold" style={{ color: 'rgba(0,0,0,0.4)' }}>
-                {product.rating.toFixed(1)} · {product.reviewsCount} reviews
-              </span>
-            </div>
-
-            {/* Price */}
-            <div
-              className="flex items-center justify-between p-4 rounded-2xl"
-              style={{ background: '#ECEAE2', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.06)' }}
-            >
-              <div className="flex items-baseline gap-3">
-                <span className="font-black tracking-[-0.02em]" style={{ fontSize: '28px', color: '#111' }}>
-                  ${product.price.toFixed(2)}
-                </span>
-                {product.originalPrice && (
-                  <span className="text-[14px] font-medium line-through" style={{ color: 'rgba(0,0,0,0.3)' }}>
-                    ${product.originalPrice.toFixed(2)}
-                  </span>
-                )}
-              </div>
-              <span
-                className="text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full"
-                style={{ background: 'rgba(34,197,94,0.12)', color: '#16a34a' }}
-              >
-                In Stock
-              </span>
-            </div>
-
-            {/* Description */}
-            {product.description && (
-              <p className="text-[13px] leading-relaxed" style={{ color: 'rgba(0,0,0,0.5)' }}>
-                {product.description}
-              </p>
+          {/* Price */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', background: '#F8F8F8', borderRadius: 12, border: '1.5px solid #EBEBEB' }}>
+            <span style={{ fontSize: 28, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.03em' }}>${product.price.toFixed(2)}</span>
+            {product.originalPrice && (
+              <span style={{ fontSize: 15, color: '#C0C0C0', textDecoration: 'line-through', fontWeight: 500 }}>${product.originalPrice.toFixed(2)}</span>
             )}
+            <span style={{ marginLeft: 'auto', fontSize: 11, fontWeight: 700, color: '#16a34a', background: 'rgba(22,163,74,0.1)', padding: '3px 10px', borderRadius: 20 }}>In Stock</span>
+          </div>
 
-            {/* Details */}
-            {product.details && product.details.length > 0 && (
-              <div className="space-y-2">
-                {product.details.map((d, i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <div
-                      className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                      style={{ background: 'rgba(201,106,0,0.15)' }}
-                    >
-                      <Check className="w-2.5 h-2.5" style={{ color: '#c96a00' }} />
-                    </div>
-                    <span className="text-[12px] font-medium" style={{ color: 'rgba(0,0,0,0.55)' }}>
-                      {d}
-                    </span>
+          {/* Description */}
+          {product.description && (
+            <p style={{ fontSize: 13, color: '#666', lineHeight: 1.65, margin: 0 }}>{product.description}</p>
+          )}
+
+          {/* Details checklist */}
+          {product.details && product.details.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {product.details.map((d, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                  <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#F0F0F0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+                    <Check size={11} color="#1A1A1A" strokeWidth={3} />
                   </div>
-                ))}
-              </div>
-            )}
+                  <span style={{ fontSize: 13, color: '#555', lineHeight: 1.5 }}>{d}</span>
+                </div>
+              ))}
+            </div>
+          )}
 
-            {/* Quantity + CTA */}
-            <div className="flex items-center gap-3 mt-auto pt-2">
-              {/* Qty */}
-              <div
-                className="flex items-center rounded-xl overflow-hidden shrink-0"
-                style={{
-                  border: '1.5px solid rgba(0,0,0,0.1)',
-                  background: '#fff',
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-                }}
-              >
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 flex items-center justify-center transition-colors hover:bg-black/5"
-                  style={{ color: 'rgba(0,0,0,0.5)' }}
-                >
-                  <Minus className="w-3.5 h-3.5" />
-                </button>
-                <span className="w-9 text-center font-black text-[14px]" style={{ color: '#111' }}>
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 flex items-center justify-center transition-colors hover:bg-black/5"
-                  style={{ color: 'rgba(0,0,0,0.5)' }}
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              {/* Add to cart */}
-              <button
-                onClick={handleAdd}
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-bold text-[13px] transition-all active:scale-95"
-                style={
-                  added
-                    ? {
-                        background: '#16a34a',
-                        color: '#fff',
-                        boxShadow: '0 4px 16px rgba(22,163,74,0.35)',
-                      }
-                    : {
-                        background: '#111',
-                        color: '#fff',
-                        boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
-                      }
-                }
-              >
-                {added ? (
-                  <>
-                    <Check className="w-4 h-4" />
-                    <span>Added to Cart!</span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>Add to Cart · ${(product.price * quantity).toFixed(2)}</span>
-                  </>
-                )}
+          {/* Qty + Add to cart */}
+          <div style={{ display: 'flex', gap: 10, marginTop: 'auto' }}>
+            {/* Qty */}
+            <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid #E0E0E0', borderRadius: 10, overflow: 'hidden', background: '#fff' }}>
+              <button onClick={() => setQuantity(Math.max(1, quantity - 1))} style={{ width: 38, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#555' }}>
+                <Minus size={14} />
+              </button>
+              <span style={{ width: 32, textAlign: 'center', fontSize: 14, fontWeight: 700, color: '#1A1A1A' }}>{quantity}</span>
+              <button onClick={() => setQuantity(quantity + 1)} style={{ width: 38, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#555' }}>
+                <Plus size={14} />
               </button>
             </div>
 
-            {/* Shipping note */}
-            <div
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-[12px] font-medium"
-              style={{ background: 'rgba(0,0,0,0.04)', color: 'rgba(0,0,0,0.45)' }}
+            {/* Add to cart */}
+            <button
+              onClick={handleAdd}
+              style={{
+                flex: 1, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                background: added ? '#16a34a' : '#1A1A1A',
+                color: '#fff', border: 'none', borderRadius: 10,
+                fontSize: 14, fontWeight: 700, cursor: 'pointer',
+                boxShadow: added ? '0 4px 16px rgba(22,163,74,0.3)' : '0 4px 16px rgba(0,0,0,0.2)',
+                transition: 'background 0.2s, box-shadow 0.2s',
+              }}
             >
-              <MapPin className="w-4 h-4 shrink-0" style={{ color: '#c96a00' }} />
-              <span>Lebanon-wide delivery · Free BAU Beirut campus pickup</span>
-            </div>
+              {added ? (
+                <><Check size={16} /> Added to Cart!</>
+              ) : (
+                <><ShoppingCart size={16} /> Add to Cart · ${(product.price * quantity).toFixed(2)}</>
+              )}
+            </button>
+          </div>
 
+          {/* Shipping note */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: '#F8F8F8', borderRadius: 10, border: '1px solid #EBEBEB' }}>
+            <MapPin size={15} color="#C96A00" />
+            <span style={{ fontSize: 12, color: '#888', fontWeight: 500 }}>Lebanon delivery · Free BAU Beirut campus pickup</span>
           </div>
         </div>
       </div>
+
+      {/* Mobile: stack vertically */}
+      <style>{`
+        @media (max-width: 620px) {
+          .modal-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 };
