@@ -178,8 +178,96 @@ export default function ShopPage() {
         </div>
       </header>
 
+      {/* ── HERO ── */}
+      <div style={{ background: '#1A1A1A', position: 'relative', overflow: 'hidden' }}>
+        {/* Subtle grid texture */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 50%, rgba(201,106,0,0.18) 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(255,255,255,0.04) 0%, transparent 50%)', pointerEvents: 'none' }} />
+
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 28px 68px', position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 560 }}>
+            {/* Label */}
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#C96A00', textTransform: 'uppercase', letterSpacing: '0.14em' }}>
+              Lebanon's #1 Collectibles Store
+            </span>
+
+            {/* Headline */}
+            <h1 style={{ fontSize: 52, fontWeight: 900, color: '#fff', margin: 0, lineHeight: 1.08, letterSpacing: '-0.03em' }}>
+              Marvel &<br />Anime Grails.
+            </h1>
+
+            {/* Sub */}
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6, maxWidth: 420 }}>
+              Figures, statues, keychains and more — sourced, verified, and delivered across Lebanon.
+            </p>
+
+            {/* CTAs */}
+            <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+              <button
+                onClick={() => { setActiveFranchise('All'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }}
+                style={{ padding: '13px 28px', background: '#fff', color: '#1A1A1A', border: 'none', borderRadius: 12, fontSize: 14, fontWeight: 800, cursor: 'pointer', letterSpacing: '-0.01em', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}
+              >
+                Shop All
+              </button>
+              <button
+                onClick={() => { setActiveFranchise('Marvel'); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }}
+                style={{ padding: '13px 28px', background: 'transparent', color: '#fff', border: '1.5px solid rgba(255,255,255,0.25)', borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
+              >
+                Marvel →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Decorative orange bar at bottom */}
+        <div style={{ height: 3, background: 'linear-gradient(90deg, #C96A00 0%, #F59E0B 50%, transparent 100%)' }} />
+      </div>
+
+      {/* ── CATEGORY TILES ── */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 28px 0' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          {[
+            {
+              id: 'Marvel',
+              label: 'Marvel Collection',
+              desc: 'Iron Man, Spider-Man, Deadpool & more',
+              bg: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%)',
+              accent: '#E23636',
+              emoji: '🦸',
+            },
+            {
+              id: 'Anime',
+              label: 'Anime Collection',
+              desc: 'One Piece, Demon Slayer, Naruto & more',
+              bg: 'linear-gradient(135deg, #1a0a2e 0%, #2d1b69 60%, #11998e 100%)',
+              accent: '#a855f7',
+              emoji: '⚔️',
+            },
+          ].map(tile => (
+            <button
+              key={tile.id}
+              onClick={() => { setActiveFranchise(tile.id); document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' }); }}
+              style={{ background: tile.bg, borderRadius: 16, padding: '28px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: 'none', cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.15)', transition: 'transform 0.2s, box-shadow 0.2s', textAlign: 'left' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-3px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 12px 32px rgba(0,0,0,0.22)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)'; }}
+            >
+              <div>
+                <p style={{ fontSize: 11, fontWeight: 700, color: tile.accent, textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 8px' }}>
+                  {tile.id}
+                </p>
+                <h3 style={{ fontSize: 22, fontWeight: 900, color: '#fff', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
+                  {tile.label}
+                </h3>
+                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', margin: 0 }}>{tile.desc}</p>
+              </div>
+              <span style={{ fontSize: 52, lineHeight: 1, marginLeft: 20, flexShrink: 0 }}>{tile.emoji}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* ── COLLECTION HEADER ── */}
-      <div style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+      <div id="shop-grid" style={{ background: '#fff', borderBottom: '1.5px solid #E2E2E2', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginTop: 28 }}>
+
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 24px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, justifyContent: 'space-between' }}>
 
           {/* Category filter pills */}
