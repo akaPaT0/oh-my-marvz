@@ -135,12 +135,17 @@ export default function ShopPage() {
         .product-card:hover .card-add-overlay { transform: translateY(0); }
         .product-card:hover { border-color: #1A1A1A; }
         .mobile-quick-add-btn { display: none; }
+        .store-pc-search { display: block; }
+        .store-mobile-search-toggle { display: none; }
 
         /* Mobile Responsive Adjustments (<= 768px) */
         @media (max-width: 768px) {
           .store-header-inner { padding: 0 14px !important; gap: 8px !important; width: 100% !important; max-width: 100% !important; }
           .store-nav-links { display: none !important; }
+          .store-pc-search { display: none !important; }
+          .store-mobile-search-toggle { display: block !important; }
           .store-hero-wrap { padding-top: 62px !important; padding-bottom: 0 !important; width: 100% !important; overflow: hidden !important; }
+
           .store-hero-inner { padding: 20px 14px 18px !important; }
           .store-hero-grid { grid-template-columns: 1fr !important; gap: 18px !important; width: 100% !important; text-align: center !important; }
 
@@ -255,8 +260,26 @@ export default function ShopPage() {
           {/* Spacer */}
           <div style={{ flex: 1 }} />
 
-          {/* Search */}
-          <div style={{ position: 'relative' }}>
+          {/* PC Open Search Bar */}
+          <div className="store-pc-search" style={{ position: 'relative', width: 230, marginRight: 6 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#F4F4F4', border: '1.5px solid #E2E2E2', borderRadius: 10, padding: '7px 12px', transition: 'all 0.15s' }}>
+              <Search size={14} color="#888" />
+              <input
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search..."
+                style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 13, color: '#1A1A1A', fontWeight: 600 }}
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#999', padding: 0, display: 'flex' }}>
+                  <X size={13} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile Search Toggle Icon */}
+          <div className="store-mobile-search-toggle" style={{ position: 'relative' }}>
             <button
               onClick={() => setSearchOpen(!searchOpen)}
               style={{ padding: '7px 8px', color: '#666', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', borderRadius: 8 }}
@@ -279,6 +302,7 @@ export default function ShopPage() {
               </div>
             )}
           </div>
+
 
           {/* Cart */}
 
