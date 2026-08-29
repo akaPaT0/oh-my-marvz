@@ -555,7 +555,7 @@ export default function ShopPage() {
           >
 
             {/* Header with User Profile & Close Button */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1.5px solid #F0F0F0', paddingBottom: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #F0F0F0', paddingBottom: 14 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', border: '2px solid #E23636', background: '#F0F0F0', boxShadow: '0 2px 8px rgba(226,54,54,0.3)', flexShrink: 0 }}>
                   <Image
@@ -567,8 +567,11 @@ export default function ShopPage() {
                   />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: 14, fontWeight: 900, color: '#111', lineHeight: 1.2 }}>Pat</span>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: '#E23636', textTransform: 'uppercase', letterSpacing: '0.04em' }}>VIP Member • 340 Coins</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontSize: 14, fontWeight: 900, color: '#111' }}>Pat</span>
+                    <span style={{ fontSize: 9.5, fontWeight: 800, background: '#FFE8E8', color: '#E23636', padding: '2px 6px', borderRadius: 6, textTransform: 'uppercase' }}>VIP</span>
+                  </div>
+                  <span style={{ fontSize: 12, color: '#777', fontWeight: 500 }}>@collector_pat</span>
                 </div>
               </div>
 
@@ -581,59 +584,23 @@ export default function ShopPage() {
               </button>
             </div>
 
-            {/* User Quick Action Buttons (Mobile) */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  background: '#F7F7F7',
-                  border: '1px solid #E8E8E8',
-                  borderRadius: 10,
-                  padding: '10px 12px',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: '#1A1A1A',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                <Package size={15} color="#E23636" />
-                <span>Orders (1)</span>
-              </button>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  background: '#F7F7F7',
-                  border: '1px solid #E8E8E8',
-                  borderRadius: 10,
-                  padding: '10px 12px',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: '#1A1A1A',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                <Heart size={15} color="#E23636" />
-                <span>Saved ({wishlist.length})</span>
-              </button>
+            {/* Marvz Coins / Loyalty Bar */}
+            <div style={{ background: '#FAF7EE', border: '1px solid #F0E6CE', borderRadius: 10, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Coins size={15} color="#D97706" />
+                <span style={{ fontSize: 12, fontWeight: 800, color: '#92400E' }}>340 Marvz Coins</span>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#B45309' }}>$3.40 credit</span>
             </div>
 
-
-            {/* Universes & Navigation */}
+            {/* Universes Pill Navigation */}
             <div>
-              <p style={{ fontSize: 11, fontWeight: 800, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px 4px' }}>Universes</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <p style={{ fontSize: 11, fontWeight: 800, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px 2px' }}>Universes</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
                 {[
-                  { id: 'All', label: 'All Universes' },
-                  { id: 'Marvel', label: 'Marvel Collection' },
-                  { id: 'Anime', label: 'Anime Vault' },
+                  { id: 'All', label: 'All' },
+                  { id: 'Marvel', label: 'Marvel' },
+                  { id: 'Anime', label: 'Anime' },
                 ].map(f => (
                   <button
                     key={f.id}
@@ -643,42 +610,91 @@ export default function ShopPage() {
                       document.getElementById('shop-grid')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '12px 14px',
-                      borderRadius: 10,
+                      padding: '8px 4px',
+                      borderRadius: 8,
                       border: 'none',
-                      background: activeFranchise === f.id ? 'rgba(226,54,54,0.08)' : '#F7F7F7',
-                      color: activeFranchise === f.id ? '#E23636' : '#1A1A1A',
+                      background: activeFranchise === f.id ? '#1A1A1A' : '#F5F5F5',
+                      color: activeFranchise === f.id ? '#fff' : '#444',
                       fontWeight: activeFranchise === f.id ? 800 : 600,
-                      fontSize: 14,
+                      fontSize: 12.5,
                       cursor: 'pointer',
-                      textAlign: 'left',
+                      textAlign: 'center',
+                      transition: 'all 0.15s',
                     }}
                   >
-                    <span>{f.label}</span>
-                    {activeFranchise === f.id && <Check size={16} color="#E23636" />}
+                    {f.label}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Classic View Link */}
-            <div style={{ borderTop: '1px solid #EFEFEF', paddingTop: 12 }}>
-              <Link href="/" onClick={() => setMobileMenuOpen(false)} style={{ color: '#555', textDecoration: 'none', fontSize: 13, fontWeight: 600, padding: '4px 6px', display: 'block' }}>
-                Switch to Classic Comic View →
-              </Link>
+            {/* User Menu Items (Identical to PC) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              {[
+                { icon: <Package size={16} />, label: 'My Orders & Tracking', badge: '1 Active' },
+                { icon: <Heart size={16} />, label: 'Saved Wishlist', badge: `${wishlist.length} Items` },
+                { icon: <Flame size={16} />, label: 'Exclusive Vault Drops', badge: 'NEW' },
+                { icon: <MapPin size={16} />, label: 'Delivery & BAU Pickup' },
+                { icon: <Settings size={16} />, label: 'Account Settings' },
+              ].map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '10px 12px',
+                    borderRadius: 10,
+                    background: '#F9F9F9',
+                    border: '1px solid #ECECEC',
+                    color: '#222',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#333' }}>
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge && (
+                    <span style={{ fontSize: 10, fontWeight: 800, color: item.badge === 'NEW' ? '#E23636' : '#666', background: item.badge === 'NEW' ? '#FFEBEB' : '#EAEAEA', padding: '2px 7px', borderRadius: 6 }}>
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              ))}
             </div>
 
-            {/* Pickup Info Banner */}
-            <div style={{ marginTop: 'auto', background: '#F8F8F8', borderRadius: 12, padding: '14px', border: '1px solid #EAEAEA' }}>
-              <p style={{ fontSize: 12, fontWeight: 800, color: '#111', margin: '0 0 4px' }}>🚚 Lebanon Doorstep & Pickup</p>
-              <p style={{ fontSize: 11, color: '#666', margin: 0, lineHeight: 1.45 }}>Fast delivery across all Lebanon or free pickup at Beirut Arab University (BAU).</p>
+            {/* Sign Out */}
+            <div style={{ borderTop: '1px solid #F0F0F0', paddingTop: 10, marginTop: 'auto' }}>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  width: '100%',
+                  padding: '10px 12px',
+                  borderRadius: 8,
+                  background: 'none',
+                  border: 'none',
+                  color: '#E23636',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                <LogOut size={15} />
+                <span>Sign Out</span>
+              </button>
             </div>
           </div>
         </div>
       )}
+
 
 
       {/* ── HERO (Signature Red, Black & White Energy) ── */}
