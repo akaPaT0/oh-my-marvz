@@ -23,7 +23,16 @@ import {
   ArrowRight,
   Sparkles,
   SlidersHorizontal,
+  Package,
+  User,
+  Settings,
+  LogOut,
+  Coins,
+  Bell,
+  Gift,
+  Flame,
 } from 'lucide-react';
+
 import { INITIAL_PRODUCTS, Product } from '@/data/products';
 import { CartDrawer, CartItem } from '@/components/CartDrawer';
 import { CheckoutModal } from '@/components/CheckoutModal';
@@ -57,6 +66,8 @@ export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [addedId, setAddedId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [isCarouselHovered, setIsCarouselHovered] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -351,16 +362,17 @@ export default function ShopPage() {
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
-          {/* User Profile Avatar (PC only) */}
-          <div className="store-nav-links" style={{ display: 'flex', alignItems: 'center', marginLeft: 4 }}>
+          {/* User Profile Avatar & Dropdown Menu (PC only) */}
+          <div className="store-nav-links" style={{ position: 'relative', display: 'flex', alignItems: 'center', marginLeft: 4 }}>
             <button
+              onClick={() => setUserMenuOpen(prev => !prev)}
               aria-label="User Profile"
               style={{
                 width: 36,
                 height: 36,
                 borderRadius: '50%',
                 overflow: 'hidden',
-                border: '2px solid #E23636',
+                border: userMenuOpen ? '2px solid #111' : '2px solid #E23636',
                 background: '#F0F0F0',
                 cursor: 'pointer',
                 padding: 0,
@@ -387,6 +399,126 @@ export default function ShopPage() {
                 style={{ objectFit: 'cover', width: '100%', height: '100%' }}
               />
             </button>
+
+            {/* PC Dropdown Menu */}
+            {userMenuOpen && (
+              <>
+                <div
+                  style={{ position: 'fixed', inset: 0, zIndex: 110 }}
+                  onClick={() => setUserMenuOpen(false)}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: 'calc(100% + 12px)',
+                    width: 270,
+                    background: '#fff',
+                    borderRadius: 16,
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.18)',
+                    border: '1px solid #EAEAEA',
+                    padding: '16px',
+                    zIndex: 120,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 12,
+                  }}
+                >
+                  {/* User Profile Card */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingBottom: 12, borderBottom: '1px solid #F0F0F0' }}>
+                    <div style={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', border: '2px solid #E23636', flexShrink: 0 }}>
+                      <Image src="/avatar.png" alt="Pat" width={44} height={44} style={{ objectFit: 'cover' }} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span style={{ fontSize: 14, fontWeight: 900, color: '#111' }}>Pat</span>
+                        <span style={{ fontSize: 9.5, fontWeight: 800, background: '#FFE8E8', color: '#E23636', padding: '2px 6px', borderRadius: 6, textTransform: 'uppercase' }}>VIP</span>
+                      </div>
+                      <span style={{ fontSize: 12, color: '#777', fontWeight: 500 }}>@collector_pat</span>
+                    </div>
+                  </div>
+
+                  {/* Marvz Coins / Loyalty Bar */}
+                  <div style={{ background: '#FAF7EE', border: '1px solid #F0E6CE', borderRadius: 10, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Coins size={15} color="#D97706" />
+                      <span style={{ fontSize: 12, fontWeight: 800, color: '#92400E' }}>340 Marvz Coins</span>
+                    </div>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#B45309' }}>$3.40 credit</span>
+                  </div>
+
+                  {/* User Menu Buttons */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    {[
+                      { icon: <Package size={15} />, label: 'My Orders & Tracking', badge: '1 Active' },
+                      { icon: <Heart size={15} />, label: 'Saved Wishlist', badge: `${wishlist.length} Items` },
+                      { icon: <Flame size={15} />, label: 'Exclusive Vault Drops', badge: 'NEW' },
+                      { icon: <MapPin size={15} />, label: 'Delivery & BAU Pickup' },
+                      { icon: <Settings size={15} />, label: 'Account Settings' },
+                    ].map((item, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setUserMenuOpen(false)}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '9px 10px',
+                          borderRadius: 8,
+                          background: 'none',
+                          border: 'none',
+                          color: '#333',
+                          fontSize: 13,
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          transition: 'background 0.12s',
+                        }}
+                        onMouseEnter={e => (e.currentTarget.style.background = '#F5F5F5')}
+                        onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#444' }}>
+                          {item.icon}
+                          <span>{item.label}</span>
+                        </div>
+                        {item.badge && (
+                          <span style={{ fontSize: 10, fontWeight: 800, color: item.badge === 'NEW' ? '#E23636' : '#666', background: item.badge === 'NEW' ? '#FFEBEB' : '#ECECEC', padding: '2px 6px', borderRadius: 6 }}>
+                            {item.badge}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Sign Out */}
+                  <div style={{ borderTop: '1px solid #F0F0F0', paddingTop: 8 }}>
+                    <button
+                      onClick={() => setUserMenuOpen(false)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        width: '100%',
+                        padding: '8px 10px',
+                        borderRadius: 8,
+                        background: 'none',
+                        border: 'none',
+                        color: '#E23636',
+                        fontSize: 12.5,
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        transition: 'background 0.12s',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.background = '#FFF5F5')}
+                      onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+                    >
+                      <LogOut size={14} />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
         </div>
@@ -408,21 +540,22 @@ export default function ShopPage() {
         >
           <div
             style={{
-              width: '80%',
-              maxWidth: 320,
+              width: '85%',
+              maxWidth: 340,
               background: '#fff',
               height: '100%',
               padding: '24px 20px',
               display: 'flex',
               flexDirection: 'column',
-              gap: 22,
+              gap: 18,
               boxShadow: '-6px 0 28px rgba(0,0,0,0.25)',
+              overflowY: 'auto',
             }}
             onClick={e => e.stopPropagation()}
           >
 
             {/* Header with User Profile & Close Button */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1.5px solid #F0F0F0', paddingBottom: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1.5px solid #F0F0F0', paddingBottom: 14 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', border: '2px solid #E23636', background: '#F0F0F0', boxShadow: '0 2px 8px rgba(226,54,54,0.3)', flexShrink: 0 }}>
                   <Image
@@ -434,8 +567,8 @@ export default function ShopPage() {
                   />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: 14, fontWeight: 900, color: '#111', lineHeight: 1.2 }}>Collector Profile</span>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: '#E23636', textTransform: 'uppercase', letterSpacing: '0.04em' }}>VIP Member</span>
+                  <span style={{ fontSize: 14, fontWeight: 900, color: '#111', lineHeight: 1.2 }}>Pat</span>
+                  <span style={{ fontSize: 11, fontWeight: 800, color: '#E23636', textTransform: 'uppercase', letterSpacing: '0.04em' }}>VIP Member • 340 Coins</span>
                 </div>
               </div>
 
@@ -447,6 +580,51 @@ export default function ShopPage() {
                 <X size={18} />
               </button>
             </div>
+
+            {/* User Quick Action Buttons (Mobile) */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  background: '#F7F7F7',
+                  border: '1px solid #E8E8E8',
+                  borderRadius: 10,
+                  padding: '10px 12px',
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: '#1A1A1A',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <Package size={15} color="#E23636" />
+                <span>Orders (1)</span>
+              </button>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  background: '#F7F7F7',
+                  border: '1px solid #E8E8E8',
+                  borderRadius: 10,
+                  padding: '10px 12px',
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: '#1A1A1A',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <Heart size={15} color="#E23636" />
+                <span>Saved ({wishlist.length})</span>
+              </button>
+            </div>
+
 
             {/* Universes & Navigation */}
             <div>
