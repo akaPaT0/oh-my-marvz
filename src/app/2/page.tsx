@@ -245,25 +245,34 @@ export default function ShopPage() {
               </div>
             </div>
 
-            {/* Right: Marvel & Anime Franchise Collection Cards */}
+            {/* Right: Marvel & Anime Franchise Collection Cards with 2x2 Real Item Collages */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {[
                 {
                   id: 'Marvel',
                   tag: 'MARVEL UNIVERSE',
                   name: 'Marvel Series',
-                  desc: 'Avengers, MCU, Spider-Man & Deadpool',
-                  img: '/banners/marvel_banner.jpg',
+                  desc: 'Avengers, Iron Man, Deadpool & Spidey',
+                  images: [
+                    '/products/ironman_figure.png',
+                    '/products/deadpool_wolverine_keychains.png',
+                    '/products/captain_america.png',
+                    '/products/avengers_stickers.png',
+                  ],
                 },
                 {
                   id: 'Anime',
                   tag: 'ANIME COLLECTION',
                   name: 'Anime Series',
-                  desc: 'One Piece, Demon Slayer, Naruto & more',
-                  img: '/banners/anime_banner.jpg',
+                  desc: 'One Piece, Demon Slayer, Naruto & Miku',
+                  images: [
+                    '/products/luffy_wano_statue.png',
+                    '/products/zoro_haki_statue.png',
+                    '/products/itachi_statue.png',
+                    '/products/animemix_stickers.png',
+                  ],
                 }
               ].map(item => (
-
                 <button
                   key={item.id}
                   onClick={() => {
@@ -294,12 +303,25 @@ export default function ShopPage() {
                     (e.currentTarget as HTMLButtonElement).style.borderColor = '#E5E5E5';
                   }}
                 >
-                  <div style={{ position: 'relative', aspectRatio: '1.05', background: '#ECECEC', overflow: 'hidden', width: '100%' }}>
-                    <Image src={item.img} alt={item.name} fill style={{ objectFit: 'cover' }} />
-                    <span style={{ position: 'absolute', top: 10, left: 10, background: '#C96A00', color: '#fff', fontSize: 10, fontWeight: 800, padding: '3px 8px', borderRadius: 4, letterSpacing: '0.05em' }}>
+                  {/* 2x2 Collage Grid of Real Store Collectibles */}
+                  <div style={{ position: 'relative', aspectRatio: '1.05', background: '#EAEAEA', overflow: 'hidden', width: '100%' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 2, width: '100%', height: '100%', background: '#E0E0E0' }}>
+                      {item.images.map((imgSrc, imgIdx) => (
+                        <div key={imgIdx} style={{ position: 'relative', width: '100%', height: '100%', background: '#F4F4F4', overflow: 'hidden' }}>
+                          <Image
+                            src={imgSrc}
+                            alt=""
+                            fill
+                            style={{ objectFit: 'cover', transform: 'scale(1.05)' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <span style={{ position: 'absolute', top: 8, left: 8, background: '#C96A00', color: '#fff', fontSize: 9, fontWeight: 800, padding: '3px 7px', borderRadius: 4, letterSpacing: '0.06em' }}>
                       {item.tag}
                     </span>
                   </div>
+
                   <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4, width: '100%', borderTop: '1px solid #EBEBEB' }}>
                     <p style={{ fontSize: 15, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.01em' }}>
                       {item.name}
@@ -314,6 +336,7 @@ export default function ShopPage() {
                 </button>
               ))}
             </div>
+
 
 
           </div>
