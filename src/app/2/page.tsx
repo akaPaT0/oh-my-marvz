@@ -127,9 +127,11 @@ export default function ShopPage() {
           .store-featured-actions { display: flex !important; flex-direction: row !important; gap: 6px !important; }
           .store-featured-btn-view { width: auto !important; height: 32px !important; padding: 0 10px !important; font-size: 11px !important; border-radius: 8px !important; }
           .store-featured-btn-add { width: auto !important; height: 32px !important; padding: 0 10px !important; font-size: 11px !important; border-radius: 8px !important; }
-          .store-featured-arrows { width: 30px !important; height: 30px !important; display: flex !important; }
+          .store-featured-arrows { display: none !important; }
           .store-featured-dots { bottom: 8px !important; right: 10px !important; padding: 3px 8px !important; }
+
           .store-collection-header-inner { padding: 12px 14px !important; width: 100% !important; flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+
 
 
 
