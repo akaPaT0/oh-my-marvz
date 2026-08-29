@@ -498,9 +498,9 @@ export default function ShopPage() {
                   {item.subtitle}
                 </p>
 
-                {/* Price & Discount */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
-                  <span style={{ fontSize: 30, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
+                {/* Price & Discount (Fixed & Stable) */}
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, height: 38 }}>
+                  <span style={{ fontSize: 32, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em', minWidth: 90 }}>
                     ${item.price.toFixed(2)}
                   </span>
                   {item.originalPrice && (
@@ -515,23 +515,26 @@ export default function ShopPage() {
                   )}
                 </div>
 
-                {/* Actions */}
-                <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+                {/* Actions (Fixed Dimensions, No Layout Shifts) */}
+                <div style={{ display: 'flex', gap: 12, marginTop: 6 }}>
                   <Link
                     href={`/2/${item.id}`}
                     style={{
-                      padding: '13px 24px',
+                      width: 145,
+                      height: 46,
                       background: '#1A1A1A',
                       color: '#fff',
                       borderRadius: 10,
                       textDecoration: 'none',
                       fontSize: 14,
                       fontWeight: 800,
-                      display: 'inline-flex',
+                      display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'center',
                       gap: 8,
-                      boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+                      boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
                       transition: 'background 0.15s',
+                      flexShrink: 0,
                     }}
                   >
                     <span>View Piece</span>
@@ -541,7 +544,8 @@ export default function ShopPage() {
                   <button
                     onClick={() => addToCart(item)}
                     style={{
-                      padding: '13px 20px',
+                      width: 135,
+                      height: 46,
                       background: justAdded ? '#16a34a' : '#fff',
                       color: justAdded ? '#fff' : '#1A1A1A',
                       border: '1.5px solid #DCDCDC',
@@ -549,11 +553,13 @@ export default function ShopPage() {
                       fontSize: 14,
                       fontWeight: 700,
                       cursor: 'pointer',
-                      display: 'inline-flex',
+                      display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'center',
                       gap: 7,
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
                       transition: 'all 0.15s',
+                      flexShrink: 0,
                     }}
                   >
                     {justAdded ? (
@@ -563,6 +569,7 @@ export default function ShopPage() {
                     )}
                   </button>
                 </div>
+
               </div>
 
 
