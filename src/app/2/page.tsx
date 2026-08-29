@@ -422,217 +422,244 @@ export default function ShopPage() {
               </div>
             </div>
 
-            {/* Featured Showcase Card with Cropped Image BG & Blur Glass Layer */}
+            {/* Featured Banner: Cropped Product Image as Full Background + Frosted Blur Glass Card */}
             <div
               style={{
                 position: 'relative',
-                borderRadius: 20,
+                borderRadius: 22,
                 overflow: 'hidden',
                 border: '1px solid #E2E2E2',
-                boxShadow: '0 8px 30px rgba(0,0,0,0.07)',
-                minHeight: 380,
+                boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                minHeight: 460,
+                display: 'flex',
+                alignItems: 'center',
+                background: '#ECECEC',
               }}
             >
-              {/* Cropped Product Image as Background */}
+              {/* Full Cropped Product Image as Background */}
               <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
+                  priority
                   style={{
                     objectFit: 'cover',
-                    transform: 'scale(1.2) translate(10%, -5%)',
-                    filter: 'blur(6px) brightness(0.92)',
+                    objectPosition: 'center 40%',
                     transition: 'all 0.4s ease',
+                  }}
+                />
+                {/* Subtle gradient vignette over the background */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.2) 100%)',
                   }}
                 />
               </div>
 
-              {/* Blur Frosted Glass Layer Overlay */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(90deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.90) 50%, rgba(255,255,255,0.65) 100%)',
-                  backdropFilter: 'blur(24px)',
-                  WebkitBackdropFilter: 'blur(24px)',
-                }}
-              />
-
-              {/* Foreground Interactive Content Grid */}
+              {/* Floating Frosted Glass Product Context Card */}
               <div
                 style={{
                   position: 'relative',
                   zIndex: 2,
-                  padding: '36px 40px',
-                  display: 'grid',
-                  gridTemplateColumns: '1.2fr 0.8fr',
-                  gap: 36,
-                  alignItems: 'center',
+                  margin: '36px 0 36px 36px',
+                  maxWidth: 520,
+                  background: 'rgba(255,255,255,0.88)',
+                  backdropFilter: 'blur(28px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(28px) saturate(180%)',
+                  borderRadius: 18,
+                  padding: '32px 34px',
+                  border: '1px solid rgba(255,255,255,0.7)',
+                  boxShadow: '0 16px 48px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.06)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 14,
                 }}
               >
-                {/* Left: Product Context Details */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '4px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                      {item.franchise} · {item.category.replace(/-/g, ' ')}
-                    </span>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: '#555', background: '#fff', border: '1px solid #E0E0E0', padding: '4px 10px', borderRadius: 6 }}>
-                      Slide {featuredIndex + 1} of {featuredProducts.length}
-                    </span>
-                  </div>
-
-                  <div>
-                    <p style={{ fontSize: 11, color: '#888', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: '0 0 4px' }}>
-                      {item.subtitle}
-                    </p>
-                    <Link
-                      href={`/2/${item.id}`}
-                      style={{ textDecoration: 'none', color: '#1A1A1A' }}
-                    >
-                      <h3 style={{ fontSize: 26, fontWeight: 900, margin: 0, lineHeight: 1.25, letterSpacing: '-0.02em', cursor: 'pointer' }}>
-                        {item.name}
-                      </h3>
-                    </Link>
-                  </div>
-
-                  {/* Rating Stars */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <div style={{ display: 'flex', gap: 2 }}>
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={14}
-                          style={{
-                            fill: i < Math.round(item.rating) ? '#F59E0B' : '#E5E7EB',
-                            color: i < Math.round(item.rating) ? '#F59E0B' : '#E5E7EB',
-                          }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{item.rating.toFixed(1)}</span>
-                    <span style={{ fontSize: 12, color: '#777' }}>({item.reviewsCount} customer reviews)</span>
-                  </div>
-
-                  {/* Price & Status Row */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
-                    <span style={{ fontSize: 28, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
-                      ${item.price.toFixed(2)}
-                    </span>
-                    {item.originalPrice && (
-                      <span style={{ fontSize: 15, color: '#999', textDecoration: 'line-through', fontWeight: 500 }}>
-                        ${item.originalPrice.toFixed(2)}
-                      </span>
-                    )}
-                    {itemDiscount && (
-                      <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 6 }}>
-                        SAVE {itemDiscount}%
-                      </span>
-                    )}
-                    <span style={{ fontSize: 11, fontWeight: 700, color: '#16a34a', background: 'rgba(22,163,74,0.12)', padding: '3px 10px', borderRadius: 20, marginLeft: 'auto' }}>
-                      ✓ In Stock
-                    </span>
-                  </div>
-
-                  {/* Description snippet */}
-                  <p style={{ fontSize: 13, color: '#555', lineHeight: 1.55, margin: '2px 0 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
-                    {item.description}
-                  </p>
-
-                  {/* CTA Actions */}
-                  <div style={{ display: 'flex', gap: 12, marginTop: 6, flexWrap: 'wrap' }}>
-                    <Link
-                      href={`/2/${item.id}`}
-                      style={{
-                        padding: '12px 24px',
-                        background: '#1A1A1A',
-                        color: '#fff',
-                        borderRadius: 10,
-                        textDecoration: 'none',
-                        fontSize: 13,
-                        fontWeight: 800,
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 8,
-                        boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
-                        transition: 'background 0.15s',
-                      }}
-                    >
-                      <span>Explore Product Page</span>
-                      <ArrowRight size={15} />
-                    </Link>
-
-                    <button
-                      onClick={() => addToCart(item)}
-                      style={{
-                        padding: '12px 20px',
-                        background: justAdded ? '#16a34a' : '#fff',
-                        color: justAdded ? '#fff' : '#1A1A1A',
-                        border: '1.5px solid #DCDCDC',
-                        borderRadius: 10,
-                        fontSize: 13,
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 7,
-                        transition: 'all 0.15s',
-                      }}
-                    >
-                      {justAdded ? (
-                        <><Check size={16} /> Added to Cart</>
-                      ) : (
-                        <><ShoppingBag size={15} /> Quick Add</>
-                      )}
-                    </button>
-                  </div>
+                {/* Badge & Slide Info */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '4px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                    {item.franchise} · {item.category.replace(/-/g, ' ')}
+                  </span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#666', background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(0,0,0,0.08)', padding: '4px 10px', borderRadius: 6 }}>
+                    Featured 0{featuredIndex + 1} of 0{featuredProducts.length}
+                  </span>
                 </div>
 
-                {/* Right: Floating Cutout Frame */}
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                {/* Title & Subtitle */}
+                <div>
+                  <p style={{ fontSize: 11, color: '#777', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: '0 0 4px' }}>
+                    {item.subtitle}
+                  </p>
+                  <Link
+                    href={`/2/${item.id}`}
+                    style={{ textDecoration: 'none', color: '#1A1A1A' }}
+                  >
+                    <h3 style={{ fontSize: 26, fontWeight: 900, margin: 0, lineHeight: 1.25, letterSpacing: '-0.02em', cursor: 'pointer' }}>
+                      {item.name}
+                    </h3>
+                  </Link>
+                </div>
+
+                {/* Rating Stars */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ display: 'flex', gap: 2 }}>
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={14}
+                        style={{
+                          fill: i < Math.round(item.rating) ? '#F59E0B' : '#E5E7EB',
+                          color: i < Math.round(item.rating) ? '#F59E0B' : '#E5E7EB',
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{item.rating.toFixed(1)}</span>
+                  <span style={{ fontSize: 12, color: '#666' }}>({item.reviewsCount} reviews)</span>
+                </div>
+
+                {/* Price Row */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
+                  <span style={{ fontSize: 28, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
+                    ${item.price.toFixed(2)}
+                  </span>
+                  {item.originalPrice && (
+                    <span style={{ fontSize: 15, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
+                      ${item.originalPrice.toFixed(2)}
+                    </span>
+                  )}
+                  {itemDiscount && (
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 6 }}>
+                      −{itemDiscount}% OFF
+                    </span>
+                  )}
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#16a34a', background: 'rgba(22,163,74,0.12)', padding: '3px 10px', borderRadius: 20, marginLeft: 'auto' }}>
+                    ✓ In Stock
+                  </span>
+                </div>
+
+                {/* Description Snippet */}
+                <p style={{ fontSize: 13, color: '#444', lineHeight: 1.55, margin: '2px 0 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
+                  {item.description}
+                </p>
+
+                {/* Actions */}
+                <div style={{ display: 'flex', gap: 10, marginTop: 6, flexWrap: 'wrap' }}>
                   <Link
                     href={`/2/${item.id}`}
                     style={{
-                      position: 'relative',
-                      width: '100%',
-                      maxWidth: 280,
-                      aspectRatio: '1',
-                      background: '#fff',
-                      borderRadius: 18,
-                      overflow: 'hidden',
-                      border: '1px solid #E0E0E0',
-                      boxShadow: '0 12px 36px rgba(0,0,0,0.12)',
-                      display: 'block',
-                      transition: 'transform 0.25s ease',
+                      padding: '12px 22px',
+                      background: '#1A1A1A',
+                      color: '#fff',
+                      borderRadius: 10,
+                      textDecoration: 'none',
+                      fontSize: 13,
+                      fontWeight: 800,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+                      transition: 'background 0.15s',
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.03)')}
-                    onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                   >
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                    />
-                    <div style={{ position: 'absolute', bottom: 10, right: 10, background: 'rgba(0,0,0,0.75)', color: '#fff', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6, backdropFilter: 'blur(4px)' }}>
-                      CLICK TO VIEW
-                    </div>
+                    <span>Explore Product</span>
+                    <ArrowRight size={15} />
                   </Link>
+
+                  <button
+                    onClick={() => addToCart(item)}
+                    style={{
+                      padding: '12px 18px',
+                      background: justAdded ? '#16a34a' : '#fff',
+                      color: justAdded ? '#fff' : '#1A1A1A',
+                      border: '1.5px solid #DCDCDC',
+                      borderRadius: 10,
+                      fontSize: 13,
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 7,
+                      transition: 'all 0.15s',
+                    }}
+                  >
+                    {justAdded ? (
+                      <><Check size={16} /> Added</>
+                    ) : (
+                      <><ShoppingBag size={15} /> Quick Add</>
+                    )}
+                  </button>
                 </div>
               </div>
 
+              {/* Side Floating Next/Prev Overlay Arrows on the Banner */}
+              <button
+                onClick={() => setFeaturedIndex(prev => (prev === 0 ? featuredProducts.length - 1 : prev - 1))}
+                aria-label="Previous slide"
+                style={{
+                  position: 'absolute',
+                  left: 12,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 3,
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.9)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                  color: '#1A1A1A',
+                }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              <button
+                onClick={() => setFeaturedIndex(prev => (prev === featuredProducts.length - 1 ? 0 : prev + 1))}
+                aria-label="Next slide"
+                style={{
+                  position: 'absolute',
+                  right: 18,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 3,
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.9)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                  color: '#1A1A1A',
+                }}
+              >
+                <ChevronRight size={20} />
+              </button>
+
               {/* Bottom Pagination Dots */}
-              <div style={{ position: 'relative', zIndex: 2, padding: '0 40px 18px', display: 'flex', justifyContent: 'center', gap: 6 }}>
+              <div style={{ position: 'absolute', bottom: 14, right: 28, zIndex: 3, display: 'flex', gap: 6, background: 'rgba(0,0,0,0.3)', padding: '6px 12px', borderRadius: 20, backdropFilter: 'blur(8px)' }}>
                 {featuredProducts.map((_, dotIdx) => (
                   <button
                     key={dotIdx}
                     onClick={() => setFeaturedIndex(dotIdx)}
                     aria-label={`Jump to slide ${dotIdx + 1}`}
                     style={{
-                      width: featuredIndex === dotIdx ? 24 : 8,
-                      height: 8,
+                      width: featuredIndex === dotIdx ? 20 : 7,
+                      height: 7,
                       borderRadius: 999,
-                      background: featuredIndex === dotIdx ? '#1A1A1A' : '#DCDCDC',
+                      background: featuredIndex === dotIdx ? '#fff' : 'rgba(255,255,255,0.4)',
                       border: 'none',
                       cursor: 'pointer',
                       padding: 0,
@@ -645,6 +672,7 @@ export default function ShopPage() {
           </div>
         );
       })()}
+
 
 
       {/* ── CATEGORY TILES (Image-Backed, High Contrast, No Emojis) ── */}
