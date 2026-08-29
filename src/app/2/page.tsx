@@ -438,17 +438,9 @@ export default function ShopPage() {
                     </div>
                   </div>
 
-                  {/* Marvz Coins / Loyalty Bar */}
-                  <div style={{ background: '#FAF7EE', border: '1px solid #F0E6CE', borderRadius: 10, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <Coins size={15} color="#D97706" />
-                      <span style={{ fontSize: 12, fontWeight: 800, color: '#92400E' }}>340 Marvz Coins</span>
-                    </div>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: '#B45309' }}>$3.40 credit</span>
-                  </div>
-
                   {/* User Menu Buttons */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+
                     {[
                       { icon: <Package size={15} />, label: 'My Orders & Tracking', badge: '1 Active' },
                       { icon: <Heart size={15} />, label: 'Saved Wishlist', badge: `${wishlist.length} Items` },
@@ -584,17 +576,9 @@ export default function ShopPage() {
               </button>
             </div>
 
-            {/* Marvz Coins / Loyalty Bar */}
-            <div style={{ background: '#FAF7EE', border: '1px solid #F0E6CE', borderRadius: 10, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Coins size={15} color="#D97706" />
-                <span style={{ fontSize: 12, fontWeight: 800, color: '#92400E' }}>340 Marvz Coins</span>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#B45309' }}>$3.40 credit</span>
-            </div>
-
             {/* Universes Pill Navigation */}
             <div>
+
               <p style={{ fontSize: 11, fontWeight: 800, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px 2px' }}>Universes</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
                 {[
