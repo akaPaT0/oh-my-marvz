@@ -72,7 +72,7 @@ export function WorkInProgressLock() {
           <div className="space-y-1">
             <input
               type="password"
-              placeholder="ENTER PASSCODE (e.g. 686868)"
+              placeholder="ENTER PASSCODE"
               value={passcode}
               onChange={(e) => {
                 setPasscode(e.target.value);
