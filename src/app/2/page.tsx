@@ -245,15 +245,15 @@ export default function ShopPage() {
               </div>
             </div>
 
-            {/* Right: Marvel & Anime Franchise Collection Cards with Authentic Artwork Collages */}
+            {/* Right: Marvel & Anime Franchise Collection Cards with Authentic Artwork */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {[
                 {
                   id: 'Marvel',
                   tag: 'MARVEL UNIVERSE',
                   name: 'Marvel Series',
-                  desc: 'Spider-Man, Avengers, Iron Man & X-Men',
-                  img: '/banners/marvel_collage.jpg',
+                  desc: 'Avengers, Iron Man, Spider-Man & X-Men',
+                  img: '/banners/marvel_comic_art.jpg',
                 },
                 {
                   id: 'Anime',
@@ -263,6 +263,7 @@ export default function ShopPage() {
                   img: '/banners/anime_collage.jpg',
                 }
               ].map(item => (
+
                 <button
                   key={item.id}
                   onClick={() => {
