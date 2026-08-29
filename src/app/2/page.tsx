@@ -225,7 +225,7 @@ export default function ShopPage() {
           <div className="store-nav-links" style={{ width: 1, height: 20, background: '#E0E0E0', flexShrink: 0 }} />
 
           {/* Nav links */}
-          <nav className="store-nav-links" style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <nav className="store-nav-links" style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
             {[
               { id: 'All', label: 'All' },
               { id: 'Marvel', label: 'Marvel' },
@@ -235,14 +235,14 @@ export default function ShopPage() {
                 key={f.id}
                 onClick={() => setActiveFranchise(f.id)}
                 style={{
-                  padding: '6px 14px',
-                  borderRadius: 8,
-                  fontSize: 13,
-                  fontWeight: activeFranchise === f.id ? 700 : 500,
-                  background: activeFranchise === f.id ? '#1A1A1A' : 'transparent',
-                  color: activeFranchise === f.id ? '#fff' : '#666',
+                  background: 'none',
                   border: 'none',
+                  padding: '6px 0',
+                  fontSize: 14,
+                  fontWeight: activeFranchise === f.id ? 700 : 500,
+                  color: activeFranchise === f.id ? '#1A1A1A' : '#777',
                   cursor: 'pointer',
+                  borderBottom: activeFranchise === f.id ? '2px solid #1A1A1A' : '2px solid transparent',
                   transition: 'all 0.15s',
                 }}
               >
@@ -250,6 +250,7 @@ export default function ShopPage() {
               </button>
             ))}
           </nav>
+
 
           {/* Spacer */}
           <div style={{ flex: 1 }} />
