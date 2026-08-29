@@ -460,117 +460,123 @@ export default function ShopPage() {
                 />
               </div>
 
-              {/* Direct Unwrapped Content Overlay */}
-
+              {/* Direct Content Overlay with Anchored Bottom Action Area */}
               <div
                 style={{
                   position: 'relative',
                   zIndex: 2,
-                  padding: '48px 48px',
-                  maxWidth: 480,
+                  padding: '44px 48px',
+                  maxWidth: 500,
+                  height: 380,
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 14,
+                  justifyContent: 'space-between',
                 }}
               >
-                {/* Tag & Counter */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '4px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                    {item.franchise} SPOTLIGHT
-                  </span>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#888' }}>
-                    0{featuredIndex + 1} / 0{featuredProducts.length}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <Link
-                  href={`/2/${item.id}`}
-                  style={{ textDecoration: 'none', color: '#1A1A1A' }}
-                >
-                  <h3 style={{ fontSize: 32, fontWeight: 900, margin: 0, lineHeight: 1.15, letterSpacing: '-0.03em', cursor: 'pointer' }}>
-                    {item.name}
-                  </h3>
-                </Link>
-
-                {/* Subtitle */}
-                <p style={{ fontSize: 13, color: '#666', margin: 0, lineHeight: 1.5, fontWeight: 500 }}>
-                  {item.subtitle}
-                </p>
-
-                {/* Price & Discount (Fixed & Stable) */}
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, height: 38 }}>
-                  <span style={{ fontSize: 32, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em', minWidth: 90 }}>
-                    ${item.price.toFixed(2)}
-                  </span>
-                  {item.originalPrice && (
-                    <span style={{ fontSize: 16, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
-                      ${item.originalPrice.toFixed(2)}
+                {/* Top: Tag, Title, Subtitle */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {/* Tag & Counter */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '4px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                      {item.franchise} SPOTLIGHT
                     </span>
-                  )}
-                  {itemDiscount && (
-                    <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 4 }}>
-                      −{itemDiscount}%
+                    <span style={{ fontSize: 12, fontWeight: 700, color: '#888' }}>
+                      0{featuredIndex + 1} / 0{featuredProducts.length}
                     </span>
-                  )}
-                </div>
+                  </div>
 
-                {/* Actions (Fixed Dimensions, No Layout Shifts) */}
-                <div style={{ display: 'flex', gap: 12, marginTop: 6 }}>
+                  {/* Title (Fixed height block) */}
                   <Link
                     href={`/2/${item.id}`}
-                    style={{
-                      width: 145,
-                      height: 46,
-                      background: '#1A1A1A',
-                      color: '#fff',
-                      borderRadius: 10,
-                      textDecoration: 'none',
-                      fontSize: 14,
-                      fontWeight: 800,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: 8,
-                      boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
-                      transition: 'background 0.15s',
-                      flexShrink: 0,
-                    }}
+                    style={{ textDecoration: 'none', color: '#1A1A1A' }}
                   >
-                    <span>View Piece</span>
-                    <ArrowRight size={15} />
+                    <h3 style={{ fontSize: 30, fontWeight: 900, margin: 0, lineHeight: 1.18, letterSpacing: '-0.03em', cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: 72 } as React.CSSProperties}>
+                      {item.name}
+                    </h3>
                   </Link>
 
-                  <button
-                    onClick={() => addToCart(item)}
-                    style={{
-                      width: 135,
-                      height: 46,
-                      background: justAdded ? '#16a34a' : '#fff',
-                      color: justAdded ? '#fff' : '#1A1A1A',
-                      border: '1.5px solid #DCDCDC',
-                      borderRadius: 10,
-                      fontSize: 14,
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: 7,
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
-                      transition: 'all 0.15s',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {justAdded ? (
-                      <><Check size={16} /> Added</>
-                    ) : (
-                      <><ShoppingBag size={15} /> Quick Add</>
-                    )}
-                  </button>
+                  {/* Subtitle */}
+                  <p style={{ fontSize: 13, color: '#666', margin: 0, lineHeight: 1.4, fontWeight: 500, display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
+                    {item.subtitle}
+                  </p>
                 </div>
 
+                {/* Bottom: Price + Action Buttons (Permanently Anchored) */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {/* Price & Discount (Fixed & Stable) */}
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, height: 36 }}>
+                    <span style={{ fontSize: 32, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em', minWidth: 90 }}>
+                      ${item.price.toFixed(2)}
+                    </span>
+                    {item.originalPrice && (
+                      <span style={{ fontSize: 16, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
+                        ${item.originalPrice.toFixed(2)}
+                      </span>
+                    )}
+                    {itemDiscount && (
+                      <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 4 }}>
+                        −{itemDiscount}%
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Actions (Fixed Dimensions, Permanently Anchored) */}
+                  <div style={{ display: 'flex', gap: 12 }}>
+                    <Link
+                      href={`/2/${item.id}`}
+                      style={{
+                        width: 145,
+                        height: 46,
+                        background: '#1A1A1A',
+                        color: '#fff',
+                        borderRadius: 10,
+                        textDecoration: 'none',
+                        fontSize: 14,
+                        fontWeight: 800,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+                        transition: 'background 0.15s',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <span>View Piece</span>
+                      <ArrowRight size={15} />
+                    </Link>
+
+                    <button
+                      onClick={() => addToCart(item)}
+                      style={{
+                        width: 135,
+                        height: 46,
+                        background: justAdded ? '#16a34a' : '#fff',
+                        color: justAdded ? '#fff' : '#1A1A1A',
+                        border: '1.5px solid #DCDCDC',
+                        borderRadius: 10,
+                        fontSize: 14,
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 7,
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                        transition: 'all 0.15s',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {justAdded ? (
+                        <><Check size={16} /> Added</>
+                      ) : (
+                        <><ShoppingBag size={15} /> Quick Add</>
+                      )}
+                    </button>
+                  </div>
+                </div>
               </div>
+
 
 
 
