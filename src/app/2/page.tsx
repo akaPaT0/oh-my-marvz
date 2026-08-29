@@ -115,8 +115,12 @@ export default function ShopPage() {
           .store-hero-cards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; width: 100% !important; }
           .store-hero-card-tile { min-height: 180px !important; padding: 14px 12px !important; }
           .store-hero-card-desc { display: none !important; }
-          .store-hero-stats { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; text-align: center !important; }
+          .store-hero-stats { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 4px !important; text-align: center !important; width: 100% !important; }
+          .store-hero-stats-divider { display: none !important; }
+          .store-hero-stat-val { font-size: 15px !important; }
+          .store-hero-stat-lbl { font-size: 9.5px !important; letter-spacing: 0 !important; }
           .store-featured-wrap { padding: 16px 14px 0 !important; width: 100% !important; overflow: hidden !important; }
+
           .store-featured-banner { min-height: 230px !important; height: 230px !important; border-radius: 16px !important; }
           .store-featured-img { object-position: right center !important; transform: translateX(0px) !important; }
           .store-featured-gradient { background: linear-gradient(90deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.88) 55%, rgba(255,255,255,0.15) 100%) !important; }
@@ -287,23 +291,24 @@ export default function ShopPage() {
                 </button>
               </div>
 
-              {/* Highlights bar */}
-              <div className="store-hero-stats" style={{ display: 'flex', gap: 24, paddingTop: 18, borderTop: '1px solid #EFEFEF', flexWrap: 'wrap' }}>
+              {/* Highlights bar (Strict 3 columns side-by-side) */}
+              <div className="store-hero-stats" style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 16, paddingTop: 18, borderTop: '1px solid #EFEFEF', width: '100%' }}>
                 <div>
-                  <p style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0 }}>4.9 ★</p>
-                  <p style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Customer Rating</p>
+                  <p className="store-hero-stat-val" style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0, whiteSpace: 'nowrap' }}>4.9 ★</p>
+                  <p className="store-hero-stat-lbl" style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600, whiteSpace: 'nowrap' }}>Customer Rating</p>
                 </div>
-                <div className="store-hero-stats-divider" style={{ width: 1, background: '#E8E8E8' }} />
+                <div className="store-hero-stats-divider" style={{ width: 1, height: 28, background: '#E8E8E8' }} />
                 <div>
-                  <p style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0 }}>24-48h</p>
-                  <p style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Lebanon Delivery</p>
+                  <p className="store-hero-stat-val" style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0, whiteSpace: 'nowrap' }}>24-48h</p>
+                  <p className="store-hero-stat-lbl" style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600, whiteSpace: 'nowrap' }}>Lebanon Delivery</p>
                 </div>
-                <div className="store-hero-stats-divider" style={{ width: 1, background: '#E8E8E8' }} />
+                <div className="store-hero-stats-divider" style={{ width: 1, height: 28, background: '#E8E8E8' }} />
                 <div>
-                  <p style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0 }}>Free Pickup</p>
-                  <p style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>BAU Beirut Campus</p>
+                  <p className="store-hero-stat-val" style={{ fontSize: 18, fontWeight: 900, color: '#1A1A1A', margin: 0, whiteSpace: 'nowrap' }}>Free Pickup</p>
+                  <p className="store-hero-stat-lbl" style={{ fontSize: 11, color: '#888', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600, whiteSpace: 'nowrap' }}>BAU Campus</p>
                 </div>
               </div>
+
 
             </div>
 
