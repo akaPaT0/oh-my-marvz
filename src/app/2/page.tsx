@@ -847,7 +847,7 @@ export default function ShopPage() {
 
       {/* ── PRODUCT GRID ── */}
       <div className="store-product-grid-wrap" style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 24px 60px' }}>
-        <div className="store-product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20 }}>
+        <div className="store-product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 20 }}>
           {filtered.map(product => {
             const wishlisted = wishlist.includes(product.id);
             const justAdded = addedId === product.id;
@@ -859,7 +859,7 @@ export default function ShopPage() {
               <div
                 key={product.id}
                 className="product-card"
-                style={{ background: '#fff', borderRadius: 16, overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 1px 4px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06)', transition: 'box-shadow 0.2s, transform 0.2s', cursor: 'default' }}
+                style={{ background: '#fff', borderRadius: 14, overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 1px 4px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06)', transition: 'box-shadow 0.2s, transform 0.2s', cursor: 'default' }}
                 onMouseEnter={e => {
                   (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.08)';
                   (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-3px)';
@@ -873,7 +873,7 @@ export default function ShopPage() {
                 <Link
                   href={`/2/${product.id}`}
                   className="card-image-wrap"
-                  style={{ position: 'relative', aspectRatio: '1', background: '#ECECEC', overflow: 'hidden', cursor: 'pointer', display: 'block' }}
+                  style={{ position: 'relative', aspectRatio: '1.05', background: '#ECECEC', overflow: 'hidden', cursor: 'pointer', display: 'block' }}
                 >
                   <Image src={product.image} alt={product.name} fill style={{ objectFit: 'cover', transition: 'transform 0.4s' }} className="card-img" />
 
@@ -900,7 +900,7 @@ export default function ShopPage() {
                       onClick={e => { e.stopPropagation(); addToCart(product); }}
                       style={{
                         width: '100%',
-                        padding: '11px',
+                        padding: '10px',
                         borderRadius: 10,
                         fontSize: 13,
                         fontWeight: 800,
@@ -921,26 +921,28 @@ export default function ShopPage() {
                   </div>
                 </Link>
 
-                {/* Info */}
-                <div className="store-product-card-body" style={{ padding: '12px 14px 14px', display: 'flex', flexDirection: 'column', gap: 6, flex: 1, borderTop: '1px solid #EBEBEB' }}>
-                  <p style={{ fontSize: 11, color: '#B0B0B0', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, margin: 0 }}>{product.subtitle}</p>
+                {/* Info (Compact height on PC) */}
+                <div className="store-product-card-body" style={{ padding: '10px 12px 12px', display: 'flex', flexDirection: 'column', gap: 4, flex: 1, borderTop: '1px solid #EBEBEB' }}>
+                  <p style={{ fontSize: 11, color: '#B0B0B0', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {product.subtitle}
+                  </p>
                   <Link
                     href={`/2/${product.id}`}
-                    style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', lineHeight: 1.35, margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textDecoration: 'none' } as React.CSSProperties}
+                    style={{ fontSize: 14, fontWeight: 700, color: '#1A1A1A', lineHeight: 1.25, margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textDecoration: 'none' } as React.CSSProperties}
                   >
                     {product.name}
                   </Link>
 
                   {/* Stars */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 1 }}>
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={12} style={{ fill: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB', color: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB' }} />
+                      <Star key={i} size={11} style={{ fill: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB', color: i < Math.round(product.rating) ? '#F59E0B' : '#E5E7EB' }} />
                     ))}
-                    <span style={{ fontSize: 11, color: '#aaa', marginLeft: 2 }}>({product.reviewsCount})</span>
+                    <span style={{ fontSize: 10.5, color: '#aaa', marginLeft: 2 }}>({product.reviewsCount})</span>
                   </div>
 
                   {/* Price & Mobile Quick Add */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, marginTop: 'auto', paddingTop: 6 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, marginTop: 'auto', paddingTop: 4 }}>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
                       <span style={{ fontSize: 16, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em' }}>${product.price.toFixed(2)}</span>
                       {product.originalPrice && (
@@ -968,6 +970,7 @@ export default function ShopPage() {
                       {justAdded ? <Check size={14} /> : <Plus size={15} />}
                     </button>
                   </div>
+
 
 
                 </div>
