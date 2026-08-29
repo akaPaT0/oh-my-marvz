@@ -202,10 +202,18 @@ export default function ShopPage() {
       }}>
         <div className="store-header-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', height: 62, gap: 12 }}>
 
-          {/* Logo */}
-          <Link href="/2" style={{ fontWeight: 900, fontSize: 16, letterSpacing: '-0.03em', color: '#1A1A1A', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
-            OH MY MARVZ
+          {/* Real Brand Logo */}
+          <Link href="/2" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
+            <Image
+              src="/logo.png"
+              alt="Oh My Marvz"
+              width={150}
+              height={42}
+              style={{ objectFit: 'contain', height: 36, width: 'auto' }}
+              priority
+            />
           </Link>
+
 
           {/* Divider */}
           <div className="store-nav-links" style={{ width: 1, height: 20, background: '#E0E0E0', flexShrink: 0 }} />
@@ -1178,9 +1186,16 @@ export default function ShopPage() {
       <footer style={{ background: '#111', color: '#fff', padding: '40px 24px' }}>
         <div className="store-footer-inner" style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 32 }}>
           <div>
-            <p style={{ fontWeight: 900, fontSize: 15, marginBottom: 8 }}>OH MY MARVZ</p>
+            <Image
+              src="/logo.png"
+              alt="Oh My Marvz"
+              width={130}
+              height={36}
+              style={{ objectFit: 'contain', height: 28, width: 'auto', marginBottom: 12, filter: 'brightness(1.1)' }}
+            />
             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, marginTop: 0 }}>Lebanon's premier collectibles store. Sourced, verified, delivered.</p>
           </div>
+
           <div>
             <p style={{ fontWeight: 700, fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>Shop</p>
             {[['Marvel Collection', '/marvel'], ['Anime Collection', '/anime'], ['Classic View', '/']].map(([label, href]) => (
