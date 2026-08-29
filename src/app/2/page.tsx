@@ -112,14 +112,19 @@ export default function ShopPage() {
           .store-hero-card-tile { min-height: 180px !important; padding: 14px 12px !important; }
           .store-hero-card-desc { display: none !important; }
           .store-hero-stats { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; text-align: center !important; }
-          .store-hero-stats-divider { display: none !important; }
           .store-featured-wrap { padding: 16px 14px 0 !important; width: 100% !important; overflow: hidden !important; }
-          .store-spotlight-box { grid-template-columns: 1fr !important; border-radius: 16px !important; }
-          .store-spotlight-img-wrap { order: -1 !important; aspect-ratio: 1.4 !important; border-left: none !important; border-bottom: 1px solid #ECECEC !important; }
-          .store-spotlight-details { padding: 18px 16px 20px !important; gap: 12px !important; }
-          .store-spotlight-h3 { font-size: 19px !important; }
-          .store-spotlight-btn-group { width: 100% !important; min-width: 100% !important; }
+          .store-featured-banner { min-height: 230px !important; height: 230px !important; border-radius: 16px !important; }
+          .store-featured-img { object-position: right center !important; transform: translateX(0px) !important; }
+          .store-featured-gradient { background: linear-gradient(90deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.88) 55%, rgba(255,255,255,0.15) 100%) !important; }
+          .store-featured-content { padding: 18px 16px !important; max-width: 65% !important; height: 100% !important; min-height: auto !important; justify-content: space-between !important; }
+          .store-featured-title { font-size: 16px !important; line-height: 1.2 !important; margin: 0 !important; }
+          .store-featured-desc { font-size: 11px !important; line-height: 1.3 !important; }
+          .store-featured-price { font-size: 20px !important; }
+          .store-featured-actions { display: flex !important; flex-direction: row !important; gap: 6px !important; }
+          .store-featured-btn-view { width: auto !important; height: 32px !important; padding: 0 10px !important; font-size: 11px !important; border-radius: 8px !important; }
+          .store-featured-btn-add { width: auto !important; height: 32px !important; padding: 0 10px !important; font-size: 11px !important; border-radius: 8px !important; }
           .store-collection-header-inner { padding: 12px 14px !important; width: 100% !important; flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+
 
           .store-filter-pills { overflow-x: auto !important; flex-wrap: nowrap !important; max-width: 100% !important; width: 100% !important; padding-bottom: 4px !important; -webkit-overflow-scrolling: touch !important; white-space: nowrap !important; }
           .store-filter-pills::-webkit-scrollbar { display: none; }
@@ -382,7 +387,7 @@ export default function ShopPage() {
       </div>
 
 
-      {/* ── FEATURED SPOTLIGHT (Clean Proportioned Card, No Swiping) ── */}
+      {/* ── FEATURED SPOTLIGHT BANNER (Cropped Image BG + Gradient Scrim, Static) ── */}
       {featuredProducts.length > 0 && (() => {
         const item = featuredProducts[0];
         const itemDiscount = item.originalPrice
@@ -396,7 +401,7 @@ export default function ShopPage() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
               <div>
                 <h2 style={{ fontSize: 20, fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.02em' }}>
-                  Featured Grail Spotlight
+                  Featured Spotlight
                 </h2>
                 <p style={{ fontSize: 13, color: '#777', margin: '3px 0 0' }}>
                   Hand-picked grail item and high-demand collector edition
@@ -428,81 +433,125 @@ export default function ShopPage() {
                   onMouseEnter={e => (e.currentTarget.style.borderColor = '#1A1A1A')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = '#DCDCDC')}
                 >
-                  <span>Explore All Pieces</span>
+                  <span>Explore Featured Products</span>
                   <ArrowRight size={13} />
                 </button>
               </div>
             </div>
 
-            {/* Clean Spotlight Card */}
+            {/* Featured Banner: Cropped Product Image as Background + Gradient Scrim */}
             <div
-              className="store-spotlight-box"
+              className="store-featured-banner"
               style={{
-                background: '#fff',
-                borderRadius: 20,
+                position: 'relative',
+                borderRadius: 22,
                 overflow: 'hidden',
-                border: '1.5px solid #E5E5E5',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
-                display: 'grid',
-                gridTemplateColumns: '1.1fr 0.9fr',
+                border: '1px solid #E2E2E2',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                minHeight: 440,
+                display: 'flex',
                 alignItems: 'center',
+                background: '#ECECEC',
               }}
             >
-              {/* Left Details */}
-              <div style={{ padding: '36px 40px', display: 'flex', flexDirection: 'column', gap: 16 }} className="store-spotlight-details">
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: '#C96A00', background: 'rgba(201,106,0,0.1)', padding: '3px 10px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                    {item.franchise} GRAIL
-                  </span>
-                  {itemDiscount && (
-                    <span style={{ fontSize: 11, fontWeight: 800, color: '#DC2626', background: 'rgba(220,38,38,0.1)', padding: '3px 8px', borderRadius: 6 }}>
-                      SAVE {itemDiscount}%
-                    </span>
-                  )}
-                </div>
+              {/* Background Product Image */}
+              <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  priority
+                  className="store-featured-img"
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: 'center 15%',
+                    transform: 'translateX(110px)',
+                    transition: 'all 0.4s ease',
+                  }}
+                />
 
-                <div>
-                  <Link href={`/2/${item.id}`} style={{ textDecoration: 'none', color: '#1A1A1A' }}>
-                    <h3 style={{ fontSize: 26, fontWeight: 900, margin: 0, lineHeight: 1.2, letterSpacing: '-0.02em', cursor: 'pointer' }} className="store-spotlight-h3">
+                {/* Gradient fade overlay for typography legibility */}
+                <div
+                  className="store-featured-gradient"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0.94) 35%, rgba(255,255,255,0.55) 55%, transparent 100%)',
+                    pointerEvents: 'none',
+                  }}
+                />
+              </div>
+
+              {/* Direct Content Overlay */}
+              <div
+                className="store-featured-content"
+                style={{
+                  position: 'relative',
+                  zIndex: 2,
+                  padding: '44px 48px',
+                  maxWidth: 500,
+                  height: 360,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+              >
+                {/* Title & Subtitle */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <Link
+                    href={`/2/${item.id}`}
+                    style={{ textDecoration: 'none', color: '#1A1A1A' }}
+                  >
+                    <h3 className="store-featured-title" style={{ fontSize: 28, fontWeight: 900, margin: 0, lineHeight: 1.18, letterSpacing: '-0.03em', cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
                       {item.name}
                     </h3>
                   </Link>
-                  <p style={{ fontSize: 13, color: '#666', margin: '6px 0 0', lineHeight: 1.45 }}>
+
+                  <p className="store-featured-desc" style={{ fontSize: 13, color: '#666', margin: 0, lineHeight: 1.4, fontWeight: 500, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}>
                     {item.subtitle}
                   </p>
                 </div>
 
-                {/* Price & Actions */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', paddingTop: 6 }}>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                    <span style={{ fontSize: 28, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
+                {/* Price + Action Buttons */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {/* Price & Discount */}
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+                    <span className="store-featured-price" style={{ fontSize: 30, fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
                       ${item.price.toFixed(2)}
                     </span>
                     {item.originalPrice && (
-                      <span style={{ fontSize: 15, color: '#999', textDecoration: 'line-through' }}>
+                      <span style={{ fontSize: 15, color: '#888', textDecoration: 'line-through', fontWeight: 500 }}>
                         ${item.originalPrice.toFixed(2)}
+                      </span>
+                    )}
+                    {itemDiscount && (
+                      <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '3px 8px', borderRadius: 4 }}>
+                        −{itemDiscount}%
                       </span>
                     )}
                   </div>
 
-                  <div style={{ display: 'flex', gap: 10, flex: 1, minWidth: 200 }} className="store-spotlight-btn-group">
+                  {/* Actions */}
+                  <div className="store-featured-actions" style={{ display: 'flex', gap: 10 }}>
                     <Link
                       href={`/2/${item.id}`}
+                      className="store-featured-btn-view"
                       style={{
-                        padding: '11px 20px',
+                        width: 140,
+                        height: 44,
                         background: '#1A1A1A',
                         color: '#fff',
                         borderRadius: 10,
                         textDecoration: 'none',
                         fontSize: 13,
                         fontWeight: 800,
-                        display: 'inline-flex',
+                        display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: 6,
-                        boxShadow: '0 3px 12px rgba(0,0,0,0.15)',
-                        flex: 1,
-                        whiteSpace: 'nowrap',
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+                        transition: 'background 0.15s',
+                        flexShrink: 0,
                       }}
                     >
                       <span>View Piece</span>
@@ -511,8 +560,10 @@ export default function ShopPage() {
 
                     <button
                       onClick={() => addToCart(item)}
+                      className="store-featured-btn-add"
                       style={{
-                        padding: '11px 18px',
+                        width: 130,
+                        height: 44,
                         background: justAdded ? '#16a34a' : '#fff',
                         color: justAdded ? '#fff' : '#1A1A1A',
                         border: '1.5px solid #DCDCDC',
@@ -520,12 +571,13 @@ export default function ShopPage() {
                         fontSize: 13,
                         fontWeight: 700,
                         cursor: 'pointer',
-                        display: 'inline-flex',
+                        display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: 6,
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
                         transition: 'all 0.15s',
-                        whiteSpace: 'nowrap',
+                        flexShrink: 0,
                       }}
                     >
                       {justAdded ? (
@@ -537,33 +589,11 @@ export default function ShopPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Right Image */}
-              <Link
-                href={`/2/${item.id}`}
-                className="store-spotlight-img-wrap"
-                style={{
-                  position: 'relative',
-                  aspectRatio: '1.35',
-                  background: '#F7F7F7',
-                  display: 'block',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  borderLeft: '1px solid #ECECEC',
-                }}
-              >
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  priority
-                  style={{ objectFit: 'cover' }}
-                />
-              </Link>
             </div>
           </div>
         );
       })()}
+
 
 
       {/* ── COLLECTION HEADER ── */}
